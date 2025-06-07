@@ -1,20 +1,21 @@
-# CMakeLists.txt for ClamAV-qt
-# This file is used to build the ClamAV-qt application using CMake.
+# CMakeLists.txt for ClamAV-GUI
+# This file is used to build the ClamAV-GUI application using CMake.
 # It sets up the project, finds the required Qt components, and configures the build process.
 # It also handles translation files and UI files, ensuring they are processed correctly.
 # The project is set to use Qt6 by default, but can be changed to Qt5 by modifying the QT_VERSION variable.
 # The translations are managed using the Qt Linguist tools, and the UI files are processed to generate header files.
-# The final executable is named ClamAV-qt and is installed to the usr/bin directory.
+# The final executable is named ClamAV-GUI and is installed to the usr/bin directory.
 # The CMake version required is 3.21 or higher. cmake version is set to 3.21 or higher to ensure compatibility with the features used in this project.
 # The project includes the necessary Qt components for GUI applications, networking, and core functionality.
 cmake_minimum_required(VERSION 3.21)
-project(ClamAV-qt
+project(ClamAV-GUI
     VERSION 1.1.4
     DESCRIPTION "ClamAV GUI for Linux"
     HOMEPAGE_URL ""
     LANGUAGES CXX
     )
 
+set(CMAKE_CXX_STANDARD 11)
 set(QT_MAJOR_VERSION 6)
 
 # find_package magic provided by the Qt6Config.cmake or Qt5Config.cmake
@@ -59,20 +60,20 @@ endif()
 
 message(STATUS "FILE_CPP: ${FILE_CPP}")
 
-add_executable(ClamAV-qt
+add_executable(ClamAV-GUI
     ${FILE_TS}
     ${TRANSLATION_QRC_FILE}
     "${UI_FILES_H}"
     "${FILE_CPP}"
     resources.qrc
     )
-target_include_directories(ClamAV-qt
+target_include_directories(ClamAV-GUI
     PRIVATE
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}
     )
 
-target_link_libraries(ClamAV-qt
+target_link_libraries(ClamAV-GUI
     PRIVATE
     Qt${QT_VERSION}::Gui
     Qt${QT_VERSION}::Widgets

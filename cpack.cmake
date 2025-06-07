@@ -1,5 +1,5 @@
 # CPack magic to generate packages
-# This file is used to configure CPack for packaging the ClamAV-qt application.
+# This file is used to configure CPack for packaging the ClamAV-GUI application.
 # It sets the package name, version, and other metadata required for packaging.
 # It also specifies the files to include in the package and the installation directories.
 # The package will be created in the build directory and can be used to distribute the application.

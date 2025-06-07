@@ -1,4 +1,4 @@
-install(TARGETS ClamAV-qt
+install(TARGETS ClamAV-GUI    
     RUNTIME DESTINATION usr/bin/
 )
 
