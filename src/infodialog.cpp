@@ -2,16 +2,16 @@
 
 infoDialog::infoDialog(QWidget* parent) : QWidget(parent)
 {
-    QString version = "1.1.7 (QT5)";
+    QString version = "1.1.8 (QT5)";
 
     QString infoText = "<html>";
     infoText += "  <head/>";
     infoText += "    <body>";
     infoText += "      <p align='center'>";
-    infoText += "        <span style=' font-size:22px; color:#000080;'>ClamAV-GUI</span>";
+    infoText += "        <span style=' font-size:22px;'>ClamAV-GUI</span>";
     infoText += "      </p>";
     infoText += "      <p align='center'>";
-    infoText += "        <span style=' font-size:15px; color:#000000;'><br/>Version " + version + " (2015 - 2025), published unter GPL 3.0</span>";
+    infoText += "        <span style=' font-size:15px;'><br/>Version " + version + " (2015 - 2025), published unter GPL 3.0</span>";
     infoText += "      </p>";
     infoText += "      <hr/>";
     infoText +=
