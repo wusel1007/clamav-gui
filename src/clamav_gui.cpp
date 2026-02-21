@@ -340,6 +340,9 @@ void clamav_gui::createDropZone()
         this->show();
 }
 
+/*
+    TODO: refactor this method. too long...
+ */
 void clamav_gui::slot_scanRequest(QStringList scanObjects)
 {
     QStringList selectedOptions = m_setupFile->getKeywords("SelectedOptions");
@@ -678,6 +681,7 @@ void clamav_gui::slot_receiveScanJob(QString name, QStringList m_parameters)
 
 void clamav_gui::slot_setTrayIconBalloonMessage(int status, QString title, QString message)
 {
+    //TODO: use enumerate
     switch (status) {
         // 0 = Information, 1 = Warning, 2 = Critical
         case 0:

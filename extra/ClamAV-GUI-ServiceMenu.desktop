@@ -19,6 +19,7 @@ NO-X-KDE-Submenu[pt_BR]=Investigar com ClamAV-GUI
 NO-X-KDE-Submenu[fr]=Scanner avec ClamAV-GUI
 NO-X-KDE-Submenu[it]=Scansione con ClamAV-GUI
 NO-X-KDE-Submenu[uk]=Сканування за допомогою ClamAV-GUI
+NO-X-KDE-Submenu[zh_CN]=通过ClamAV-GUI来扫描
 
 [Desktop Action scan]
 Name=Scan with ClamAV-GUI
@@ -34,6 +35,7 @@ Name[pt_BR]=Investigar com ClamAV-GUI
 Name[fr]=Scanner avec ClamAV-GUI
 Name[it]=Scansione con ClamAV-GUI
 Name[uk]=Сканування за допомогою ClamAV-GUI
+Name[zh_CN]=通过ClamAV来扫描
 Icon=clamav-gui
 Exec=clamav-gui --scan %F
 

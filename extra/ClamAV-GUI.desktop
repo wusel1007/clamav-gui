@@ -14,6 +14,7 @@ Comment[pt_BR]=Interface gráfica para o ClamAV
 Comment[fr]=Interface graphique pour ClamAV
 Comment[it]=Interfaccia grafica per ClamAV
 Comment[uk]=Графічний інтерфейс для ClamAV
+Comment[zh_CN]=ClamAV 图形界面
 Exec=clamav-gui
 Icon=clamav-gui
 Type=Application

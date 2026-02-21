@@ -39,6 +39,10 @@ void optionsDialog::slot_getClamscanProcessHasOutput()
     m_getClamscanProcessOutput = m_getClamscanProcessOutput + m_getClamscanParametersProcess->readAll();
 }
 
+
+/*
+  TODO: refactor this method, too long
+ */
 void optionsDialog::slot_getClamscanProcessFinished()
 {
     QString excludeList = "--help|--version|--database|--log|--file-list|--move|--copy|--exclude|--exclude-dir|--include|--include-dir|";
@@ -286,24 +290,27 @@ void optionsDialog::slot_selectLVDButtonClicked()
 {
     QString rc;
     rc = QFileDialog::getExistingDirectory(this, tr("Select Directory"), QDir::homePath() + "/.clamav-gui/signatures", QFileDialog::ShowDirsOnly);
-    if (rc != "") {
-        m_ui.loadVirusDatabaseLineEdit->setText(rc);
-        writeDirectories();
-        emit systemStatusChanged();
-        if (m_ui.loadVirusDatabaseCheckBox->isChecked() == true) {
-            emit databasePathChanged(rc);
-            QFile file(rc + "/freshclam.dat");
-            if (file.exists() == false) {
-                if (QMessageBox::warning(this, tr("Virus definitions missing!"),
-                                         tr("No virus definitions found in the database folder. Should the virus definitions be downloaded?"),
-                                         QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
-                    m_setupFile->setSectionValue("Directories","LoadSupportedDBFiles","checked|" + QDir::homePath() + "/.clamav-gui/signatures");
-                    m_ui.loadVirusDatabaseCheckBox->setChecked(true);
-                    m_ui.loadVirusDatabaseLineEdit->setText(QDir::homePath() + "/.clamav-gui/signatures");
-                    emit updateDatabase();
-                }
-            }
-        }
+    if (rc.isEmpty()) {
+        return;
+    }
+    m_ui.loadVirusDatabaseLineEdit->setText(rc);
+    writeDirectories();
+    emit systemStatusChanged();
+    if (!m_ui.loadVirusDatabaseCheckBox->isChecked()) {
+        return;
+    }
+    emit databasePathChanged(rc);
+    QFile file(rc + "/freshclam.dat");
+    if (file.exists()) {
+        return;
+    }
+    if (QMessageBox::warning(this, tr("Virus definitions missing!"),
+                                tr("No virus definitions found in the database folder. Should the virus definitions be downloaded?"),
+                                QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
+        m_setupFile->setSectionValue("Directories","LoadSupportedDBFiles","checked|" + QDir::homePath() + "/.clamav-gui/signatures");
+        m_ui.loadVirusDatabaseCheckBox->setChecked(true);
+        m_ui.loadVirusDatabaseLineEdit->setText(QDir::homePath() + "/.clamav-gui/signatures");
+        emit updateDatabase();
     }
 }
 

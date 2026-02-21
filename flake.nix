@@ -6,13 +6,17 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils, ... }:
-    flake-utils.lib.eachDefaultSystem (system:
-      let
+  outputs = {
+    self,
+    nixpkgs,
+    flake-utils,
+    ...
+  }:
+    flake-utils.lib.eachDefaultSystem (
+      system: let
         pkgs = nixpkgs.legacyPackages.${system};
-        qt = pkgs.qt6;  # Use Qt6 (can change to qt5 if needed)
-      in
-      {
+        qt = pkgs.qt6; # Use Qt6 (can change to qt5 if needed)
+      in {
         devShells.default = pkgs.mkShell {
           # Build inputs (required during build)
           nativeBuildInputs = with pkgs; [

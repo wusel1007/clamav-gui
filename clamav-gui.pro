@@ -111,7 +111,16 @@ TRANSLATIONS += translations/clamav-gui-de_DE.ts \
     translations/clamav-gui-fr_FR.ts \
     translations/clamav-gui-pt_PT.ts \
     translations/clamav-gui-it_IT.ts \
-    translations/clamav-gui-uk_UA.ts
+    translations/clamav-gui-uk_UA.ts \
+    translations/clamav-gui-zh_CN.ts 
+    translations/clamav-en_GB.ts \
+    translations/clamav-da_DK.ts \ 
+    translations/clamav-es_ES.ts \
+    translations/clamav-fr_FR.ts \ 
+    translations/clamav-pt_PT.ts \
+    translations/clamav-it_IT.ts \ 
+    translations/clamav-uk_UA.ts \
+    translations/clamav-zh_CN.ts
 
 INSTALLS += target \
     icon16 \
@@ -165,7 +174,24 @@ servicemenufile.path = /$(DESTDIR)/usr/share/kservices5/ServiceMenus
 servicemenufile.files = extra/ClamAV-GUI-ServiceMenu.desktop
 
 translation.path = /$(DESTDIR)/usr/share/clamav-gui
-translation.files = translations/clamav-gui-de_DE.qm translations/clamav-gui-en_GB.qm translations/clamav-gui-da_DK.qm translations/clamav-gui-es_ES.qm translations/clamav-gui-fr_FR.qm translations/clamav-gui-pt_PT.qm translations/clamav-gui-it_IT.qm translations/clamav-gui-uk_UA.qm
+translation.files = translations/clamav-gui-de_DE.qm \
+                    translations/clamav-gui-en_GB.qm \
+                    translations/clamav-gui-da_DK.qm \
+                    translations/clamav-gui-es_ES.qm \
+                    translations/clamav-gui-fr_FR.qm \
+                    translations/clamav-gui-pt_PT.qm \
+                    translations/clamav-gui-it_IT.qm \
+                    translations/clamav-gui-uk_UA.qm \
+                    translations/clamav-gui-zh_CN.qm \
+                    translations/clamav-en_GB.qm \
+                    translations/clamav-da_DK.qm \ 
+                    translations/clamav-es_ES.qm \
+                    translations/clamav-fr_FR.qm \ 
+                    translations/clamav-pt_PT.qm \
+                    translations/clamav-it_IT.qm \ 
+                    translations/clamav-uk_UA.qm \
+                    translations/clamav-zh_CN.qm
+
 
 manpages_de.path = /$(DESTDIR)/usr/share/man/de/man1
 manpages_de.files = man/de/clamav-gui.1.gz
