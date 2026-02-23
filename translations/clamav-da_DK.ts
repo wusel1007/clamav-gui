@@ -5,7 +5,7 @@
     <name>ClamAV</name>
     <message>
       <source>Be verbose</source>
-      <translation>Sei mitteilsam</translation>
+      <translation>Vær kommunikativ</translation>
     </message>
     <message>
       <source>Show filenames inside scanned archives</source>
