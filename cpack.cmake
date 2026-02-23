@@ -5,7 +5,7 @@
 # The package will be created in the build directory and can be used to distribute the application.
 set(CPACK_PACKAGE_CONTACT "Jörg Macedo da Costa Zopes")
 set(CPACK_PACKAGE_NAME "ClamAV-GUI")
-set(CPACK_PACKAGE_VERSION "1.1.4")
+set(CPACK_PACKAGE_VERSION "1.1.8")
 set(CPACK_PACKAGE_FILE_NAME "ClamAV-GUI-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}")
 
 set(CPACK_PACKAGING_INSTALL_PREFIX "/")

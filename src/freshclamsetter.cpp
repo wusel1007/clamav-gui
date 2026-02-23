@@ -205,10 +205,13 @@ void freshclamsetter::slot_startStopDeamonButtonClicked()
     else {
         QFile tempFile(m_pidFile);
         QString pidString;
-        if (tempFile.exists() == true) {
-            tempFile.open(QIODevice::ReadOnly);
+        if (tempFile.exists() && tempFile.open(QIODevice::ReadOnly)) {
             QTextStream stream(&tempFile);
             pidString = stream.readLine();
+        }
+        if (pidString.isEmpty()) 
+        {
+            return;
         }
         if (m_setupFile->getSectionBoolValue("FreshClam", "runasroot") == true) {
             QString para = "/bin/kill -sigterm " + pidString + " && rm " + m_pidFile;
@@ -273,13 +276,14 @@ void freshclamsetter::slot_ps_processFinished(int rc)
 
         QFile tempFile(m_pidFile);
         QString pidString;
-        if (tempFile.exists() == true) {
-            tempFile.open(QIODevice::ReadOnly);
+        if (tempFile.exists() && tempFile.open(QIODevice::ReadOnly)) {
             QTextStream stream(&tempFile);
             pidString = stream.readLine();
         }
-        m_setupFile->setSectionValue("Freshclam", "Pid", pidString);
-        emit systemStatusChanged();
+        if (!pidString.isEmpty()) {
+            m_setupFile->setSectionValue("Freshclam", "Pid", pidString);
+            emit systemStatusChanged();
+        }
     }
     else {
         m_pidFile = "";
@@ -413,10 +417,12 @@ void freshclamsetter::slot_clearLogButtonClicked()
     QFile file(QDir::homePath() + "/.clamav-gui/update.log");
 
     file.remove();
-    file.open(QIODevice::ReadWrite);
-    QTextStream stream(&file);
-    stream << "";
-    file.close();
+    
+    if (file.open(QIODevice::ReadWrite)) {
+        QTextStream stream(&file);
+        stream << "";
+        file.close();
+    }
     m_ui.logPlainText->setPlainText("");
 }
 
@@ -427,8 +433,7 @@ void freshclamsetter::slot_logFileWatcherTriggered()
     QString value;
     int pos;
 
-    if (file.exists() == true) {
-        file.open(QIODevice::ReadOnly);
+    if (file.exists() && file.open(QIODevice::ReadOnly)) {
         QTextStream stream(&file);
         content = stream.readAll();
         file.close();
@@ -520,13 +525,11 @@ void freshclamsetter::slot_updateFileWatcherTriggered()
     QString value;
     int pos;
 
-    if (file.exists() == true) {
-        file.open(QIODevice::ReadOnly);
+    if (file.exists() && file.open(QIODevice::ReadOnly)) {
         QTextStream stream(&file);
         content = stream.readAll();
         file.close();
     }
-
     pos = content.lastIndexOf("ClamAV update process started at");
     if (pos != -1) {
         value = content.mid(pos + 33, content.indexOf("\n", pos + 33) - (pos + 33));
@@ -590,10 +593,13 @@ void freshclamsetter::slot_clearDeamonLogButtonClicked()
     m_ui.deamonLogText->setPlainText("");
     m_updateLogFileWatcher->removePath(QDir::homePath() + "/.clamav-gui/freshclam.log");
     file.remove();
-    file.open(QIODevice::ReadWrite);
-    QTextStream stream(&file);
-    stream << "";
-    file.close();
+   
+    if (file.open(QIODevice::ReadWrite))
+    {
+        QTextStream stream(&file);
+        stream << "";
+        file.close();
+    }
     file.setPermissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner | QFileDevice::ReadUser | QFileDevice::WriteUser | QFileDevice::ReadGroup |
                         QFileDevice::WriteGroup | QFileDevice::ReadOther | QFileDevice::WriteOther);
     m_updateLogFileWatcher->addPath(QDir::homePath() + "/.clamav-gui/freshclam.log");
@@ -1021,7 +1027,7 @@ void freshclamsetter::slot_freshclamLocationProcessFinished()
         m_ui.freshclamLocationLineEdit->setText("not found");
         QMessageBox::warning(this, "WARNING", "Freshclam is missing. Please install!", QMessageBox::Ok);
         setForm(false);  //emit disableUpdateButtons();
-        emit quitApplication();
+        // emit quitApplication();
     }
 }
 
@@ -1030,7 +1036,7 @@ void freshclamsetter::slot_clamscanLocationProcessFinished()
     m_clamscanlocationProcessOutput = m_clamscanlocationProcessOutput + m_clamscanLocationProcess->readAll();
     if (m_clamscanlocationProcessOutput.length() < 13) {
         QMessageBox::warning(this, "ERROR", "Clamav is missing. Please install!", QMessageBox::Ok);
-        emit quitApplication();
+        // emit quitApplication();
     }
 }
 

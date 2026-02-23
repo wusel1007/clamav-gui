@@ -18,13 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef CFileSystemModel_H
-#define CFileSystemModel_H
+#pragma once
 
 #include <QFileSystemModel>
 #include <QModelIndex>
 #include <QSet>
 #include <QPersistentModelIndex>
+
 class CFileSystemModel : public QFileSystemModel
 {
 public:
@@ -43,4 +43,3 @@ private:
 
     bool recursiveCheck(const QModelIndex &index, const QVariant &value);
 };
-#endif // CFileSystemModel_H

@@ -1,7 +1,9 @@
 {
   pkgs? import <nixpkgs> {}
 }:
-
+let 
+  src = pkgs.lib.cleanSource ./.;
+in 
 pkgs.stdenv.mkDerivation {
   pname = "clamav-gui";
   version = "25.05.0";
@@ -10,9 +12,9 @@ pkgs.stdenv.mkDerivation {
   LANG = "en_US.UTF-8";
   LC_ALL = "en_US.UTF-8";
 
-  src = ./.;
+  inherit src;
 
-    # Debug: Verify files are copied correctly
+  # Debug: Verify files are copied correctly
   preConfigure = ''
     echo "=== Source tree contents ==="
     find $src
@@ -33,6 +35,8 @@ pkgs.stdenv.mkDerivation {
     qt6.qt5compat
     qt6.qtwayland
   ];
+
+  doCheck = true;
 
   # to prevent double wrapping of wrapQtApps and wrapGApps
   #dontWrapGApps = true;

@@ -183,10 +183,12 @@ void clamdManager::slot_logFileContentChanged()
     QString content;
     QString checkString;
 
-    file.open(QIODevice::ReadOnly);
-    QTextStream stream(&file);
-    content = stream.readAll();
-    file.close();
+    if (file.open(QIODevice::ReadOnly))
+    {
+        QTextStream stream(&file);
+        content = stream.readAll();
+        file.close();
+    }
 
     QStringList lines = content.split("\n");
     foreach (QString line, lines) {
@@ -247,10 +249,13 @@ void clamdManager::slot_clamdStartStopButtonClicked()
         QFile logFile(QDir::homePath() + "/.clamav-gui/clamd.log");
         if (logFile.exists() == true)
             logFile.remove();
-        logFile.open(QIODevice::ReadWrite);
-        QTextStream stream(&logFile);
-        stream << "";
-        logFile.close();
+
+        if (logFile.open(QIODevice::ReadWrite))
+        {
+            QTextStream stream(&logFile);
+            stream << "";
+            logFile.close();
+        }
         m_clamdLogWatcher->addPath(QDir::homePath() + "/.clamav-gui/clamd.log");
 
         m_ui.clamdLogPlainTextEdit->clear();
@@ -288,21 +293,24 @@ void clamdManager::slot_clamdStartStopButtonClicked()
     else {
         m_setupFile->setSectionValue("Clamd", "Status", "shutting down ...");
         emit systemStatusChanged();
-        pidFile.open(QIODevice::ReadOnly);
-        QTextStream stream(&pidFile);
-        QString pid = stream.readLine();
-        pidFile.close();
+        QString pid;
+        if (pidFile.open(QIODevice::ReadOnly)) {
+            QTextStream stream(&pidFile);
+            pid = stream.readLine();
+            pidFile.close();
+        }
         m_ui.startStopClamdPushButton->setText(tr("  Stopping Clamd. Please wait!"));
         QFile stopclamdFile(QDir::homePath() + "/.clamav-gui/stopclamd.sh");
         if (stopclamdFile.exists() == true)
             stopclamdFile.remove();
         if (stopclamdFile.open(QIODevice::Text | QIODevice::ReadWrite)) {
             QTextStream stream(&stopclamdFile);
+            stream << "#!/bin/bash\n";
             if (m_clamonaccPid != "n/a") {
-                stream << "#!/bin/bash\n/bin/kill -sigterm " + pid + " && kill -9 " + m_clamonaccPid;
+                stream << "/bin/kill -9 " + m_clamonaccPid + "\n ";
             }
-            else {
-                stream << "#!/bin/bash\n/bin/kill -sigterm " + pid;
+            if (!pid.isEmpty()) {
+                stream << "/bin/kill -sigterm " + pid;
             }
             stopclamdFile.close();
             stopclamdFile.setPermissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner | QFileDevice::ExeOwner | QFileDevice::ReadGroup |
@@ -352,15 +360,17 @@ void clamdManager::slot_startClamdProcessFinished(int exitCode, QProcess::ExitSt
         m_clamdPidWatcher->addPath("/tmp/clamd.pid");
 
         QFile pidFile("/tmp/clamd.pid");
-        pidFile.open(QIODevice::ReadOnly);
-        QTextStream stream(&pidFile);
-        QString pid = stream.readLine();
-        pid = pid.replace("\n", "");
+        if (pidFile.open(QIODevice::ReadOnly))
+        {
+            QTextStream stream(&pidFile);
+            QString pid = stream.readLine();
+            pid = pid.replace("\n", "");
 
-        m_setupFile->setSectionValue("Clamd", "ClamdPid", pid);
-        m_setupFile->setSectionValue("Clamd", "Status", "is running");
+            m_setupFile->setSectionValue("Clamd", "ClamdPid", pid);
+            m_setupFile->setSectionValue("Clamd", "Status", "is running");
 
-        pidFile.close();
+            pidFile.close();
+        }
 
         emit systemStatusChanged();
         m_ui.startStopClamdPushButton->setStyleSheet(selectColor("green"));
@@ -628,11 +638,13 @@ void clamdManager::slot_restartClamonaccProcessFinished()
 void clamdManager::slot_restartClamdButtonClicked()
 {
     QFile pidFile("/tmp/clamd.pid");
-    pidFile.open(QIODevice::ReadOnly);
-    QTextStream stream(&pidFile);
-    QString pid = stream.readLine();
-    pidFile.close();
-
+    QString pid = "0";
+    if (pidFile.open(QIODevice::ReadOnly))
+    {
+        QTextStream stream(&pidFile);
+        pid = stream.readLine();
+        pidFile.close();
+    }
     m_setupFile->setSectionValue("Clamd", "ClamdPid", pid);
 
     QString clamonaccOptions;
@@ -746,15 +758,16 @@ bool clamdManager::checkClamdRunning()
     if (pid == 0) {
         rc = true;
         QFile pidFile("/tmp/clamd.pid");
-        pidFile.open(QIODevice::ReadOnly);
-        QTextStream stream(&pidFile);
-        QString pidString = stream.readLine();
-        pidString = pidString.replace("\n", "");
-        m_setupFile->setSectionValue("Clamd", "ClamdPid", pidString);
-        m_setupFile->setSectionValue("Clamd", "Status", "is running");
-        m_ui.startStopClamdPushButton->setStyleSheet(selectColor("green"));
-        pidFile.close();
-
+        if (pidFile.open(QIODevice::ReadOnly))
+        {
+            QTextStream stream(&pidFile);
+            QString pidString = stream.readLine();
+            pidString = pidString.replace("\n", "");
+            m_setupFile->setSectionValue("Clamd", "ClamdPid", pidString);
+            m_setupFile->setSectionValue("Clamd", "Status", "is running");
+            m_ui.startStopClamdPushButton->setStyleSheet(selectColor("green"));
+            pidFile.close();
+        }
         emit systemStatusChanged();
     }
     else {

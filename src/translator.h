@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QStringList>
 #include <QString>
+#include <QTranslator>
 
 /*!
  * \brief The translator class provides translation services for the application.
@@ -35,6 +36,8 @@ public:
     static QString beautifyString(QString value, int length = 50);
 
 private:
+    void loadTranslations();  // Add this declaration
+    QTranslator m_translator;
     QString m_languageset;
 };
 
