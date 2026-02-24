@@ -40,7 +40,8 @@ clamdconfspinboxoption::clamdconfspinboxoption(QWidget* parent, QString keyword,
         m_ui.spinBox->setValue(spinvalue);
     }
 
-    label = trans.translateit(label);
+    //label = trans.translateit(label);
+    label = QCoreApplication::translate("ClamAV", label.toUtf8().constData());
     m_ui.checkBox->setText(translator::beautifyString(label, 120));
     m_startup = false;
 

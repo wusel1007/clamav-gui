@@ -38,29 +38,10 @@
         <file>icons/setup.png</file>
         <file>icons/languagelabel.xpm</file>
         <file>icons/expand-button.png</file>
-        <file>icons/spain.png</file>
-        <file>icons/dansk.png</file>
-        <file>icons/Brasil.png</file>
-        <file>icons/france.png</file>
-        <file>icons/germany.png</file>
-        <file>icons/Portugal.png</file>
-        <file>icons/ukraine.png</file>
-        <file>icons/GB.png</file>
-        <file>icons/italy.png</file>
         <file>icons/add_option.png</file>
         <file>icons/remove_option.png</file>
         <file>icons/edit-copy.png</file>
         <file>icons/edit-cut.png</file>
-        <file>icons/angola.png</file>
-        <file>icons/australia.png</file>
-        <file>icons/caboverde.png</file>
-        <file>icons/ireland.png</file>
-        <file>icons/macau.png</file>
-        <file>icons/mozambique.png</file>
-        <file>icons/newzealand.png</file>
-        <file>icons/saotome.png</file>
-        <file>icons/timorleste.png</file>
-        <file>icons/us.png</file>
         <file>icons/onaccess.png</file>
         <file>icons/add.png</file>
         <file>icons/restart.png</file>
@@ -72,6 +53,26 @@
         <file>icons/systemstatus.png</file>
         <file>icons/gifs/activity.gif</file>
         <file>icons/multithread.png</file>
+        <file>icons/zh_CN.png</file>
+        <file>icons/pt_AO.png</file>
+        <file>icons/da_DK.png</file>
+        <file>icons/de_DE.png</file>
+        <file>icons/en_AU.png</file>
+        <file>icons/en_GB.png</file>
+        <file>icons/en_IE.png</file>
+        <file>icons/en_NZ.png</file>
+        <file>icons/en_US.png</file>
+        <file>icons/es_ES.png</file>
+        <file>icons/fr_FR.png</file>
+        <file>icons/it_IT.png</file>
+        <file>icons/pt_BR.png</file>
+        <file>icons/pt_CV.png</file>
+        <file>icons/pt_MO.png</file>
+        <file>icons/pt_MZ.png</file>
+        <file>icons/pt_PT.png</file>
+        <file>icons/pt_ST.png</file>
+        <file>icons/pt_TL.png</file>
+        <file>icons/uk_UA.png</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>

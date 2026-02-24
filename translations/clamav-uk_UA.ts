@@ -715,5 +715,5 @@
       <source>Print the file type after each file scanned</source>
       <translation/>
     </message>
-    </context>
+</context>
 </TS>

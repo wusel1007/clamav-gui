@@ -15,7 +15,8 @@ scanoption::scanoption(QWidget *parent, QString setupFileName, QString section, 
 
     m_setupFileSection = section;
     m_option = label;
-    m_com = trans.translateit(comment);
+    //m_com = trans.translateit(comment);
+    m_com = QCoreApplication::translate("ClamAV", comment.toUtf8().constData());
     m_ui.checkBox->setChecked(checked);
 
     if (checked == true) {

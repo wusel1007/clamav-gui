@@ -28,7 +28,8 @@ clamdconfcomboboxoption::clamdconfcomboboxoption(QWidget* parent, QString keywor
         m_ui.comboBox->setVisible(false);
     }
 
-    label = trans.translateit(label);
+    //label = trans.translateit(label);
+    label = QCoreApplication::translate("ClamAV", label.toUtf8().constData());
     m_ui.checkBox->setText(translator::beautifyString(label, 120));
 
     m_startup = false;

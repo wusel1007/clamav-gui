@@ -15,7 +15,8 @@ scanoptionyn::scanoptionyn(QWidget *parent, QString setupFileName, QString secti
     translator trans(language);
 
     m_option = label.mid(0,label.indexOf("<equal>"));
-    m_com = trans.translateit(comment);
+    //m_com = trans.translateit(comment);
+    m_com = QCoreApplication::translate("ClamAV", comment.toUtf8().constData());
     m_ui.checkBox->setChecked(checked);
     m_ui.comboBox->setEnabled(checked);
 

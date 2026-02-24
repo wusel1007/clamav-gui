@@ -56,6 +56,12 @@ setupTab::setupTab(QWidget* parent, setupFileHandler* setupFile) : QWidget(paren
     }
 
     slot_updateSystemInfo();
+    m_findTranslationProcess = new QProcess(this);
+    connect(m_findTranslationProcess,SIGNAL(finished(int,QProcess::ExitStatus)),this,SLOT(slot_findTranslationProcessFinished()));
+
+    QStringList parameters;
+    parameters << "/usr/share/clamav-gui";
+    m_findTranslationProcess->start("ls",parameters);
 
     m_supressMessage = false;
 }
@@ -196,6 +202,36 @@ void setupTab::slot_logHightlighterCheckBoxClicked()
     slot_updateSystemInfo();
 }
 
+void setupTab::slot_findTranslationProcessFinished()
+{
+    // load the list with the full names of the languages for the translation files from countryfullnames.txt
+    QStringList m_langcode2name;
+    QString m_langcodeshelper = "";
+    QFile m_file("/usr/share/clamav-gui/countryfullnames.txt");
+    if (m_file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream stream(&m_file);
+        m_langcodeshelper = stream.readAll().toLocal8Bit().constData();
+        m_file.close();
+        m_langcode2name = m_langcodeshelper.split("\n");
+    }
+
+    QString m_languages = m_findTranslationProcess->readAll();
+    QStringList m_languageList = m_languages.split("\n");
+    QString m_lang = "";
+    QString m_languagefullname = "";
+    foreach (m_lang, m_languageList) {
+        if (m_lang.indexOf(".qm") != -1) {
+            m_lang = m_lang.mid(11,5);
+            foreach (QString m_item, m_langcode2name) {
+                if (m_item.indexOf(m_lang) == 0) {
+                    m_languagefullname = m_item.mid(5);
+                }
+            }
+            m_ui.languageSelectComboBox->addItem(QIcon("/usr/share/clamav-gui/languageicons/" + m_lang + ".png"),"[" + m_lang + "] " + m_languagefullname);
+        }
+    }
+}
+
 void setupTab::slot_clamonaccButtonClicked()
 {
     emit switchActiveTab(6);
@@ -204,8 +240,9 @@ void setupTab::slot_clamonaccButtonClicked()
 void setupTab::slot_selectedLanguageChanged()
 {
     m_setupFile->setSectionValue("Setup", "language", m_ui.languageSelectComboBox->currentText().mid(0, 7));
-    if (m_supressMessage == false)
+    if (m_supressMessage == false) {
         QMessageBox::information(this, tr("Warning"), tr("You have to restart the application for changes to take effect!"));
+    }
 }
 
 void setupTab::slot_basicSettingsChanged()

@@ -4,7 +4,8 @@
 #include <QMessageBox>
 #include <QStringList>
 #include <QString>
-#include <QTranslator>
+#include <QFile>
+#include <QDir>
 
 /*!
  * \brief The translator class provides translation services for the application.
@@ -24,6 +25,7 @@ public:
         * \brief translateit Translates the given string based on the selected language.
         * \param original The original string to be translated.
         * \return The translated string.
+        * \OBSOLETE due to changes mode in the translation files.
     */
     QString translateit(QString original);
 
@@ -36,8 +38,6 @@ public:
     static QString beautifyString(QString value, int length = 50);
 
 private:
-    void loadTranslations();  // Add this declaration
-    QTranslator m_translator;
     QString m_languageset;
 };
 

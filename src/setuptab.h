@@ -2,6 +2,7 @@
 #define SETUPTAB_H
 
 #include <QFileSystemWatcher>
+#include <QTranslator>
 #include <QFileDialog>
 #include <QProcess>
 #include <QPixmap>
@@ -28,6 +29,7 @@ public:
 private:
     Ui::setupTab m_ui;
     setupFileHandler    * m_setupFile; // clamd && freshclam
+    QProcess            * m_findTranslationProcess;
     bool                  m_supressMessage;
     bool                  m_monochrome;
     QString checkmonochrome(QString color);
@@ -41,6 +43,7 @@ private slots:
     void slot_freshclamButtonClicked();
     void slot_clamdscanComboBoxClicked();
     void slot_logHightlighterCheckBoxClicked();
+    void slot_findTranslationProcessFinished();
 
 signals:
     void switchActiveTab(int);

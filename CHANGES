@@ -1,5 +1,10 @@
+* Thu Feb 24 2026 - Version 1.1.9
+- Chinese added as supported language
+- Complete revision of the translation part in the setup tab.
+- Fixed the context menu.
+
 * Wed Nov 26 2025 - Version 1.1.8
-- Fixed a minor bug in the setup wizzard and a wrong signalname in the logview class (switching to monochrome mode.)
+- Fixed a minor bug in the setup wizzard and a wrong signalname in the option tab (switching to monochrome mode.)
 
 * Thu Nov 25 2025 - Version 1.1.7
 - Fixed a bug in the options tab, regarding the directory information saved in the setup file (settings.ini).

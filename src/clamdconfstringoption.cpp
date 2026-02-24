@@ -19,7 +19,8 @@ clamdConfStringOption::clamdConfStringOption(QWidget* parent, QString keyword, b
         m_ui.lineEdit->setText(options);
     }
 
-    label = trans.translateit(label);
+    //label = trans.translateit(label);
+    label = QCoreApplication::translate("ClamAV", label.toUtf8().constData());
     label = translator::beautifyString(label, 120);
 
     m_ui.checkBox->setText(label);
