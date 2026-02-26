@@ -112,6 +112,12 @@ void ProfileWizardDialog::readSettings()
     value = value.mid(value.indexOf("|") + 1);
     checked == "checked" ? m_ui->scanReportToFileCheckBox->setChecked(true) : m_ui->scanReportToFileCheckBox->setChecked(false);
     m_ui->scanReportToFileLineEdit->setText(value);
+    // use profile name as part of the report file for new profiles
+    if(m_newProfile){
+        QStringList pathSlices = value.split("/");
+        value = value.replace(pathSlices[pathSlices.length() - 1], m_profileName + "_scanreport.log");
+        m_ui->scanReportToFileLineEdit->setText(value);
+    }
 
     value = m_setupFile->getSectionValue("Directories", "ScanFilesFromFile");
     checked = value.left(value.indexOf("|"));
