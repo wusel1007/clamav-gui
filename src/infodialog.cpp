@@ -2,16 +2,16 @@
 
 infoDialog::infoDialog(QWidget* parent) : QWidget(parent)
 {
-    QString version = "1.1.8 (QT5)";
+    QString version = "2.0.0 (QT6)";
 
     QString infoText = "<html>";
     infoText += "  <head/>";
     infoText += "    <body>";
     infoText += "      <p align='center'>";
-    infoText += "        <span style=' font-size:22px;'>ClamAV-GUI</span>";
+    infoText += "        <span style=' font-size:22px; color:#000080;'>ClamAV-GUI</span>";
     infoText += "      </p>";
     infoText += "      <p align='center'>";
-    infoText += "        <span style=' font-size:15px;'><br/>Version " + version + " (2015 - 2025), published unter GPL 3.0</span>";
+    infoText += "        <span style=' font-size:15px; color:#000000;'><br/>Version " + version + " (2015 - 2025), published unter GPL 3.0</span>";
     infoText += "      </p>";
     infoText += "      <hr/>";
     infoText +=
@@ -35,7 +35,7 @@ infoDialog::infoDialog(QWidget* parent) : QWidget(parent)
     infoText += "        <tr>";
     infoText += "          <td>";
     infoText += "            <p>";
-    infoText += "              <img src='qrc:///icons/icons/dansk.png'/>";
+    infoText += "              <img src='/usr/share/clamav-gui/languageicons/da_DK.png'/>";
     infoText += "              <span style=' font-size:14px;'> Danish:</span>";
     infoText += "            </p>";
     infoText += "          </td>";
@@ -56,7 +56,7 @@ infoDialog::infoDialog(QWidget* parent) : QWidget(parent)
     infoText += "          </td>";
     infoText += "          <td>";
     infoText += "            <p>";
-    infoText += "              <img src='qrc:///icons/icons/spain.png'/>";
+    infoText += "              <img src='/usr/share/clamav-gui/languageicons/es_ES.png'/>";
     infoText += "              <span style=' font-size:14px;'> Spanish:</span>";
     infoText += "            </p>";
     infoText += "          </td>";
@@ -74,7 +74,7 @@ infoDialog::infoDialog(QWidget* parent) : QWidget(parent)
     infoText += "        <tr>";
     infoText += "          <td>";
     infoText += "            <p>";
-    infoText += "              <img src='qrc:///icons/icons/germany.png'/>";
+    infoText += "              <img src='/usr/share/clamav-gui/languageicons/de_DE.png'/>";
     infoText += "              <span style=' font-size:14px;'> German:</span>";
     infoText += "            </p>";
     infoText += "          </td>";
@@ -95,7 +95,7 @@ infoDialog::infoDialog(QWidget* parent) : QWidget(parent)
     infoText += "          </td>";
     infoText += "          <td>";
     infoText += "            <p>";
-    infoText += "              <img src='qrc:///icons/icons/france.png'/>";
+    infoText += "              <img src='/usr/share/clamav-gui/languageicons/fr_FR.png'/>";
     infoText += "              <span style=' font-size:14px;'> French:</span>";
     infoText += "            </p>";
     infoText += "          </td>";
@@ -113,7 +113,7 @@ infoDialog::infoDialog(QWidget* parent) : QWidget(parent)
     infoText += "        <tr>";
     infoText += "          <td>";
     infoText += "            <p>";
-    infoText += "              <img src='qrc:///icons/icons/Portugal.png'/>";
+    infoText += "              <img src='/usr/share/clamav-gui/languageicons/pt_PT.png'/>";
     infoText += "              <span style=' font-size:14px;'> Portuguese:</span>";
     infoText += "            </p>";
     infoText += "          </td>";
@@ -134,7 +134,7 @@ infoDialog::infoDialog(QWidget* parent) : QWidget(parent)
     infoText += "          </td>";
     infoText += "          <td>";
     infoText += "            <p>";
-    infoText += "              <img src='qrc:///icons/icons/Brasil.png'/>";
+    infoText += "              <img src='/usr/share/clamav-gui/languageicons/pt_BR.png'/>";
     infoText += "              <span style=' font-size:14px;'> Brasilian:</span>";
     infoText += "            </p>";
     infoText += "          </td>";
@@ -152,7 +152,7 @@ infoDialog::infoDialog(QWidget* parent) : QWidget(parent)
     infoText += "        <tr>";
     infoText += "          <td>";
     infoText += "            <p>";
-    infoText += "              <img src='qrc:///icons/icons/GB.png'/>";
+    infoText += "              <img src='/usr/share/clamav-gui/languageicons/en_GB.png'/>";
     infoText += "              <span style=' font-size:14px;'> English:</span>";
     infoText += "            </p>";
     infoText += "          </td>";
@@ -173,7 +173,7 @@ infoDialog::infoDialog(QWidget* parent) : QWidget(parent)
     infoText += "          </td>";
     infoText += "          <td>";
     infoText += "            <p>";
-    infoText += "              <img src='qrc:///icons/icons/italy.png'/>";
+    infoText += "              <img src='/usr/share/clamav-gui/languageicons/it_IT.png'/>";
     infoText += "              <span style=' font-size:14px;'> Italian:</span>";
     infoText += "            </p>";
     infoText += "          </td>";
@@ -195,7 +195,7 @@ infoDialog::infoDialog(QWidget* parent) : QWidget(parent)
     infoText += "        <tr>";
     infoText += "          <td>";
     infoText += "            <p>";
-    infoText += "              <img src='qrc:///icons/icons/ukraine.png'/>";
+    infoText += "              <img src='/usr/share/clamav-gui/languageicons/uk_UA.png'/>";
     infoText += "            </p>";
     infoText += "          </td>";
     infoText += "          <td>";
