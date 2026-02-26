@@ -1,4 +1,9 @@
-* Thu Feb 24 2026 - Version 1.1.9
+* Thu Feb 26 2026 - Version 1.2.0
+- in the Profile-Wizzard the name of the profile is used as part of the logfile (lucasvinbr)
+- Fixed the initial creation of the clamd.conf file. (broken due to unknown reason???)
+- Fixed the color-setting of the start/stop button for clamd. After restart of the program the button was red even when clamd was running (text was right).
+
+* Tue Feb 24 2026 - Version 1.1.9
 - Chinese added as supported language
 - Complete revision of the translation part in the setup tab.
 - Fixed the context menu.
