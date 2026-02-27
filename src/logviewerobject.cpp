@@ -53,7 +53,12 @@ void logViewerObject::loadLogFile(QString profile)
     QStringList values;
 
     while (m_ui->logTab->count() > 0) {
+        QWidget * tempwidget = m_ui->logTab->widget(0);
         m_ui->logTab->removeTab(0);
+
+        if (tempwidget != nullptr) {
+            delete tempwidget;
+        }
     }
 
     values = sf->getSectionValue("Directories", "ScanReportToFile").split("|");
@@ -75,6 +80,8 @@ void logViewerObject::loadLogFile(QString profile)
             file.close();
         }
     }
+
+    delete sf;
 }
 
 void logViewerObject::slot_profileSeclectionChanged()

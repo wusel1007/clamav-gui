@@ -186,7 +186,7 @@ void scheduler::slot_scanButtonClicked(int id)
 {
     int rc = QMessageBox::information(this, tr("Start Scan-Job"), tr("Do you realy want to start this Scan-Job?"), QMessageBox::Yes, QMessageBox::No);
     QString profileName;
-    qint64 today = QDateTime::currentDateTime().toMSecsSinceEpoch();
+    qint64 today = QDateTime::currentMSecsSinceEpoch();
     QStringList values;
     QString temp;
     QString scanID;
@@ -237,6 +237,8 @@ void scheduler::slot_logButtonClicked(int id)
     else {
         QMessageBox::information(this, tr("INFO"), tr("No active log-file for this profile specified!"));
     }
+
+    delete tempSF;
 }
 
 void scheduler::startScanJob(QString profileName)
@@ -380,6 +382,8 @@ void scheduler::startScanJob(QString profileName)
     }
 
     emit triggerScanJob(profileName, parameters);
+
+    delete setupFile;
 }
 
 void scheduler::slot_checkTimerTimeout()
@@ -601,6 +605,8 @@ void scheduler::slot_profileSelectionChanged()
         logFile = "";
     }
     m_ui.logFileLabel->setText("Log-File : " + logFile);
+
+    delete tempSetupFile;
 }
 
 void scheduler::slot_logChanged()

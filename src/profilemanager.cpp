@@ -208,6 +208,8 @@ void ProfileManager::slot_readProfileSettings()
     }
 
     m_ui->filenameTextLabel->setText(logFile);
+
+    delete tempSetupFile;
 }
 
 void ProfileManager::slot_addProfileButtonClicked()
@@ -251,8 +253,7 @@ void ProfileManager::slot_eraseProfileButtonClicked()
                                            QMessageBox::Yes, QMessageBox::No);
             QFile tempFile(QDir::homePath() + "/.clamav-gui/profiles/" + m_ui->profileComboBox->currentText() + ".ini");
             if (rc == QMessageBox::Yes) {
-                setupFileHandler* sf =
-                    new setupFileHandler(QDir::homePath() + "/.clamav-gui/profiles/" + m_ui->profileComboBox->currentText() + ".ini", this);
+                setupFileHandler* sf = new setupFileHandler(QDir::homePath() + "/.clamav-gui/profiles/" + m_ui->profileComboBox->currentText() + ".ini", this);
                 logfileName = sf->getSectionValue("Directories", "ScanReportToFile")
                                   .mid(sf->getSectionValue("Directories", "ScanReportToFile").indexOf("|") + 1);
                 if (logfileName != "") {
@@ -269,6 +270,7 @@ void ProfileManager::slot_eraseProfileButtonClicked()
                 getProfileList();
                 slot_readProfileSettings();
                 emit triggerProfilesChanged();
+                delete sf;
             }
         }
         else {

@@ -546,6 +546,8 @@ void ProfileWizardDialog::readSettings()
     }
     slot_scanLimitsCheckBoxClicked();
     slot_highlightSettings();
+
+    delete tempconfig;
 }
 
 void ProfileWizardDialog::slot_nextButtonClicked()
@@ -695,8 +697,8 @@ void ProfileWizardDialog::slot_createButtonClicked()
     QString checked;
     QString keyword;
     QString value;
-    QString optionString;
-    QString tooltipString;
+    /*QString optionString;
+    QString tooltipString;*/
 
     m_newProfile = false;
     for (int i = 0; i < list.count(); i++) {
@@ -951,6 +953,8 @@ void ProfileWizardDialog::slot_createButtonClicked()
 
     emit signal_profileSaved();
     this->accept();
+
+    delete profiles;
 }
 
 void ProfileWizardDialog::slot_getClamscanProcessHasOutput()

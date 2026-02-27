@@ -32,7 +32,12 @@ void logViewObject::loadLogFile(QString filename)
     bool css = setupFileHandler::getSectionBoolValue(QDir::homePath() + "/.clamav-gm_ui/settings.ini","Setup", "DisableLogHighlighter");
 
     while (m_ui.logTab->count() > 0) {
+        QWidget * tempwidget = m_ui.logTab->widget(0);
         m_ui.logTab->removeTab(0);
+
+        if (tempwidget != nullptr) {
+            delete tempwidget;
+        }
     }
 
     if (file.open(QIODevice::ReadOnly)) {

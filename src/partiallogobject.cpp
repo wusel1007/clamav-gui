@@ -140,7 +140,7 @@ void partialLogObject::slot_totalErrorButtonClicked() {
 
 void partialLogObject::slot_infectedFilesButtonClicked() {
     QTextCursor cursor = m_ui.logPlainText->textCursor();
-    QString searchString = "FOUND\n";
+    QString searchString = " FOUND\n";
     int pos = m_ui.logPlainText->toPlainText().indexOf(searchString, m_infectedStart);
 
     if (pos > -1) {

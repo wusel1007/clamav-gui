@@ -30,7 +30,6 @@ scheduleScanObject::scheduleScanObject(QWidget* parent, QString name, QStringLis
     QString message;
 
     if (m_setupFile->getSectionValue("Clamd", "Status") == "is running") {
-        // TODO: use enumerate
         switch (m_setupFile->getSectionIntValue("Clamd", "ClamdScanMultithreading")) {
             case 0:
                 useclamdscan = false;
@@ -344,7 +343,7 @@ void scheduleScanObject::slot_totalErrorButtonClicked()
 void scheduleScanObject::slot_infectedFilesButtonClicked()
 {
     QTextCursor cursor = m_ui.logMessagePlainTextEdit->textCursor();
-    QString searchString = "FOUND";
+    QString searchString = " FOUND\n";
     int pos = m_ui.logMessagePlainTextEdit->toPlainText().toUpper().indexOf(searchString, m_infectedStart);
 
     if (pos >= 0) {
