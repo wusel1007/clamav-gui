@@ -2,7 +2,7 @@
 
 infoDialog::infoDialog(QWidget* parent) : QWidget(parent)
 {
-    QString version = "2.0.0 (QT6)";
+    QString version = "1.2.1 (QT6)";
 
     QString infoText = "<html>";
     infoText += "  <head/>";

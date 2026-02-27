@@ -1,3 +1,7 @@
+* Fri Feb 27 2026 - Version 1.2.1
+- Fixed the highlighter. Only " FOUND\n" is highlighted.
+- the search function through the "infected files" button is fixed as well. Only entries with " FOUND\n" are found.
+
 * Thu Feb 26 2026 - Version 1.2.0
 - in the Profile-Wizzard the name of the profile is used as part of the logfile (lucasvinbr)
 - Fixed the initial creation of the clamd.conf file. (broken due to unknown reason???)

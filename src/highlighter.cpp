@@ -86,7 +86,7 @@ highlighter::highlighter(QTextDocument* parent) : QSyntaxHighlighter(parent)
     m_singleLineCommentFormat.setFontWeight(QFont::Normal);
 #ifdef QT_VERSION_6
     rule.pattern = QRegularExpression(
-        "^ERROR: ClamCom:|.Empty file|^WARN.*|.FOUND *|.ERROR:.*|.WARNING:.*|^Can't connect to port.*|.Access denied|^Infected files:.|^Total "
+        "^ERROR: ClamCom:|.Empty file|^WARN.*| FOUND$|.ERROR:.*|.WARNING:.*|^Can't connect to port.*|.Access denied|^Infected files:.|^Total "
         "errors:.*");
 #else
     rule.pattern = QRegExp(
