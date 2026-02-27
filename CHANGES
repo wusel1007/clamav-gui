@@ -1,3 +1,6 @@
+* Fri Feb 27 2026 - Version 1.2.2
+- Fixed memory leaks in several modules. (regarding the use of the setupfilehandler and log-tabs)
+
 * Fri Feb 27 2026 - Version 1.2.1
 - Fixed the highlighter. Only " FOUND\n" is highlighted.
 - the search function through the "infected files" button is fixed as well. Only entries with " FOUND\n" are found.
