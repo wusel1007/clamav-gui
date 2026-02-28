@@ -35,15 +35,8 @@ setupTab::setupTab(QWidget* parent, setupFileHandler* setupFile) : QWidget(paren
     else {
         m_setupFile->setSectionValue("Setup", "DisableLogHighlighter", false);
     }
-
+    findTranslation();
     slot_updateSystemInfo();
-    m_findTranslationProcess = new QProcess(this);
-    connect(m_findTranslationProcess,SIGNAL(finished(int,QProcess::ExitStatus)),this,SLOT(slot_findTranslationProcessFinished()));
-
-    QStringList parameters;
-    parameters << "/usr/share/clamav-gui";
-    m_findTranslationProcess->start("ls",parameters);
-
     m_supressMessage = false;
 }
 
@@ -183,20 +176,23 @@ void setupTab::slot_logHightlighterCheckBoxClicked()
     slot_updateSystemInfo();
 }
 
-void setupTab::slot_findTranslationProcessFinished()
+void setupTab::findTranslation()
 {
     int index = -1;
     QString langhelper;
-    QString m_languages = m_findTranslationProcess->readAll();
-    QStringList m_languageList = m_languages.split("\n");
-    QString m_lang = "";
     QString m_country = "";
-    foreach (m_lang, m_languageList) {
-        if (m_lang.indexOf(".qm") != -1) {
-            m_lang = m_lang.mid(11,5);
+    QString translation_path = QCoreApplication::applicationDirPath() + "/../share/clamav-gui/";
+    QDir directory(translation_path);
+    QStringList m_filelist = directory.entryList(QDir::Files);
+    foreach(QString m_file, m_filelist) {
+        qDebug() << m_file;
+        if (m_file.indexOf(".qm") != -1 && m_file.contains("gui")) {
+            qDebug() << m_file;
+            QString m_lang = m_file.mid(11,5);
             QLocale locale(m_lang);
             m_country = locale.territoryToString(locale.territory());
-            m_ui.languageSelectComboBox->addItem(QIcon("/usr/share/clamav-gui/languageicons/" + m_lang + ".png"),"[" + m_lang + "] " + m_country);
+            qDebug() << m_country;
+            m_ui.languageSelectComboBox->addItem(QIcon(translation_path + "languageicons/" + m_lang + ".png"),"[" + m_lang + "] " + m_country);        
         }
     }
 

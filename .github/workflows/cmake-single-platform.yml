@@ -66,3 +66,12 @@ jobs:
           ${{ github.workspace }}/build/*.rpm
         retention-days: 7  # Automatically clean up after a week
 
+    - name: Upload to Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          ${{ github.workspace }}/build/*.deb
+          ${{ github.workspace }}/build/*.rpm
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
