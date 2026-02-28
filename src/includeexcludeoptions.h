@@ -37,9 +37,9 @@ public:
     ~includeExcludeOptions();
 
 private:
-    Ui::includeExcludeOptions *m_ui;
     setupFileHandler    * m_setupFile;
     setupFileHandler    * m_profiles;
+    Ui::includeExcludeOptions *m_ui;
     bool m_readSettingsInProgress;
     void readSettings();
 

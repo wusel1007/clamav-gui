@@ -18,8 +18,8 @@ public:
     ~ProfileManager();
 
 private:
-    Ui::ProfileManager  *m_ui;
     setupFileHandler    *m_setupFile;
+    Ui::ProfileManager  *m_ui;
     ProfileWizardDialog *m_profileWizard;
     
     void getProfileList();

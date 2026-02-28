@@ -185,16 +185,8 @@ void setupTab::slot_logHightlighterCheckBoxClicked()
 
 void setupTab::slot_findTranslationProcessFinished()
 {
-    QStringList m_langcode2name;
-    QString m_langcodeshelper = "";
-    QFile m_file("/usr/share/clamav-gui/languageicons/countryfullnames.txt");
-    if (m_file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QTextStream stream(&m_file);
-        m_langcodeshelper = stream.readAll().toLocal8Bit().constData();
-        m_file.close();
-        m_langcode2name = m_langcodeshelper.split("\n");
-    }
-
+    int index = -1;
+    QString langhelper;
     QString m_languages = m_findTranslationProcess->readAll();
     QStringList m_languageList = m_languages.split("\n");
     QString m_lang = "";
@@ -203,13 +195,10 @@ void setupTab::slot_findTranslationProcessFinished()
         if (m_lang.indexOf(".qm") != -1) {
             m_lang = m_lang.mid(11,5);
             QLocale locale(m_lang);
-            m_country = locale.countryToString(locale.country());
+            m_country = locale.territoryToString(locale.territory());
             m_ui.languageSelectComboBox->addItem(QIcon("/usr/share/clamav-gui/languageicons/" + m_lang + ".png"),"[" + m_lang + "] " + m_country);
         }
     }
-
-    int index = -1;
-    QString langhelper;
 
     if (m_setupFile->keywordExists("Setup", "language") == true) {
         langhelper = m_setupFile->getSectionValue("Setup", "language");
@@ -225,8 +214,6 @@ void setupTab::slot_findTranslationProcessFinished()
             index = m_ui.languageSelectComboBox->findText("[en_GB]", Qt::MatchContains);
         m_ui.languageSelectComboBox->setCurrentIndex(index);
     }
-
-
 }
 
 void setupTab::slot_clamonaccButtonClicked()
