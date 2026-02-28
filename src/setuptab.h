@@ -29,10 +29,10 @@ public:
 private:
     Ui::setupTab m_ui;
     setupFileHandler    * m_setupFile; // clamd && freshclam
-    QProcess            * m_findTranslationProcess;
     bool                  m_supressMessage;
     bool                  m_monochrome;
     QString checkmonochrome(QString color);
+    void findTranslation();
 
 private slots:
     void slot_selectedLanguageChanged();
@@ -43,8 +43,7 @@ private slots:
     void slot_freshclamButtonClicked();
     void slot_clamdscanComboBoxClicked();
     void slot_logHightlighterCheckBoxClicked();
-    void slot_findTranslationProcessFinished();
-
+    
 signals:
     void switchActiveTab(int);
     void sendSystemInfo(QString);

@@ -62,3 +62,14 @@ install(FILES   ${CMAKE_BINARY_DIR}/clamav-gui-uk_UA.qm
                 ${CMAKE_BINARY_DIR}/clamav-de_DE.qm
     DESTINATION usr/share/clamav-gui/              
 )
+
+
+install(FILES icons/da_DK.png icons/de_DE.png 
+              icons/en_AU.png icons/en_GB.png icons/en_IE.png 
+              icons/en_NZ.png icons/en_US.png icons/es_ES.png 
+              icons/fr_FR.png icons/it_IT.png icons/pt_AO.png 
+              icons/pt_BR.png icons/pt_CV.png icons/pt_MO.png 
+              icons/pt_MZ.png icons/pt_PT.png icons/pt_ST.png 
+              icons/pt_TL.png icons/uk_UA.png icons/zh_CN.png
+    DESTINATION usr/share/clamav-gui/languageicons/
+)
