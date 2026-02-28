@@ -2,6 +2,7 @@
 #define TRANSLATOR_H
 
 #include <QMessageBox>
+#include <QTextStream>
 #include <QStringList>
 #include <QString>
 #include <QFile>

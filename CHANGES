@@ -1,3 +1,7 @@
+* Sat Feb 28 2026 - Version 1.2.3
+- Changed the setup tab language selection. The full name of the selected country is now provided by qlocale. File "countryfullnames.txt" removed from the project. (obsolete)
+- Also the combobox with the available languages is set to the current selected language.
+
 * Fri Feb 27 2026 - Version 1.2.2
 - Fixed memory leaks in several modules. (regarding the use of the setupfilehandler and log-tabs)
 
