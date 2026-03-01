@@ -340,6 +340,7 @@ void optionsDialog::slot_selectSRTFButtonClicked()
     if (rc != "")
         m_ui.scanReportToFileLineEdit->setText(rc);
     writeDirectories();
+    emit srtfSettingsChanged();
 }
 
 void optionsDialog::slot_selectSFFButtonClicked()
@@ -561,6 +562,11 @@ void optionsDialog::writeDirectories()
 void optionsDialog::slot_updateDirectories()
 {
     updateDirectories();
+}
+
+void optionsDialog::slot_scanReportToFileSettingsChanged()
+{
+    emit srtfSettingsChanged();
 }
 
 void optionsDialog::slot_logViewerButtonClicked()

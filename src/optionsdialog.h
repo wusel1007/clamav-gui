@@ -67,6 +67,7 @@ class optionsDialog : public QWidget {
     void slot_selectSFFButtonClicked();
     void writeDirectories();
     void slot_updateDirectories();
+    void slot_scanReportToFileSettingsChanged();
     void slot_logViewerButtonClicked();
     void slot_getClamscanProcessHasOutput();
     void slot_getClamscanProcessFinished();
@@ -77,6 +78,7 @@ class optionsDialog : public QWidget {
     void updateDatabase();
     void updateClamdConf();
     void systemStatusChanged();
+    void srtfSettingsChanged();
 
    public:
     QString getCopyDirectory();

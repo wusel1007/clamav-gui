@@ -53,7 +53,7 @@
                <x>0</x>
                <y>0</y>
                <width>871</width>
-               <height>547</height>
+               <height>551</height>
               </rect>
              </property>
              <layout class="QGridLayout" name="gridLayout_2">
@@ -106,7 +106,7 @@
             <x>0</x>
             <y>0</y>
             <width>895</width>
-            <height>592</height>
+            <height>594</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout_7">
@@ -551,8 +551,8 @@
    <slot>slot_selectSRTFButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>896</x>
-     <y>174</y>
+     <x>897</x>
+     <y>142</y>
     </hint>
     <hint type="destinationlabel">
      <x>743</x>
@@ -567,8 +567,8 @@
    <slot>slot_selectSFFButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>896</x>
-     <y>227</y>
+     <x>897</x>
+     <y>176</y>
     </hint>
     <hint type="destinationlabel">
      <x>743</x>
@@ -583,8 +583,8 @@
    <slot>slot_selectTDButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>896</x>
-     <y>279</y>
+     <x>897</x>
+     <y>208</y>
     </hint>
     <hint type="destinationlabel">
      <x>743</x>
@@ -599,8 +599,8 @@
    <slot>slot_selectMDButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>896</x>
-     <y>331</y>
+     <x>897</x>
+     <y>240</y>
     </hint>
     <hint type="destinationlabel">
      <x>741</x>
@@ -615,8 +615,8 @@
    <slot>slot_selectCDButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>896</x>
-     <y>383</y>
+     <x>897</x>
+     <y>272</y>
     </hint>
     <hint type="destinationlabel">
      <x>742</x>
@@ -631,8 +631,8 @@
    <slot>slot_logViewerButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>810</x>
-     <y>175</y>
+     <x>811</x>
+     <y>144</y>
     </hint>
     <hint type="destinationlabel">
      <x>741</x>
@@ -647,8 +647,8 @@
    <slot>slot_selectLVDButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>896</x>
-     <y>121</y>
+     <x>897</x>
+     <y>108</y>
     </hint>
     <hint type="destinationlabel">
      <x>742</x>
@@ -663,8 +663,8 @@
    <slot>writeDirectories()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>48</x>
-     <y>110</y>
+     <x>68</x>
+     <y>106</y>
     </hint>
     <hint type="destinationlabel">
      <x>5</x>
@@ -679,8 +679,8 @@
    <slot>writeDirectories()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>98</x>
-     <y>173</y>
+     <x>118</x>
+     <y>140</y>
     </hint>
     <hint type="destinationlabel">
      <x>5</x>
@@ -695,8 +695,8 @@
    <slot>writeDirectories()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>84</x>
-     <y>226</y>
+     <x>104</x>
+     <y>174</y>
     </hint>
     <hint type="destinationlabel">
      <x>3</x>
@@ -711,8 +711,8 @@
    <slot>writeDirectories()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>70</x>
-     <y>278</y>
+     <x>90</x>
+     <y>206</y>
     </hint>
     <hint type="destinationlabel">
      <x>2</x>
@@ -727,8 +727,8 @@
    <slot>writeDirectories()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>89</x>
-     <y>330</y>
+     <x>109</x>
+     <y>238</y>
     </hint>
     <hint type="destinationlabel">
      <x>0</x>
@@ -743,8 +743,8 @@
    <slot>writeDirectories()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>73</x>
-     <y>382</y>
+     <x>93</x>
+     <y>270</y>
     </hint>
     <hint type="destinationlabel">
      <x>0</x>
@@ -759,8 +759,8 @@
    <slot>writeDirectories()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>89</x>
-     <y>434</y>
+     <x>109</x>
+     <y>302</y>
     </hint>
     <hint type="destinationlabel">
      <x>1</x>
@@ -775,8 +775,8 @@
    <slot>writeDirectories()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>86</x>
-     <y>486</y>
+     <x>106</x>
+     <y>334</y>
     </hint>
     <hint type="destinationlabel">
      <x>2</x>
@@ -791,8 +791,8 @@
    <slot>writeDirectories()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>896</x>
-     <y>435</y>
+     <x>897</x>
+     <y>304</y>
     </hint>
     <hint type="destinationlabel">
      <x>933</x>
@@ -807,12 +807,44 @@
    <slot>writeDirectories()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>896</x>
-     <y>487</y>
+     <x>897</x>
+     <y>336</y>
     </hint>
     <hint type="destinationlabel">
      <x>931</x>
      <y>636</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>scanReportToFileCheckBox</sender>
+   <signal>clicked()</signal>
+   <receiver>optionsDialog</receiver>
+   <slot>slot_scanReportToFileSettingsChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>44</x>
+     <y>130</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>4</x>
+     <y>136</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>scanReportToFileLineEdit</sender>
+   <signal>editingFinished()</signal>
+   <receiver>optionsDialog</receiver>
+   <slot>slot_scanReportToFileSettingsChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>279</x>
+     <y>130</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>3</x>
+     <y>172</y>
     </hint>
    </hints>
   </connection>
@@ -828,5 +860,6 @@
   <slot>writeDirectories()</slot>
   <slot>slot_selectSFFButtonClicked()</slot>
   <slot>slot_logViewerButtonClicked()</slot>
+  <slot>slot_scanReportToFileSettingsChanged()</slot>
  </slots>
 </ui>

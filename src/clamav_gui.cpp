@@ -196,6 +196,7 @@ clamav_gui::clamav_gui(QWidget* parent) : QWidget(parent)
     connect(m_optionTab, SIGNAL(updateDatabase()), this, SLOT(slot_updateDatabase()));
     connect(m_optionTab, SIGNAL(updateClamdConf()), m_clamdTab, SLOT(slot_updateClamdConf()));
     connect(m_optionTab, SIGNAL(systemStatusChanged()), m_setUpTab, SLOT(slot_updateSystemInfo()));
+    connect(m_optionTab, SIGNAL(srtfSettingsChanged()), m_logTab, SLOT(slot_profilesChanged()));
     connect(m_setUpTab, SIGNAL(switchActiveTab(int)), this, SLOT(slot_switchActiveTab(int)));
     connect(m_setUpTab, SIGNAL(sendSystemInfo(QString)), this, SLOT(slot_receiveVersionInformation(QString)));
     connect(this, SIGNAL(scanJobFinished()), m_logTab, SLOT(slot_profilesChanged()));
