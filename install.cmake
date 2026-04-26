@@ -26,6 +26,8 @@ install(FILES extra/icon128/clamav-gui.png
     DESTINATION usr/share/icons/hicolor/128x128/apps/
 )
 
+set(CPACK_PACKAGE_ICON extra/icon256/clamav-gui.png)
+
 install(FILES extra/icon256/clamav-gui.png
     DESTINATION usr/share/icons/hicolor/256x256/apps/
 )
@@ -38,8 +40,12 @@ install(FILES CHANGES README
     DESTINATION usr/share/doc/clamav-gui/
 )
 
-install(FILES extra/ClamAV-GUI.desktop
+install(FILES extra/clamav-gui.desktop
     DESTINATION usr/share/applications/
+)
+
+install(FILES extra/clamav-gui-servicemenu.desktop
+    DESTINATION usr/share/kio/servicemenus/
 )
 
 install(FILES   ${CMAKE_BINARY_DIR}/clamav-gui-uk_UA.qm
@@ -73,3 +79,15 @@ install(FILES icons/da_DK.png icons/de_DE.png
               icons/pt_TL.png icons/uk_UA.png icons/zh_CN.png
     DESTINATION usr/share/clamav-gui/languageicons/
 )
+
+install(CODE [[
+  file(GET_RUNTIME_DEPENDENCIES
+    EXECUTABLES $<TARGET_FILE:clamav-gui>
+    RESOLVED_DEPENDENCIES_VAR _deps
+    POST_EXCLUDE_REGEXES "libc\\\\..*|libc-.*|libstdc\\\\+\\\\..*|libstdc\\\\+.*|libgcc_s\\\\.so.*"
+  )
+
+  foreach(_dep ${_deps})
+      file(INSTALL ${_dep} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+  endforeach()
+]])

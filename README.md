@@ -21,10 +21,12 @@ Installation:
  - Alternatively, you can build from source with cmake and cpack
 
 Build Instructions:
+ - **For creating AppImage:**
+    appimagetool, patchelf and libfuse2 is needed
  - For building with qt6:
    * On Ubuntu: 
     ```bash
-    sudo apt install cmake build-essential qt6-base-dev qt6-tools-dev libqt6core5compat6-dev
+    sudo apt install cmake build-essential qt6-base-dev qt6-tools-dev libqt6core5compat6-dev 
     ```
  - Requires qt5 base development files, qtchooser, g++, and make
    *For Ubuntu <= 20.04: 
@@ -58,7 +60,8 @@ Build Instructions:
    mkdir build && cd build
    cmake ..
    make 
-   cpack -G DEB (cpack -G RPM) 
+   cpack -G DEB (cpack -G RPM, cpack -G AppImage)
+  
    ```
    Install the package 
  

@@ -26,4 +26,5 @@ X-KDE-Username=Categories=Qt;KDE;System;Security;
 MimeType=
 Path=
 StartupNotify=true
+Categories=System;Security;
 
