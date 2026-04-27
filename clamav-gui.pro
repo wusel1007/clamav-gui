@@ -155,7 +155,8 @@ INSTALLS += target \
     manpages_it \
     manpages_pt \
     documents \
-    langicons
+    langicons \
+    metadata
 
 target.path = /$(DESTDIR)/usr/bin
 target.files = clamav-gui
@@ -182,10 +183,10 @@ icon256.path = /$(DESTDIR)/usr/share/icons/hicolor/256x256/apps
 icon256.files = extra/icon256/clamav-gui.png
 
 desktopfile.path = /$(DESTDIR)/usr/share/applications
-desktopfile.files = extra/clamav-gui.desktop
+desktopfile.files = extra/org.opendesktop.clamav_gui.desktop
 
-servicemenufile.path = /$(DESTDIR)/usr/share/kio/servicemenus
-servicemenufile.files = extra/clamav-gui-servicemenu.desktop
+metadata.path = /$(DESTDIR)/usr/share/metainfo
+metadata.files = extra/org.opendesktop.clamav_gui.appdata.xml
 
 translation.path = /$(DESTDIR)/usr/share/clamav-gui
 translation.files = translations/clamav-gui-de_DE.qm translations/clamav-gui-en_GB.qm translations/clamav-gui-da_DK.qm translations/clamav-gui-es_ES.qm translations/clamav-gui-fr_FR.qm translations/clamav-gui-pt_PT.qm translations/clamav-gui-it_IT.qm translations/clamav-gui-uk_UA.qm translations/clamav-de_DE.qm translations/clamav-en_GB.qm translations/clamav-da_DK.qm translations/clamav-es_ES.qm translations/clamav-fr_FR.qm translations/clamav-pt_PT.qm translations/clamav-it_IT.qm translations/clamav-uk_UA.qm

@@ -40,8 +40,12 @@ install(FILES CHANGES README
     DESTINATION usr/share/doc/clamav-gui/
 )
 
-install(FILES extra/clamav-gui.desktop
+install(FILES extra/org.opendesktop.clamav_gui.desktop
     DESTINATION usr/share/applications/
+)
+
+install(FILES extra/org.opendesktop.clamav_gui.appdata.xml
+    DESTINATION usr/share/metainfo/
 )
 
 install(FILES   ${CMAKE_BINARY_DIR}/clamav-gui-uk_UA.qm

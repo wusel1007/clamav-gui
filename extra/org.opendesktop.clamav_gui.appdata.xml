@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.opendesktop.clamav_gui</id>
+
+  <name>clamav-gui</name>
+  <summary>Front-End for clamav</summary>
+  <url type="homepage">https://www.opendesktop.org/p/1127892/</url>
+  <developer id="org.freedesktop">
+    <name>Joerg Macedo da Costa Zopes (joerg.zopes@gmx.de)</name>
+  </developer>
+  <content_rating type="oars-1.0">
+    <content_attribute id='money-purchasing'>none</content_attribute>
+  </content_rating>
+  <metadata_license>FTL</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+
+  <description>
+    <p>
+      A front-end (GUI) for clamav, freshclam and clamd. It supports on demand scanning, a context-menu for Dolphin and scheduled scanning.
+    </p>
+  </description>
+
+  <launchable type="desktop-id">org.opendesktop.clamav_gui.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://images.pling.com/img/00/00/10/24/28/1127892/clamav-gui-01.png</image>
+    </screenshot>
+  </screenshots>
+</component>
