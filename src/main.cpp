@@ -170,15 +170,15 @@ int main(int argc, char *argv[])
         }
 
         QString filename = "clamav-gui-" + lang + ".qm";
-        if (QFile::exists("/usr/share/clamav-gui/" + filename))
+        if (QFile::exists(QCoreApplication::applicationDirPath() + "/../share/clamav-gui/" + filename))
         {
-            translatorLoaded = translator1.load(filename,"/usr/share/clamav-gui");
+            translatorLoaded = translator1.load(filename,QCoreApplication::applicationDirPath() + "/../share/clamav-gui/");
             if (translatorLoaded == true) a.installTranslator(&translator1);
 
             filename = "clamav-" + lang + ".qm";
-            if (QFile::exists("/usr/share/clamav-gui/" + filename))
+            if (QFile::exists(QCoreApplication::applicationDirPath() + "/../share/clamav-gui/" + filename))
             {
-                translatorLoaded = translator2.load(filename,"/usr/share/clamav-gui");
+                translatorLoaded = translator2.load(filename,QCoreApplication::applicationDirPath() + "/../share/clamav-gui/");
                 if (translatorLoaded == true) a.installTranslator(&translator2);
             }
         }

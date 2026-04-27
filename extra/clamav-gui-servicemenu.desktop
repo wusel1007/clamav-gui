@@ -24,4 +24,3 @@ Name[it]=Scansione con ClamAV-GUI
 Name[uk]=Сканування за допомогою ClamAV-GUI
 Icon=clamav-gui
 Exec=clamav-gui --scan %F
-

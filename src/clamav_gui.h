@@ -97,6 +97,7 @@ private:
     bool                     firstrun;
     void createTrayIcon();
     void createDropZone();
+    void checkAppImage();
 
 private slots:
     void slot_setMainWindowState(bool);

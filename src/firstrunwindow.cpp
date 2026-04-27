@@ -93,7 +93,8 @@ void firstRunWindow::findTranslation()
     index = m_ui->applicationLanguageComboBox->findText("[" + lang + "]", Qt::MatchContains);
     if (index == -1)
         index = m_ui->applicationLanguageComboBox->findText("[en_GB]", Qt::MatchContains);
-    m_ui->applicationLanguageComboBox->setCurrentIndex(index);
+    if (index != -1)
+        m_ui->applicationLanguageComboBox->setCurrentIndex(index);
  }
 
 void firstRunWindow::slot_initProcessFinished()
@@ -313,10 +314,13 @@ void firstRunWindow::createServiceMenu()
     if (serviceMenuPath.isEmpty() && QFileInfo::exists(QDir::homePath() + "/.local/share/kio/servicemenus"))
         serviceMenuPath = QDir::homePath() + "/.local/share/kio/servicemenus";
 
-    if (serviceMenuPath.isEmpty())
-        serviceMenuPath = serviceMenuPath = QDir::homePath() + "/.local/share/kio/servicemenus";
+    if ((serviceMenuPath.isEmpty()) && (QFileInfo::exists(QCoreApplication::applicationDirPath() + "/../share/" + "kio/servicemenues")))
+        serviceMenuPath = QDir::homePath() + "/.local/share/kio/servicemenus";
 
-    if (!QFileInfo::exists(serviceMenuPath + "/scanWithClamAV-GUI.desktop"))
+    if ((serviceMenuPath.isEmpty()) && (QFileInfo::exists(QCoreApplication::applicationDirPath() + "/../share/" + "kservices5/ServiceMenus")))
+        serviceMenuPath = QDir::homePath() + "/.local/share/kservices5/ServiceMenus";
+
+    if (serviceMenuPath != "")
     {
         if (!QFileInfo::exists(serviceMenuPath))
         {
@@ -357,12 +361,17 @@ void firstRunWindow::createServiceMenu()
         serviceFile->setSectionValue("Desktop Action scan", "Icon", "clamav-gui");
         serviceFile->setSectionValue("Desktop Action scan", "Exec", "clamav-gui --scan %F");
         delete serviceFile;
+
+        QFile file(serviceMenuPath + "/scanWithClamAV-GUI.desktop");
+        file.setPermissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner | QFileDevice::ExeOwner | QFileDevice::ReadGroup |
+                            QFileDevice::WriteGroup | QFileDevice::ExeGroup);
+        m_ui->dolphinContestMenuStatusLabel->setPixmap(QPixmap(":/icons/icons/create.png"));
     }
-    QFile file(serviceMenuPath + "/scanWithClamAV-GUI.desktop");
-    file.setPermissions(QFileDevice::ReadOwner|QFileDevice::WriteOwner|QFileDevice::ExeOwner|QFileDevice::ReadGroup|QFile::WriteGroup|QFileDevice::ExeGroup|QFileDevice::ReadOther|QFileDevice::WriteOther|QFileDevice::ExeOther);
+    else {
+        m_ui->dolphinContestMenuStatusLabel->setPixmap(QPixmap(":/icons/icons/cancel.png"));
+    }
     //*****************************************************************************
 
-    m_ui->dolphinContestMenuStatusLabel->setPixmap(QPixmap(":/icons/icons/create.png"));
 }
 
 void firstRunWindow::createInitialSettings()

@@ -19,12 +19,9 @@ Exec=clamav-gui
 Icon=clamav-gui
 Type=Application
 Terminal=false
-TerminalOptions=
 X-KDE-StartupNotify=true
 X-KDE-SubstituteUID=false
 X-KDE-Username=Categories=Qt;KDE;System;Security;
 MimeType=
-Path=
 StartupNotify=true
 Categories=System;Security;
-

@@ -9,7 +9,7 @@
 # The project includes the necessary Qt components for GUI applications, networking, and core functionality.
 cmake_minimum_required(VERSION 3.21)
 project(ClamAV-GUI
-    VERSION 1.3.7
+    VERSION 1.3.8
     DESCRIPTION "ClamAV GUI for Linux"
     HOMEPAGE_URL ""
     LANGUAGES CXX
@@ -24,7 +24,7 @@ set(QT_MAJOR_VERSION 6)
 find_package(Qt${QT_MAJOR_VERSION} REQUIRED COMPONENTS Widgets Core Network Gui LinguistTools)
 
 if(QT_MAJOR_VERSION EQUAL 6)
-    find_package(Qt${QT_MAJOR_VERSION} REQUIRED COMPONENTS Core5Compat)
+    #find_package(Qt${QT_MAJOR_VERSION} REQUIRED COMPONENTS Core5Compat)
 endif()
 
 set(CMAKE_AUTOMOC ON)
@@ -110,7 +110,7 @@ target_link_libraries(clamav-gui
     Qt${QT_MAJOR_VERSION}::Widgets
     Qt${QT_MAJOR_VERSION}::Core
     Qt${QT_MAJOR_VERSION}::Network
-    Qt${QT_MAJOR_VERSION}::Core5Compat
+    #Qt${QT_MAJOR_VERSION}::Core5Compat
     )
 
 option(BUILD_TESTING "Build tests" OFF)

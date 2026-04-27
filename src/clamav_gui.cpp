@@ -138,7 +138,9 @@ clamav_gui::clamav_gui(QWidget* parent) : QWidget(parent)
         connect(m_showLogoTimer, SIGNAL(timeout()), this, SLOT(slot_showLogoTimerTimeout()));
         m_showLogoTimer->start(250);
         if(!firstrun) emit doneit();
+        checkAppImage();
     }
+
 }
 
 
@@ -256,6 +258,34 @@ void clamav_gui::createDropZone()
     if (m_setupFile->getSectionBoolValue("Settings", "ShowHideMainWindow") == true)
         this->show();
 }
+
+void clamav_gui::checkAppImage()
+{
+    QString AppImagePath = qEnvironmentVariable("APPIMAGE");
+    QString serviceMenuPath;
+
+    if (QFileInfo::exists(QDir::homePath() + "/.local/share/kservices5/ServiceMenus/scanWithClamAV-GUI.desktop"))
+        serviceMenuPath = QDir::homePath() + "/.local/share/kservices5/ServiceMenus/scanWithClamAV-GUI.desktop";
+
+    if (serviceMenuPath.isEmpty() && QFileInfo::exists(QDir::homePath() + "/.local/share/kio/servicemenus/scanWithClamAV-GUI.desktop"))
+        serviceMenuPath = QDir::homePath() + "/.local/share/kio/servicemenus/scanWithClamAV-GUI.desktop";
+
+    if ((serviceMenuPath.isEmpty()) && (QFileInfo::exists(QCoreApplication::applicationDirPath() + "/../share/" + "kio/servicemenues/scanWithClamAV-GUI.desktop")))
+        serviceMenuPath = serviceMenuPath = QDir::homePath() + "/.local/share/kio/servicemenus/scanWithClamAV-GUI.desktop";
+
+    if ((serviceMenuPath.isEmpty()) && (QFileInfo::exists(QCoreApplication::applicationDirPath() + "/../share/" + "kservices5/ServiceMenus/scanWithClamAV-GUI.desktop")))
+        serviceMenuPath = QDir::homePath() + "/.local/share/kservices5/ServiceMenus/scanWithClamAV-GUI.desktop";
+
+    if (!serviceMenuPath.isEmpty())
+    {
+        setupFileHandler servicemenu(QDir::homePath() + "/.local/share/kio/servicemenus/scanWithClamAV-GUI.desktop");
+        if (AppImagePath != "")
+            servicemenu.setSectionValue("Desktop Action scan", "Exec", AppImagePath + " --scan %F");
+        else
+            servicemenu.setSectionValue("Desktop Action scan", "Exec", "clamav-gui --scan %F");
+    }
+}
+
 
 /*
     TODO: refactor this method. too long...
