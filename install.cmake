@@ -44,10 +44,6 @@ install(FILES extra/clamav-gui.desktop
     DESTINATION usr/share/applications/
 )
 
-install(FILES extra/clamav-gui-servicemenu.desktop
-    DESTINATION usr/share/kio/servicemenus/
-)
-
 install(FILES   ${CMAKE_BINARY_DIR}/clamav-gui-uk_UA.qm
                 ${CMAKE_BINARY_DIR}/clamav-gui-pt_PT.qm
                 ${CMAKE_BINARY_DIR}/clamav-gui-it_IT.qm
@@ -80,6 +76,8 @@ install(FILES icons/da_DK.png icons/de_DE.png
     DESTINATION usr/share/clamav-gui/languageicons/
 )
 
+option(BUNDLE_3RDPARTY_LIBS "bundle Qt and libgcc stdc++ libraries" OFF)
+if (BUNDLE_3RDPARTY_LIBS)
 install(CODE [[
   file(GET_RUNTIME_DEPENDENCIES
     EXECUTABLES $<TARGET_FILE:clamav-gui>
@@ -91,3 +89,4 @@ install(CODE [[
       file(INSTALL ${_dep} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
   endforeach()
 ]])
+endif()
