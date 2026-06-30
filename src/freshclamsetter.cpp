@@ -177,7 +177,8 @@ void freshclamsetter::slot_updateNowButtonClicked()
         if (touchFile.open(QIODevice::WriteOnly|QIODevice::Append))
             touchFile.close();
     }
-    m_updateLogFileWatcher->addPath(QDir::homePath() + "/.clamav-gui/update.log");
+    if (QFileInfo::exists(QDir::homePath() + "/.clamav-gui/update.log"))
+        m_updateLogFileWatcher->addPath(QDir::homePath() + "/.clamav-gui/update.log");
 }
 
 void freshclamsetter::slot_startStopDeamonButtonClicked()
@@ -195,7 +196,8 @@ void freshclamsetter::slot_startStopDeamonButtonClicked()
             if (touchFile.open(QIODevice::WriteOnly|QIODevice::Append))
             touchFile.close();
         }
-        m_logFileWatcher->addPath(m_logFile);
+        if (QFileInfo::exists(m_logFile))
+            m_logFileWatcher->addPath(m_logFile);
         if (m_setupFile->getSectionBoolValue("FreshClam", "runasroot") == true)
         {
             if (m_startup == false)
@@ -615,6 +617,15 @@ void freshclamsetter::slot_updateFileWatcherTriggered()
         m_setupFile->setSectionValue("Updater", "DailyVersion", value);
     }
 
+    pos = content.lastIndexOf("daily.cld updated");
+    if (pos != -1)
+    {
+        value = content.mid(pos + 18, content.indexOf("\n", pos + 18) - (pos + 18));
+        value.replace("(", "");
+        value.replace(")", "");
+        m_setupFile->setSectionValue("Updater", "DailyVersion", value);
+    }
+
     pos = content.lastIndexOf("bytecode.cvd updated");
     if (pos != -1)
     {
@@ -803,10 +814,12 @@ void freshclamsetter::slot_startDeamonProcessFinished(int exitCode, QProcess::Ex
         m_ui.startStopDeamonButton->setIcon(QIcon(":/icons/icons/Clam.png"));
         if (m_pidFileWatcher->directories().size() > 0)
             m_pidFileWatcher->removePath(m_pidFile);
-        m_pidFileWatcher->addPath(m_pidFile);
+        if (QFileInfo::exists(m_pidFile))
+            m_pidFileWatcher->addPath(m_pidFile);
         if (m_logFileWatcher->directories().size() > 0)
             m_logFileWatcher->removePath(m_logFile);
-        m_logFileWatcher->addPath(m_logFile);
+        if (QFileInfo::exists(m_logFile))
+            m_logFileWatcher->addPath(m_logFile);
         slot_logFileWatcherTriggered();
         checkDaemonRunning();
     }
@@ -824,8 +837,6 @@ void freshclamsetter::slot_startDeamonProcessFinished(int exitCode, QProcess::Ex
 
 void freshclamsetter::slot_initFreshclamSettings()
 {
-    QFile tempFile;
-
     m_lockFreshclamConf = true;
 
     if (m_setupFile->keywordExists("FreshClam", "runasroot") == true)
@@ -842,17 +853,21 @@ void freshclamsetter::slot_initFreshclamSettings()
         m_ui.autoStartDaemonCheckBox->setChecked(false);
     }
 
-    // m_freshclamConf = new setupFileHandler(QDir::homePath() + "/.clamav-gui/freshclam.conf", this); Already instantiated in the constructor.
-
     if (m_freshclamConf->singleLineExists("DatabaseDirectory") == true)
     {
         m_ui.databaseDirectoryPathLabel->setText(m_freshclamConf->getSingleLineValue("DatabaseDirectory"));
     }
     else {
-        QDir tempdir;
-        if ((tempdir.exists("/var/lib/clamav") == true) && ((tempFile.exists("/var/lib/clamav/freshclam.dat") == true)))
+        QString dbBasePath = "";
+        if ((QFileInfo::exists("/var/lib/clamav") == true) && (QFileInfo::exists("/var/lib/clamav/freshclam.dat") == true))
+            dbBasePath = "/var/lib/clamav";
+
+        if ((QFileInfo::exists("/usr/local/share/clamav") == true) && (QFileInfo::exists("/usr/local/share/freshclam.dat") == true))
+            dbBasePath = "/usr/local/share/clamav";
+
+        if (dbBasePath != "")
         {
-            m_freshclamConf->setSingleLineValue("DatabaseDirectory", "/var/lib/clamav", "Path to a directory containing database files.  This directory must already exist, be an absolute path, be writeable by freshclam and readable by clamd/clamscan. Default: /var/lib/clamav");
+            m_freshclamConf->setSingleLineValue("DatabaseDirectory", dbBasePath, "Path to a directory containing database files.  This directory must already exist, be an absolute path, be writeable by freshclam and readable by clamd/clamscan. Default: /var/lib/clamav");
             m_ui.runasrootCheckBox->setChecked(true);
             m_setupFile->setSectionValue("FreshClam", "runasroot", true);
         }
@@ -964,7 +979,7 @@ void freshclamsetter::slot_initFreshclamSettings()
     m_clamscanlocationProcessOutput = "";
     m_freshclamlocationProcessOutput = "";
 
-    QFile file(m_ui.databaseDirectoryPathLabel->text() + "/freshclam.dat");
+    /*QFile file(m_freshclamConf->getSingleLineValue("DatabaseDirectory") + "/freshclam.dat");
     if ((file.exists() == false) && (m_setupFile->getSectionBoolValue("Setup","FirstRun") == false))
     {
         if (QMessageBox::warning(this, tr("Virus definitions missing!"),
@@ -974,7 +989,7 @@ void freshclamsetter::slot_initFreshclamSettings()
         {
             emit updateDatabase();
         }
-    }
+    }*/
 
     setUpdaterInfo();
 }

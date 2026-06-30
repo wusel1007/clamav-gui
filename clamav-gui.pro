@@ -145,7 +145,6 @@ INSTALLS += target \
     icon256 \
     translation \
     desktopfile \
-    servicemenufile \
     manpages_de \
     manpages_en \
     manpages_dk \

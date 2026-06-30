@@ -278,7 +278,7 @@ void scheduler::startScanJob(QString profileName)
     for (int i = 0; i < directoryOptions.count(); i++)
     {
         option = directoryOptions.at(i);
-        value = m_setupFile->getSectionValue("Directories", option);
+        value = setupFile->getSectionValue("Directories", option);
         checked = value.left(value.indexOf("|"));
         value = value.mid(value.indexOf("|") + 1);
 

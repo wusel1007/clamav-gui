@@ -87,7 +87,6 @@ clamav_gui::clamav_gui(QWidget* parent) : QWidget(parent)
         m_ui.tabWidget->addTab(m_infoTab, QIcon(":/icons/icons/information.png"), tr("About"));
 
         m_ui.tabWidget->setTabShape(QTabWidget::Rounded);
-
         connect(m_freshclamTab, SIGNAL(setBallonMessage(int, QString, QString)), this, SLOT(slot_setTrayIconBalloonMessage(int, QString, QString)));
         connect(m_freshclamTab, SIGNAL(disableUpdateButtons()), m_freshclamTab, SLOT(slot_disableUpdateButtons()));
         connect(m_freshclamTab, SIGNAL(disableUpdateButtons()), m_scannerTab, SLOT(slot_disableScanButton()));
@@ -118,12 +117,11 @@ clamav_gui::clamav_gui(QWidget* parent) : QWidget(parent)
         connect(m_setUpTab, SIGNAL(logHighlightingChanged(bool)), m_logTab, SLOT(slot_add_remove_highlighter(bool)));
         connect(m_setUpTab, SIGNAL(logHighlightingChanged(bool)), m_freshclamTab, SLOT(slot_add_remove_highlighter(bool)));
         connect(m_setUpTab, SIGNAL(logHighlightingChanged(bool)), m_profileManagerTab, SLOT(monochromeModeChanged(bool)));
+        connect(this, SIGNAL(doneit()),m_freshclamTab,SLOT(slot_initFreshclamSettings()));
         if (firstrun) connect(initDialog,SIGNAL(doneit()),m_clamdTab,SLOT(slot_initClamdSettings())); else
             connect(this,SIGNAL(doneit()),m_clamdTab,SLOT(slot_initClamdSettings()));
         if (firstrun) connect(initDialog,SIGNAL(settingChanged()),m_clamdTab,SLOT(slot_clamdSettingsChanged()));
         if (firstrun) connect(initDialog,SIGNAL(quitApplication()),this,SLOT(slot_quitApplication()));
-        if (firstrun) connect(initDialog,SIGNAL(doneit()),m_freshclamTab,SLOT(slot_initFreshclamSettings())); else
-            connect(this,SIGNAL(doneit()),m_freshclamTab,SLOT(slot_initFreshclamSettings()));
         if (firstrun) connect(initDialog, SIGNAL(doneit()),m_optionTab,SLOT(slot_updateDirectories())); else
             connect(this,SIGNAL(doneit()),m_optionTab,SLOT(slot_updateDirectories()));
 
@@ -137,16 +135,40 @@ clamav_gui::clamav_gui(QWidget* parent) : QWidget(parent)
         m_showLogoTimer->setSingleShot(true);
         connect(m_showLogoTimer, SIGNAL(timeout()), this, SLOT(slot_showLogoTimerTimeout()));
         m_showLogoTimer->start(250);
+
+        m_getVersionProcess = new QProcess(this);
+        connect(m_getVersionProcess,SIGNAL(finished(int,QProcess::ExitStatus)),this,SLOT(slot_getVersionProcessFinished(int,QProcess::ExitStatus)));
+
+        QStringList gvParams;
+        gvParams << "--config-file" << QDir::homePath() + "/.clamav-gui/freshclam.conf" << "-V";
+
+        m_getVersionProcess->start("freshclam",gvParams);
+
         if(!firstrun) emit doneit();
         checkAppImage();
     }
-
 }
 
 
 void clamav_gui::slot_receiveVersionInformation(QString info)
 {
     m_ui.frame->setVersionLabel(info);
+}
+
+void clamav_gui::slot_getVersionProcessFinished(int, QProcess::ExitStatus)
+{
+    QString buffer = m_getVersionProcess->readAll();
+    QStringList versionSections = buffer.split("/");
+    while (versionSections.length() < 3)
+        versionSections << "n/a";
+    QString scannerVersion = versionSections.at(0).mid(6);
+    QString value = versionSections.at(1);
+    QString lastUpdate = versionSections.at(2);
+
+    QString systemInfo = "<div style='font-size:12px;line-height:20px;'><b>Scanner: <font color='navy'>" + scannerVersion +
+                 "</font><br>Database: <font color='navy'>" + value + "</font><br>";
+    systemInfo += "Date: <font color='navy'>" + lastUpdate + "</font></b></div>";
+    slot_receiveVersionInformation(systemInfo);
 }
 
 void clamav_gui::closeEvent(QCloseEvent* event)

@@ -21,6 +21,7 @@
 #ifndef LOGVIEWEROBJECT_H
 #define LOGVIEWEROBJECT_H
 
+#include <QFileSystemWatcher>
 #include <QWidget>
 #include <QFile>
 #include <QDir>
@@ -43,6 +44,7 @@ private:
     setupFileHandler    *m_setupfile;
     Ui::logViewerObject *m_ui;
     QString m_logFileName;
+    QFileSystemWatcher  *m_currentWatcher;
     void loadLogFile(QString);
     void saveLog();
 

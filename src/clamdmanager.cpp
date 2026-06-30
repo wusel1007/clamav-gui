@@ -303,7 +303,8 @@ void clamdManager::slot_updateClamdConf()
 
         if (m_clamdLogWatcher->directories().size() > 0)
             m_clamdLogWatcher->removePaths(m_clamdLogWatcher->directories());
-        m_clamdLogWatcher->addPath(logPath);
+        if (QFileInfo::exists(logPath))
+            m_clamdLogWatcher->addPath(logPath);
     }
     if (m_clamdManagerLocked == false)
     {
@@ -441,8 +442,8 @@ void clamdManager::slot_clamdStartStopButtonClicked()
                 stream << "\n";
                 logFile.close();
             }
-
-            m_clamdLogWatcher->addPath(logPath);
+            if (QFileInfo::exists(logPath))
+                m_clamdLogWatcher->addPath(logPath);
         }
         m_ui.clamdLogPlainTextEdit->clear();
         m_ui.startStopClamdPushButton->setText(tr("  Clamd starting. Please wait!"));
@@ -545,7 +546,8 @@ void clamdManager::slot_startClamdProcessFinished(int exitCode, QProcess::ExitSt
 
         if (m_clamdPidWatcher->directories().size() > 0)
             m_clamdPidWatcher->removePaths(m_clamdPidWatcher->directories());
-        m_clamdPidWatcher->addPath(m_setupFile->getSectionValue("Clamd","ClamdPidFile"));
+        if (QFileInfo::exists(m_setupFile->getSectionValue("Clamd","ClamdPidFile")))
+            m_clamdPidWatcher->addPath(m_setupFile->getSectionValue("Clamd","ClamdPidFile"));
 
         m_findClamdProcess->start("bash",QStringList() << "-c" << "ps -ax | grep `pidof clamd` | grep clamd");
 
@@ -601,7 +603,8 @@ void clamdManager::slot_killClamdProcessFinished()
         {
             if (m_clamdPidWatcher->directories().size() > 0)
                 m_clamdPidWatcher->removePaths(m_clamdPidWatcher->directories());
-            m_clamdPidWatcher->addPath(m_setupFile->getSectionValue("Clamd","ClamdPidFile"));
+            if (QFileInfo::exists(m_setupFile->getSectionValue("Clamd","ClamdPidFile")))
+                m_clamdPidWatcher->addPath(m_setupFile->getSectionValue("Clamd","ClamdPidFile"));
             m_ui.startStopClamdPushButton->setStyleSheet(selectColor("green"));
             m_ui.startStopClamdPushButton->setText(tr("  Clamd running - Stop Clamd"));
             m_ui.startStopClamdPushButton->setIcon(QIcon(":/icons/icons/stopclamd.png"));

@@ -410,16 +410,6 @@ void optionsDialog::slot_selectLVDButtonClicked()
     QFile file(rc + "/freshclam.dat");
     if (file.exists())
         return;
-
-    /*if (QMessageBox::warning(this, tr("Virus definitions missing!"),
-                                tr("No virus definitions found in the database folder. Should the virus definitions be downloaded?"),
-                                QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes)
-      {
-        m_setupFile->setSectionValue("Directories","LoadSupportedDBFiles","checked|" + QDir::homePath() + "/.clamav-gui/signatures");
-        m_ui.loadVirusDatabaseCheckBox->setChecked(true);
-        m_ui.loadVirusDatabaseLineEdit->setText(QDir::homePath() + "/.clamav-gui/signatures");
-        emit updateDatabase();
-    }*/
 }
 
 void optionsDialog::slot_selectCDButtonClicked()

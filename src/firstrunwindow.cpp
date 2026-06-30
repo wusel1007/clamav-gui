@@ -17,11 +17,13 @@ firstRunWindow::firstRunWindow(QWidget *parent)
     m_setupFile->setSectionValue("Setup","FirstRun",true);
     createInitialSettings();
     createClamdConfFile();
+    createFreshclamConfFile();
     m_delayTimer = new QTimer(this);
     m_delayTimer->setSingleShot(true);
     connect(m_delayTimer,SIGNAL(timeout()),this,SLOT(slot_findRequiredApplications()));
     m_delayTimer->start(500);
     findTranslation();
+    slot_sddComboBoxChanged();
 
     m_processInit = false;
 }
@@ -267,6 +269,11 @@ void firstRunWindow::slot_languageChanged()
 
 void firstRunWindow::slot_done()
 {
+    QString databaseDirectory = m_setupFile->getSectionValue("Directories","LoadSupportedDBFiles");
+    databaseDirectory = databaseDirectory.mid(databaseDirectory.indexOf("|")+1);
+    setupFileHandler * m_freshclamConf = new setupFileHandler(QDir::homePath() + "/.clamav-gui/freshclam.conf");
+    m_freshclamConf->setSingleLineValue("DatabaseDirectory",databaseDirectory);
+    delete m_freshclamConf;
     qApp->quit();
     QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
 }
@@ -376,14 +383,25 @@ void firstRunWindow::createServiceMenu()
 
 void firstRunWindow::createInitialSettings()
 {
+    QString virusDatabasePath = "";
+
     if (QFileInfo::exists("/var/lib/clamav")) m_ui->signatureDatabaseDirectoryComboBox->addItem("/var/lib/clamav");
     if (QFileInfo::exists("/usr/local/share/clamav")) m_ui->signatureDatabaseDirectoryComboBox->addItem("/usr/local/share/clamav");
     m_ui->signatureDatabaseDirectoryComboBox->addItem(QDir::homePath() + "/.clamav-gui/signatures");
 
     if (QFileInfo::exists("/var/lib/clamav") && (QFile::exists("/var/lib/clamav/freshclam.dat")))
     {
+        virusDatabasePath = "/var/lib/clamav";
+    }
+    if ((QFileInfo::exists("/usr/local/share/clamav") && (QFile::exists("/usr/local/share/clamav/freshclam.dat"))))
+    {
+        virusDatabasePath = "/usr/local/share/clamav";
+    }
+
+    if (virusDatabasePath != "")
+    {
         if (m_setupFile->keywordExists("Directories","LoadSupportedDBFiles") == false)
-            m_setupFile->setSectionValue("Directories", "LoadSupportedDBFiles", "checked|/var/lib/clamav");
+            m_setupFile->setSectionValue("Directories", "LoadSupportedDBFiles", "checked|" + virusDatabasePath);
 
         if (m_setupFile->keywordExists("FreshClam","runasroot") == false)
             m_setupFile->setSectionValue("FreshClam","runasroot",true);

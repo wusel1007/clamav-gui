@@ -121,8 +121,11 @@ void scanTab::slot_updateDeviceList()
         delete item->widget();
     }
 
-    m_fileSystemWatcher->addPath(dir.path());
-    connect(m_fileSystemWatcher, SIGNAL(directoryChanged(QString)), this, SLOT(slot_updateDeviceList()));
+    if (dir.path() != "")
+    {
+        m_fileSystemWatcher->addPath(dir.path());
+        connect(m_fileSystemWatcher, SIGNAL(directoryChanged(QString)), this, SLOT(slot_updateDeviceList()));
+    }
 
     if (m_setupFile->getSectionBoolValue("Setup", "DisableLogHighlighter") == true)
     {

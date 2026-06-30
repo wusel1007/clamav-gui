@@ -4,6 +4,7 @@
 logViewerObject::logViewerObject(QWidget* parent, setupFileHandler* setupFile) : QWidget(parent), m_setupfile(setupFile), m_ui(new Ui::logViewerObject)
 {
     m_ui->setupUi(this);
+    m_currentWatcher = nullptr;
     slot_profilesChanged();
 }
 
@@ -97,6 +98,11 @@ void logViewerObject::loadLogFile(QString profile)
             }
             m_ui->logTab->setCurrentIndex(0);
             file.close();
+            if (m_currentWatcher != nullptr)
+                delete m_currentWatcher;
+            m_currentWatcher = new QFileSystemWatcher(this);
+            m_currentWatcher->addPath(values[1]);
+            connect(m_currentWatcher,SIGNAL(fileChanged(QString)),this,SLOT(slot_profilesChanged()));
         }
     }
 
