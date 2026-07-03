@@ -9,7 +9,7 @@
 # The project includes the necessary Qt components for GUI applications, networking, and core functionality.
 cmake_minimum_required(VERSION 3.21)
 project(ClamAV-GUI
-    VERSION 1.4.0
+    VERSION 1.4.1
     DESCRIPTION "ClamAV GUI for Linux"
     HOMEPAGE_URL ""
     LANGUAGES CXX

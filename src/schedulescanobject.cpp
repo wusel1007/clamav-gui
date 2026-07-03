@@ -30,7 +30,7 @@ scheduleScanObject::scheduleScanObject(QWidget* parent, QString name, QStringLis
 
     QString message;
 
-    if (m_setupFile->getSectionValue("Clamd", "Status") == "is running")
+    if (QProcess::execute("pidof", QStringList() << "-q" << "-s" << "clamd") == 0)
     {
         switch (m_setupFile->getSectionIntValue("Clamd", "ClamdScanMultithreading"))
         {

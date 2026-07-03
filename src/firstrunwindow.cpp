@@ -66,6 +66,28 @@ void firstRunWindow::slot_clamdscanChanged()
     m_setupFile->setSectionValue("Clamd","ClamdScanMultithreading",m_ui->clamdscanComboBox->currentIndex());
 }
 
+void firstRunWindow::slot_gsettingsProcessFinished(int rc, QProcess::ExitStatus)
+{
+    QString output = m_gsettingsProcess->readAll();
+    QStringList gnomecommanderParams;
+    if (rc == 0)
+    {
+        if (output.indexOf("[]") != -1)
+        {
+            gnomecommanderParams << "set"  << "org.gnome.gnome-commander.preferences.general" << "favorite-apps" << "[('scan with ClamAV-GUI', '/usr/bin/clamav-gui --scan %F', '/usr/share/icons/hicolor/48x48/apps/clamav-gui.png', '', uint32 2, false, true, false)]";
+            QProcess::execute("gsettings",gnomecommanderParams);
+        }
+        else {
+            if (output.indexOf("clamav-gui") == -1)
+            {
+                output = output.mid(0,output.length() - 2) + ", ('scan with ClamAV-GUI', '/usr/bin/clamav-gui --scan %F', '/usr/share/icons/hicolor/48x48/apps/clamav-gui.png', '', uint32 2, false, true, false)]";
+            }
+            gnomecommanderParams << "set" << "org.gnome.gnome-commander.preferences.general" << "favorite-apps"  << output;
+            QProcess::execute("gsettings",gnomecommanderParams);
+        }
+    }
+}
+
 void firstRunWindow::findTranslation()
 {
     int index = -1;
@@ -311,8 +333,9 @@ void firstRunWindow::createBaseDirStructure()
 
 void firstRunWindow::createServiceMenu()
 {
+    bool created = false;
     //*****************************************************************************
-    //creating service Menu
+    //creating service Menu for Dolphin
     //*****************************************************************************
     QString serviceMenuPath;
     if (QFileInfo::exists(QDir::homePath() + "/.local/share/kservices5/ServiceMenus"))
@@ -372,6 +395,33 @@ void firstRunWindow::createServiceMenu()
         QFile file(serviceMenuPath + "/scanWithClamAV-GUI.desktop");
         file.setPermissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner | QFileDevice::ExeOwner | QFileDevice::ReadGroup |
                             QFileDevice::WriteGroup | QFileDevice::ExeGroup);
+        created = true;
+    }
+// Service Menu for NEMO
+    if (QFileInfo::exists(QDir::homePath() + "/.local/share/nemo/actions"))
+    {
+        setupFileHandler* serviceFile = new setupFileHandler(QDir::homePath() + "/.local/share/nemo/actions/scan.nemo_action", this);
+        serviceFile->setSectionValue("Nemo Action", "Name", "scan with ClamAV-GUI");
+        serviceFile->setSectionValue("Nemo Action", "Comment", "scan with ClamAV-GUI");
+        serviceFile->setSectionValue("Nemo Action", "Exec", "clamav-gui --scan &F");
+        serviceFile->setSectionValue("Nemo Action", "Icon-Name", "clamav-gui");
+        serviceFile->setSectionValue("Nemo Action", "Selection", "notnone");
+        serviceFile->setSectionValue("Nemo Action", "Extensions", "any");
+        serviceFile->setSectionValue("Nemo Action", "Separator", ",");
+        serviceFile->setSectionValue("Nemo Action", "Dependencies", "clamav-gui");
+        delete serviceFile;
+    }
+
+// ServiceMenu for GNOME-Commander
+    QStringList gnomecommanderParams;
+
+    m_gsettingsProcess = new QProcess(this);
+    gnomecommanderParams << "get"  << "org.gnome.gnome-commander.preferences.general" << "favorite-apps";
+    connect(m_gsettingsProcess,SIGNAL(finished(int,QProcess::ExitStatus)),this,SLOT(slot_gsettingsProcessFinished(int,QProcess::ExitStatus)));
+    m_gsettingsProcess->start("gsettings",gnomecommanderParams);
+
+    if (created == true)
+    {
         m_ui->dolphinContestMenuStatusLabel->setPixmap(QPixmap(":/icons/icons/create.png"));
     }
     else {

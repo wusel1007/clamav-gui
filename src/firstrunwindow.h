@@ -27,6 +27,7 @@ private:
     QStringList           m_initParameters;
     QStringList           m_processParameters;
     QProcess            * m_initProcess;
+    QProcess            * m_gsettingsProcess;
     QTimer              * m_delayTimer;
     int                   m_initIndex;
     bool                  m_processInit;
@@ -49,6 +50,7 @@ private slots:
     void slot_monochromeModeChanged();
     void slot_startupModeChanged();
     void slot_clamdscanChanged();
+    void slot_gsettingsProcessFinished(int, QProcess::ExitStatus);
 
 
 signals:
