@@ -1,3 +1,6 @@
+* Sun Jul 12 2026 - Version 1.4.2
+- optimization of the hide/show function for the main window.
+
 * Fri Jul 3 2026 - Version 1.4.1
 - Added service menu for nemo filemanager (Cinemon)
 - Added service menu for GNOME-Commander (gsettings)

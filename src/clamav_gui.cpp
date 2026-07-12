@@ -216,8 +216,15 @@ void clamav_gui::slot_actionShowHideMainWindowTriggered()
 {
     if (m_setupFile->getSectionBoolValue("Settings", "ShowHideMainWindow") == true)
     {
-        slot_setMainWindowState(false);
-        m_setupFile->setSectionValue("Settings", "ShowHideMainWindow", false);
+        if (this->isActiveWindow() == true)
+        {
+            slot_setMainWindowState(false);
+            m_setupFile->setSectionValue("Settings", "ShowHideMainWindow", false);
+        }
+        else {
+            slot_setMainWindowState(true);
+            m_setupFile->setSectionValue("Settings", "ShowHideMainWindow", true);
+        }
     }
     else {
         slot_setMainWindowState(true);
@@ -662,7 +669,10 @@ void clamav_gui::slot_logoTimerTimeout()
         if (m_setupFile->getSectionValue("Setup", "WindowState") == "minimized")
             this->close();
         if (m_setupFile->getSectionValue("Setup", "WindowState") == "maximized")
+        {
             this->showMaximized();
+            m_setupFile->setSectionValue("Settings", "ShowHideMainWindow", true);
+        }
     }
     else
         this->showMaximized();
