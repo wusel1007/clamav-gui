@@ -1,3 +1,9 @@
+*Fri Jul 31 2026 - Version 1.4.3
+- Modification made for the show/hide behaviour of the main window for the inital run (setup/config) and the standard operation.
+- The routine for parsing the available options for the clamd.conf file was compromised by a version of "man" used by Manjero Linux.
+- This caused a segmentation fault. Changed the parser in a way that the output of the "man clamd.conf" command is normalized to
+- generate a unified format. This was found and later tested with the help of Roberto Bonafini. Thanks a lot for the help, the time and the testing.
+
 * Sun Jul 12 2026 - Version 1.4.2
 - optimization of the hide/show function for the main window.
 

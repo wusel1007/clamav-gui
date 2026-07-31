@@ -54,16 +54,17 @@ void logViewerObject::slot_profilesChanged()
 
 void logViewerObject::loadLogFile(QString profile)
 {
-    setupFileHandler* sf = new setupFileHandler(QDir::homePath() + "/.clamav-gui/profiles/" + profile + ".ini", this);
+    //setupFileHandler* sf = new setupFileHandler(QDir::homePath() + "/.clamav-gui/profiles/" + profile + ".ini", this);
     bool css = m_setupfile->getSectionBoolValue("Setup", "DisableLogHighlighter");
     QString buffer;
     QStringList logs;
     QString tabHeader;
     QStringList values;
+    QWidget * tempwidget = nullptr;
 
     while (m_ui->logTab->count() > 0)
     {
-        QWidget * tempwidget = m_ui->logTab->widget(0);
+        tempwidget = m_ui->logTab->widget(0);
         m_ui->logTab->removeTab(0);
 
         if (tempwidget != nullptr)
@@ -77,36 +78,39 @@ void logViewerObject::loadLogFile(QString profile)
         values = m_setupfile->getSectionValue("Directories", "ScanReportToFile").split("|");
     } else
     {
-        values = sf->getSectionValue("Directories", "ScanReportToFile").split("|");
+        values = setupFileHandler::getSectionValue(QDir::homePath() + "/.clamav-gui/profiles/" + profile + ".ini","Directories", "ScanReportToFile").split("|");
     }
     if (values.count() == 2)
     {
-        QFile file(values[1]);
-        m_logFileName = values[1];
-        if (file.open(QIODevice::ReadOnly))
+        if (values[1] != "")
         {
-            QTextStream stream(&file);
-            buffer = stream.readAll();
-            logs = buffer.split("<Scanning startet>");
-            for (int i = 1; i < logs.count(); i++)
+            QFile file(values[1]);
+            m_logFileName = values[1];
+            if (file.open(QIODevice::ReadOnly))
             {
-                partialLogObject* log = new partialLogObject(this, logs[i], css);
-                connect(this, SIGNAL(logHighlightingChanged(bool)), log, SLOT(slot_add_remove_highlighter(bool)));
-                tabHeader = logs[i].mid(1, logs[i].indexOf("\n") - 1);
-                while (tabHeader.right(1) == "-") tabHeader = tabHeader.mid(0,tabHeader.length()-1);
-                m_ui->logTab->insertTab(0, log, QIcon(":/icons/icons/information.png"), tabHeader);
+                QTextStream stream(&file);
+                buffer = stream.readAll();
+                logs = buffer.split("<Scanning startet>");
+                for (int i = 1; i < logs.count(); i++)
+                {
+                    partialLogObject* log = new partialLogObject(this, logs[i], css);
+                    connect(this, SIGNAL(logHighlightingChanged(bool)), log, SLOT(slot_add_remove_highlighter(bool)));
+                    tabHeader = logs[i].mid(1, logs[i].indexOf("\n") - 1);
+                    while (tabHeader.right(1) == "-") tabHeader = tabHeader.mid(0,tabHeader.length()-1);
+                    m_ui->logTab->insertTab(0, log, QIcon(":/icons/icons/information.png"), tabHeader);
+                }
+                m_ui->logTab->setCurrentIndex(0);
+                file.close();
+                if (m_currentWatcher != nullptr)
+                    delete m_currentWatcher;
+                m_currentWatcher = new QFileSystemWatcher(this);
+                m_currentWatcher->addPath(values[1]);
+                connect(m_currentWatcher,SIGNAL(fileChanged(QString)),this,SLOT(slot_profilesChanged()));
             }
-            m_ui->logTab->setCurrentIndex(0);
-            file.close();
-            if (m_currentWatcher != nullptr)
-                delete m_currentWatcher;
-            m_currentWatcher = new QFileSystemWatcher(this);
-            m_currentWatcher->addPath(values[1]);
-            connect(m_currentWatcher,SIGNAL(fileChanged(QString)),this,SLOT(slot_profilesChanged()));
         }
     }
 
-    delete sf;
+    //delete sf;
 }
 
 void logViewerObject::slot_profileSeclectionChanged()
@@ -119,17 +123,20 @@ void logViewerObject::saveLog()
     QString logText;
     partialLogObject* log;
 
-    QFile logFile(m_logFileName);
-    if (logFile.open(QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Text))
+    if (m_logFileName != "")
     {
-        QTextStream stream(&logFile);
-        for (int i = 0; i < m_ui->logTab->count(); i++)
+        QFile logFile(m_logFileName);
+        if (logFile.open(QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Text))
         {
-            log = (partialLogObject*)m_ui->logTab->widget(i);
-            logText = logText + log->getLogText();
+            QTextStream stream(&logFile);
+            for (int i = 0; i < m_ui->logTab->count(); i++)
+            {
+                log = (partialLogObject*)m_ui->logTab->widget(i);
+                logText = logText + log->getLogText();
+            }
+            stream << logText;
+            logFile.close();
         }
-        stream << logText;
-        logFile.close();
     }
 }
 

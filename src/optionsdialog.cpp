@@ -5,7 +5,6 @@
 optionsDialog::optionsDialog(QWidget* parent, setupFileHandler* setupFile) : QWidget(parent), m_setupFile(setupFile)
 {
     m_ui.setupUi(this);
-    //updateDirectories();
     m_ui.tabWidget->setTabText(0, tr("Options"));
     m_ui.tabWidget->setTabText(1, tr("Directories"));
     m_scanLimits = new scanLimitsTab(this, m_setupFile);
@@ -25,8 +24,7 @@ optionsDialog::optionsDialog(QWidget* parent, setupFileHandler* setupFile) : QWi
 
     QStringList parameters;
     parameters << "--help";
-
-    m_getClamscanParametersProcess->start("clamscan", parameters);
+    m_getClamscanParametersProcess->start(setupFileHandler::getSectionValue(QDir::homePath()+"/.clamav-gui/settings.ini","RequiredApplications","clamscan"), parameters);
 }
 
 void optionsDialog::createScanOptionElements()
@@ -34,119 +32,122 @@ void optionsDialog::createScanOptionElements()
     QStringList comments;
     QStringList parameters;
 
-    QFile clamscanHelpFile(QDir::homePath() + "/.clamav-gui/clamscan.help.info");
-    if (clamscanHelpFile.open(QIODevice::ReadOnly|QIODevice::Text))
+    if (QFileInfo::exists(QDir::homePath() + "/.clamav-gui/clamscan.help.info"))
     {
-        QTextStream stream(&clamscanHelpFile);
-        QString buffer = stream.readAll();
-        clamscanHelpFile.close();
-        QStringList listHelper = buffer.split("<!>");
-        parameters = listHelper.at(0).trimmed().split("\n");
-        comments = listHelper.at(1).trimmed().split("|");
-    }
-
-    scanoption* option;
-    scanoptionyn* optionyn;
-    QString label;
-    QString yes_no;
-    QString language;
-    bool flipflop = false;
-
-    for (int x = 0; x < parameters.length(); x++)
-    {
-        label = parameters[x];
-        if ((label.indexOf("yes(*)/no") != -1) || (label.indexOf("yes/no(*)") != -1))
+        QFile clamscanHelpFile(QDir::homePath() + "/.clamav-gui/clamscan.help.info");
+        if (clamscanHelpFile.open(QIODevice::ReadOnly|QIODevice::Text))
         {
-            label.indexOf("yes/no(*)") == -1 ? yes_no = "yes" : yes_no = "no";
-            label = label.left(label.indexOf("="));
-            if (m_setupFile->keywordExists("SelectedOptions", label + "<equal>no") == true)
+            QTextStream stream(&clamscanHelpFile);
+            QString buffer = stream.readAll();
+            clamscanHelpFile.close();
+            QStringList listHelper = buffer.split("<!>");
+            parameters = listHelper.at(0).trimmed().split("\n");
+            comments = listHelper.at(1).trimmed().split("|");
+        }
+
+        scanoption* option;
+        scanoptionyn* optionyn;
+        QString label;
+        QString yes_no;
+        QString language;
+        bool flipflop = false;
+
+        for (int x = 0; x < parameters.length(); x++)
+        {
+            label = parameters[x];
+            if ((label.indexOf("yes(*)/no") != -1) || (label.indexOf("yes/no(*)") != -1))
             {
-                label = label + "<equal>no";
-            }
-            else {
-                if (m_setupFile->keywordExists("SelectedOptions", label + "<equal>yes") == true)
+                label.indexOf("yes/no(*)") == -1 ? yes_no = "yes" : yes_no = "no";
+                label = label.left(label.indexOf("="));
+                if (m_setupFile->keywordExists("SelectedOptions", label + "<equal>no") == true)
                 {
-                    label = label + "<equal>yes";
+                    label = label + "<equal>no";
                 }
                 else {
-                    if (yes_no == "yes")
+                    if (m_setupFile->keywordExists("SelectedOptions", label + "<equal>yes") == true)
                     {
                         label = label + "<equal>yes";
                     }
                     else {
-                        label = label + "<equal>no";
+                        if (yes_no == "yes")
+                        {
+                            label = label + "<equal>yes";
+                        }
+                        else {
+                            label = label + "<equal>no";
+                        }
                     }
                 }
             }
-        }
 
-        language = setupFileHandler::getSectionValue(QDir::homePath() + "/.clamav-gui/settings.ini","Setup","language");
-        if (language == "") language = "[en_GB]";
-        if (m_setupFile->keywordExists("SelectedOptions", label.replace("=", "<equal>")) == true)
-        {
-            if (label.indexOf("<equal>") == -1)
+            language = setupFileHandler::getSectionValue(QDir::homePath() + "/.clamav-gui/settings.ini","Setup","language");
+            if (language == "") language = "[en_GB]";
+            if (m_setupFile->keywordExists("SelectedOptions", label.replace("=", "<equal>")) == true)
             {
-                option = new scanoption(this, QDir::homePath() + "/.clamav-gui/settings.ini", "SelectedOptions", true, label, comments[x]);
-                connect(option, SIGNAL(valuechanged()), this, SLOT(slot_updateClamdConf()));
-                if (flipflop == false)
+                if (label.indexOf("<equal>") == -1)
                 {
-                    m_ui.optionLayout->addWidget(option);
-                    scanOptions << option;
-                    flipflop = true;
+                    option = new scanoption(this, QDir::homePath() + "/.clamav-gui/settings.ini", "SelectedOptions", true, label, comments[x]);
+                    connect(option, SIGNAL(valuechanged()), this, SLOT(slot_updateClamdConf()));
+                    if (flipflop == false)
+                    {
+                        m_ui.optionLayout->addWidget(option);
+                        scanOptions << option;
+                        flipflop = true;
 
+                    }
+                    else {
+                        m_ui.optionLayout_2->addWidget(option);
+                        scanOptions << option;
+                        flipflop = false;
+                    }
                 }
                 else {
-                    m_ui.optionLayout_2->addWidget(option);
-                    scanOptions << option;
-                    flipflop = false;
+                    optionyn = new scanoptionyn(this, QDir::homePath() + "/.clamav-gui/settings.ini", "SelectedOptions", true, label, comments[x]);
+                    connect(optionyn, SIGNAL(valuechanged()), this, SLOT(slot_updateClamdConf()));
+                    if (flipflop == false)
+                    {
+                        m_ui.optionLayout->addWidget(optionyn);
+                        scanOptions << optionyn;
+                        flipflop = true;
+                    }
+                    else {
+                        m_ui.optionLayout_2->addWidget(optionyn);
+                        scanOptions << optionyn;
+                        flipflop = false;
+                    }
                 }
             }
             else {
-                optionyn = new scanoptionyn(this, QDir::homePath() + "/.clamav-gui/settings.ini", "SelectedOptions", true, label, comments[x]);
-                connect(optionyn, SIGNAL(valuechanged()), this, SLOT(slot_updateClamdConf()));
-                if (flipflop == false)
+                if (label.indexOf("<equal>") == -1)
                 {
-                    m_ui.optionLayout->addWidget(optionyn);
-                    scanOptions << optionyn;
-                    flipflop = true;
+                    option = new scanoption(this, QDir::homePath() + "/.clamav-gui/settings.ini", "SelectedOptions", false, label, comments[x]);
+                    connect(option, SIGNAL(valuechanged()), this, SLOT(slot_updateClamdConf()));
+                    if (flipflop == false)
+                    {
+                        m_ui.optionLayout->addWidget(option);
+                        scanOptions << option;
+                        flipflop = true;
+                    }
+                    else {
+                        m_ui.optionLayout_2->addWidget(option);
+                        scanOptions << option;
+                        flipflop = false;
+                    }
                 }
                 else {
-                    m_ui.optionLayout_2->addWidget(optionyn);
-                    scanOptions << optionyn;
-                    flipflop = false;
-                }
-            }
-        }
-        else {
-            if (label.indexOf("<equal>") == -1)
-            {
-                option = new scanoption(this, QDir::homePath() + "/.clamav-gui/settings.ini", "SelectedOptions", false, label, comments[x]);
-                connect(option, SIGNAL(valuechanged()), this, SLOT(slot_updateClamdConf()));
-                if (flipflop == false)
-                {
-                    m_ui.optionLayout->addWidget(option);
-                    scanOptions << option;
-                    flipflop = true;
-                }
-                else {
-                    m_ui.optionLayout_2->addWidget(option);
-                    scanOptions << option;
-                    flipflop = false;
-                }
-            }
-            else {
-                optionyn = new scanoptionyn(this, QDir::homePath() + "/.clamav-gui/settings.ini", "SelectedOptions", false, label, comments[x]);
-                connect(optionyn, SIGNAL(valuechanged()), this, SLOT(slot_updateClamdConf()));
-                if (flipflop == false)
-                {
-                    m_ui.optionLayout->addWidget(optionyn);
-                    scanOptions << optionyn;
-                    flipflop = true;
-                }
-                else {
-                    m_ui.optionLayout_2->addWidget(optionyn);
-                    scanOptions << optionyn;
-                    flipflop = false;
+                    optionyn = new scanoptionyn(this, QDir::homePath() + "/.clamav-gui/settings.ini", "SelectedOptions", false, label, comments[x]);
+                    connect(optionyn, SIGNAL(valuechanged()), this, SLOT(slot_updateClamdConf()));
+                    if (flipflop == false)
+                    {
+                        m_ui.optionLayout->addWidget(optionyn);
+                        scanOptions << optionyn;
+                        flipflop = true;
+                    }
+                    else {
+                        m_ui.optionLayout_2->addWidget(optionyn);
+                        scanOptions << optionyn;
+                        flipflop = false;
+                    }
                 }
             }
         }

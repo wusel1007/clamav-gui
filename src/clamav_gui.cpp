@@ -7,6 +7,7 @@ enum baloonStatus {Information, Warning, Critical};
 clamav_gui::clamav_gui(QWidget* parent) : QWidget(parent)
 {
     m_ui.setupUi(this);
+
     this->setWindowFlags(Qt::WindowTitleHint | Qt::WindowMinimizeButtonHint | Qt::WindowMaximizeButtonHint);
     firstrun = false;
     QString settingsPath = QDir::homePath() + "/.clamav-gui/settings.ini";
@@ -55,36 +56,30 @@ clamav_gui::clamav_gui(QWidget* parent) : QWidget(parent)
         m_ui.tabWidget->removeTab(0);
 
         m_scannerTab = new scanTab(this, m_setupFile);
+        m_optionTab = new optionsDialog(this, m_setupFile);
+        m_profileManagerTab = new ProfileManager(this, m_setupFile);
+        m_schedulerTab = new scheduler(this, m_setupFile);
+        m_logTab = new logViewerObject(this, m_setupFile);
+        m_freshclamTab = new freshclamsetter(this, m_setupFile);
+        m_clamdTab = new clamdManager(this, m_setupFile);
+        m_setUpTab = new setupTab(this, m_setupFile);
+        m_infoTab = new infoDialog(this);
+
+        m_ui.tabWidget->addTab(m_scannerTab, QIcon(":/icons/icons/Clam.png"), tr("Scan"));
+        m_ui.tabWidget->addTab(m_optionTab, QIcon(":/icons/icons/options.png"), tr("Options"));
+        m_ui.tabWidget->addTab(m_profileManagerTab, QIcon(":/icons/icons/profilemanager.png"), tr("Profile Manager"));
+        m_ui.tabWidget->addTab(m_schedulerTab, QIcon(":/icons/icons/scheduler.png"), tr("Scheduler"));
+        m_ui.tabWidget->addTab(m_logTab, QIcon(":/icons/icons/includeexclude.png"), tr("Logs"));
+        m_ui.tabWidget->addTab(m_freshclamTab, QIcon(":/icons/icons/freshclam.png"), tr("FreshClam"));
+        m_ui.tabWidget->addTab(m_clamdTab, QIcon(":/icons/icons/onaccess.png"), tr("Clamd"));
+        m_ui.tabWidget->addTab(m_setUpTab, QIcon(":/icons/icons/setup.png"), tr("Setup"));
+        m_ui.tabWidget->addTab(m_infoTab, QIcon(":/icons/icons/information.png"), tr("About"));
+
         connect(m_scannerTab, SIGNAL(requestDropZoneVisible()), this, SLOT(slot_showDropZone()));
         connect(m_scannerTab, SIGNAL(triggerScanRequest(QStringList)), this, SLOT(slot_scanRequest(QStringList)));
         connect(m_scannerTab, SIGNAL(abortScan()), this, SLOT(slot_abortScan()));
         connect(this, SIGNAL(setScannerForm(bool)), m_scannerTab, SLOT(slot_enableForm(bool)));
-        m_ui.tabWidget->addTab(m_scannerTab, QIcon(":/icons/icons/Clam.png"), tr("Scan"));
-
-        m_optionTab = new optionsDialog(this, m_setupFile);
-        m_ui.tabWidget->addTab(m_optionTab, QIcon(":/icons/icons/options.png"), tr("Options"));
-
-        m_profileManagerTab = new ProfileManager(this, m_setupFile);
-        m_ui.tabWidget->addTab(m_profileManagerTab, QIcon(":/icons/icons/profilemanager.png"), tr("Profile Manager"));
-
-        m_schedulerTab = new scheduler(this, m_setupFile);
-        m_ui.tabWidget->addTab(m_schedulerTab, QIcon(":/icons/icons/scheduler.png"), tr("Scheduler"));
-
-        m_logTab = new logViewerObject(this, m_setupFile);
-        m_ui.tabWidget->addTab(m_logTab, QIcon(":/icons/icons/includeexclude.png"), tr("Logs"));
-
-        m_freshclamTab = new freshclamsetter(this, m_setupFile);
         connect(m_freshclamTab, SIGNAL(quitApplication()), this, SLOT(slot_quitApplication()));
-        m_ui.tabWidget->addTab(m_freshclamTab, QIcon(":/icons/icons/freshclam.png"), tr("FreshClam"));
-
-        m_clamdTab = new clamdManager(this, m_setupFile);
-        m_ui.tabWidget->addTab(m_clamdTab, QIcon(":/icons/icons/onaccess.png"), tr("Clamd"));
-
-        m_setUpTab = new setupTab(this, m_setupFile);
-        m_ui.tabWidget->addTab(m_setUpTab, QIcon(":/icons/icons/setup.png"), tr("Setup"));
-
-        m_infoTab = new infoDialog(this);
-        m_ui.tabWidget->addTab(m_infoTab, QIcon(":/icons/icons/information.png"), tr("About"));
 
         m_ui.tabWidget->setTabShape(QTabWidget::Rounded);
         connect(m_freshclamTab, SIGNAL(setBallonMessage(int, QString, QString)), this, SLOT(slot_setTrayIconBalloonMessage(int, QString, QString)));
@@ -122,7 +117,9 @@ clamav_gui::clamav_gui(QWidget* parent) : QWidget(parent)
             connect(this,SIGNAL(doneit()),m_clamdTab,SLOT(slot_initClamdSettings()));
         if (firstrun) connect(initDialog,SIGNAL(settingChanged()),m_clamdTab,SLOT(slot_clamdSettingsChanged()));
         if (firstrun) connect(initDialog,SIGNAL(quitApplication()),this,SLOT(slot_quitApplication()));
-        if (firstrun) connect(initDialog, SIGNAL(doneit()),m_optionTab,SLOT(slot_updateDirectories())); else
+        if (firstrun)
+            connect(initDialog, SIGNAL(doneit()),m_optionTab,SLOT(slot_updateDirectories()));
+        else
             connect(this,SIGNAL(doneit()),m_optionTab,SLOT(slot_updateDirectories()));
 
         m_ui.tabWidget->setCurrentIndex(0);
@@ -299,10 +296,10 @@ void clamav_gui::checkAppImage()
     if (serviceMenuPath.isEmpty() && QFileInfo::exists(QDir::homePath() + "/.local/share/kio/servicemenus/scanWithClamAV-GUI.desktop"))
         serviceMenuPath = QDir::homePath() + "/.local/share/kio/servicemenus/scanWithClamAV-GUI.desktop";
 
-    if ((serviceMenuPath.isEmpty()) && (QFileInfo::exists(QCoreApplication::applicationDirPath() + "/../share/" + "kio/servicemenues/scanWithClamAV-GUI.desktop")))
+    if (serviceMenuPath.isEmpty() && QFileInfo::exists(QCoreApplication::applicationDirPath() + "/../share/" + "kio/servicemenues/scanWithClamAV-GUI.desktop"))
         serviceMenuPath = serviceMenuPath = QDir::homePath() + "/.local/share/kio/servicemenus/scanWithClamAV-GUI.desktop";
 
-    if ((serviceMenuPath.isEmpty()) && (QFileInfo::exists(QCoreApplication::applicationDirPath() + "/../share/" + "kservices5/ServiceMenus/scanWithClamAV-GUI.desktop")))
+    if (serviceMenuPath.isEmpty() && QFileInfo::exists(QCoreApplication::applicationDirPath() + "/../share/" + "kservices5/ServiceMenus/scanWithClamAV-GUI.desktop"))
         serviceMenuPath = QDir::homePath() + "/.local/share/kservices5/ServiceMenus/scanWithClamAV-GUI.desktop";
 
     if (!serviceMenuPath.isEmpty())

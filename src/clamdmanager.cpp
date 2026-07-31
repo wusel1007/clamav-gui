@@ -142,15 +142,19 @@ void clamdManager::slot_updateClamdConfParameters()
 void clamdManager::slot_getClamdConfParameterProcessFinished()
 {
     QString rc = m_getClamdConfParametersProcess->readAll();
-    QFile file(m_setupFile->getSectionValue("Clamd","ClamdConfPath"));
-    if (file.open(QIODevice::WriteOnly|QIODevice::Text))
+    QString clamdConfFilename = m_setupFile->getSectionValue("Clamd","ClamdConfPath");
+    if (clamdConfFilename != "")
     {
-        QTextStream stream(&file);
-        stream << rc;
-        Qt::endl(stream);
-        file.close();
+        QFile file(clamdConfFilename);
+        if (file.open(QIODevice::WriteOnly|QIODevice::Text))
+        {
+            QTextStream stream(&file);
+            stream << rc;
+            Qt::endl(stream);
+            file.close();
+        }
+        getClamdConfElements();
     }
-    getClamdConfElements();
 }
 
 void clamdManager::slot_filterChanged(QString searchString)
@@ -433,17 +437,20 @@ void clamdManager::slot_clamdStartStopButtonClicked()
                 m_clamdLogWatcher->removePaths(m_clamdLogWatcher->directories());
 
             QString logPath = m_setupFile->getSectionValue("Clamd","ClamdLogFile");
-            QFile logFile(logPath);
-            /*if (logFile.exists() == true)
-                logFile.remove();*/
-            if (logFile.open(QIODevice::ReadWrite))
+            if (logPath != "")
             {
-                QTextStream stream(&logFile);
-                stream << "\n";
-                logFile.close();
+                QFile logFile(logPath);
+                /*if (logFile.exists() == true)
+                logFile.remove();*/
+                if (logFile.open(QIODevice::ReadWrite))
+                {
+                    QTextStream stream(&logFile);
+                    stream << "\n";
+                    logFile.close();
+                }
+                if (QFileInfo::exists(logPath))
+                    m_clamdLogWatcher->addPath(logPath);
             }
-            if (QFileInfo::exists(logPath))
-                m_clamdLogWatcher->addPath(logPath);
         }
         m_ui.clamdLogPlainTextEdit->clear();
         m_ui.startStopClamdPushButton->setText(tr("  Clamd starting. Please wait!"));
@@ -887,7 +894,8 @@ void clamdManager::restartClamonacc()
     QStringList parameters;
 
     QFile restartclamdFile(QDir::homePath() + "/.clamav-gui/restartclamd.sh");
-    restartclamdFile.remove();
+    if (restartclamdFile.exists())
+        restartclamdFile.remove();
 
     if (restartclamdFile.open(QIODevice::Text | QIODevice::ReadWrite))
     {
@@ -1011,13 +1019,36 @@ void clamdManager::getClamdConfElements()
         content = content.mid(content.indexOf("Example"));
         content = content.left(content.indexOf("NOTES"));
         content = content.trimmed();
+
         QStringList lines = content.split("\n");
+
+// Fix for manpage output on Manjero Linux
+//--------------------------------------------------------
+        content = "";
+        QString leadingSpaces = "";
+        int count = 0;
+        while (lines[1].mid(count,1) == " ")
+        {
+            count ++;
+            leadingSpaces = leadingSpaces + " ";
+        }
+//--------------------------------------------------------
+
         content = "";
 
         foreach(QString line, lines)
         {
             if (line != "")
             {
+                // Fix for manpage output on Manjero Linux
+                //--------------------------------------------------------
+                if (line.indexOf(leadingSpaces) == 0)
+                {
+                    line = line.trimmed();
+                    line = "              " + line;
+                }
+                //--------------------------------------------------------
+
                 if (line.mid(0,14) != "              ")
                 {
                     skip = false;
@@ -1158,12 +1189,12 @@ void clamdManager::getClamdConfElements()
         element = clamdConfElement.at(i);
 
         QStringList values = element.split("|");
-        keywordHelper = values.at(0);
-        label = values.at(1);
-        optionValues = values.at(2);
+        values.size() > 0?keywordHelper = values.at(0):keywordHelper = "";
+        values.size() > 1?label = values.at(1):label="";
+        values.size() > 2?optionValues = values.at(2):optionValues = "";
         QStringList splitter = keywordHelper.split(" ");
-        keyword = splitter.at(0);
-        group = splitter.at(1);
+        splitter.size() > 0?keyword = splitter.at(0):keyword = "";
+        splitter.size() > 1?group = splitter.at(1):group = "";
 
         if (optionValues == "disabled")
             optionValues = "";

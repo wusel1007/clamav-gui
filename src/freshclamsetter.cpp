@@ -8,7 +8,6 @@ freshclamsetter::freshclamsetter(QWidget* parent, setupFileHandler* setupFile) :
     QDir tempDir;
 
     m_ui.setupUi(this);
-
     m_startup = true;
 
     m_lockFreshclamConf = true;
@@ -139,7 +138,8 @@ void freshclamsetter::slot_updateNowButtonClicked()
         }
 
         QFile startfreshclamFile(QDir::homePath() + "/.clamav-gui/startfreshclam.sh");
-        startfreshclamFile.remove();
+        if (startfreshclamFile.exists())
+            startfreshclamFile.remove();
 
         if (startfreshclamFile.open(QIODevice::Text | QIODevice::ReadWrite))
         {
@@ -205,7 +205,8 @@ void freshclamsetter::slot_startStopDeamonButtonClicked()
                 QString para = m_setupFile->getSectionValue("FreshclamSettings", "FreshclamLocation") + " -d -l " + m_logFile +
                                " --config-file=" + QDir::homePath() + "/.clamav-gui/freshclam.conf";
                 QFile startfreshclamFile(QDir::homePath() + "/.clamav-gui/startfreshclam.sh");
-                startfreshclamFile.remove();
+                if (startfreshclamFile.exists())
+                    startfreshclamFile.remove();
                 if (startfreshclamFile.open(QIODevice::Text | QIODevice::ReadWrite))
                 {
                     QTextStream stream(&startfreshclamFile);
@@ -246,7 +247,8 @@ void freshclamsetter::slot_startStopDeamonButtonClicked()
         {
             QString para = "/bin/kill -sigterm " + pidString + " && rm " + m_pidFile;
             QFile stopfreshclamFile(QDir::homePath() + "/.clamav-gui/stopfreshclam.sh");
-            stopfreshclamFile.remove();
+            if (stopfreshclamFile.exists())
+                stopfreshclamFile.remove();
             if (stopfreshclamFile.open(QIODevice::Text | QIODevice::ReadWrite))
             {
                 QTextStream stream(&stopfreshclamFile);
@@ -388,7 +390,8 @@ void freshclamsetter::slot_startDelayTimerExpired()
         QString para = m_setupFile->getSectionValue("FreshclamSettings", "FreshclamLocation") + " -d -l " + m_logFile +
                        " --config-file=" + QDir::homePath() + "/.clamav-gui/freshclam.conf";
         QFile startfreshclamFile(QDir::homePath() + "/.clamav-gui/startfreshclam.sh");
-        startfreshclamFile.remove();
+        if (startfreshclamFile.exists())
+            startfreshclamFile.remove();
         if (startfreshclamFile.open(QIODevice::Text | QIODevice::ReadWrite))
         {
             QTextStream stream(&startfreshclamFile);
@@ -459,7 +462,8 @@ void freshclamsetter::slot_clearLogButtonClicked()
 {
     QFile file(QDir::homePath() + "/.clamav-gui/update.log");
 
-    file.remove();
+    if (file.exists())
+        file.remove();
     if (file.open(QIODevice::ReadWrite))
     {
         QTextStream stream(&file);
@@ -471,13 +475,14 @@ void freshclamsetter::slot_clearLogButtonClicked()
 
 void freshclamsetter::slot_logFileWatcherTriggered()
 {
-    QFile file(m_logFile);
-    QString content;
+    QString content = "";
     QString value;
     int pos;
 
-    if (file.exists() == true)
+    if (QFileInfo::exists(m_logFile) == true)
     {
+        QFile file(m_logFile);
+
         if (file.open(QIODevice::ReadOnly))
         {
             QTextStream stream(&file);
@@ -486,99 +491,101 @@ void freshclamsetter::slot_logFileWatcherTriggered()
         }
     }
 
-    pos = content.lastIndexOf("ClamAV update process started at");
-    if (pos != -1)
+    if (content != "")
     {
-        value = content.mid(pos + 33, content.indexOf("\n", pos + 33) - (pos + 33));
-        m_setupFile->setSectionValue("Updater", "LastUpdate", value);
-    }
+        pos = content.lastIndexOf("ClamAV update process started at");
+        if (pos != -1)
+        {
+            value = content.mid(pos + 33, content.indexOf("\n", pos + 33) - (pos + 33));
+            m_setupFile->setSectionValue("Updater", "LastUpdate", value);
+        }
 
-    pos = content.lastIndexOf("main.cvd updated (");
-    if (pos != -1)
-    {
-        value = content.mid(pos + 17, content.indexOf("\n", pos + 17) - (pos + 17));
-        value.replace("(", "");
-        value.replace(")", "");
-        m_setupFile->setSectionValue("Updater", "MainVersion", value);
-    }
+        pos = content.lastIndexOf("main.cvd updated (");
+        if (pos != -1)
+        {
+            value = content.mid(pos + 17, content.indexOf("\n", pos + 17) - (pos + 17));
+            value.replace("(", "");
+            value.replace(")", "");
+            m_setupFile->setSectionValue("Updater", "MainVersion", value);
+        }
 
-    pos = content.lastIndexOf("main.cvd database is up-to-date (");
-    if (pos != -1)
-    {
-        value = content.mid(pos + 32, content.indexOf("\n", pos + 32) - (pos + 32));
-        value.replace("(", "");
-        value.replace(")", "");
-        m_setupFile->setSectionValue("Updater", "MainVersion", value);
-    }
+        pos = content.lastIndexOf("main.cvd database is up-to-date (");
+        if (pos != -1)
+        {
+            value = content.mid(pos + 32, content.indexOf("\n", pos + 32) - (pos + 32));
+            value.replace("(", "");
+            value.replace(")", "");
+            m_setupFile->setSectionValue("Updater", "MainVersion", value);
+        }
 
-    pos = content.lastIndexOf("daily.cvd updated (");
-    if (pos != -1)
-    {
-        value = content.mid(pos + 18, content.indexOf("\n", pos + 18) - (pos + 18));
-        value.replace("(", "");
-        value.replace(")", "");
-        m_setupFile->setSectionValue("Updater", "DailyVersion", value);
-    }
+        pos = content.lastIndexOf("daily.cvd updated (");
+        if (pos != -1)
+        {
+            value = content.mid(pos + 18, content.indexOf("\n", pos + 18) - (pos + 18));
+            value.replace("(", "");
+            value.replace(")", "");
+            m_setupFile->setSectionValue("Updater", "DailyVersion", value);
+        }
 
-    pos = content.lastIndexOf("daily.cld updated (");
-    if (pos != -1)
-    {
-        value = content.mid(pos + 18, content.indexOf("\n", pos + 18) - (pos + 18));
-        value.replace("(", "");
-        value.replace(")", "");
-        m_setupFile->setSectionValue("Updater", "DailyVersion", value);
-    }
+        pos = content.lastIndexOf("daily.cld updated (");
+        if (pos != -1)
+        {
+            value = content.mid(pos + 18, content.indexOf("\n", pos + 18) - (pos + 18));
+            value.replace("(", "");
+            value.replace(")", "");
+            m_setupFile->setSectionValue("Updater", "DailyVersion", value);
+        }
 
-    pos = content.lastIndexOf("daily.cld database is up-to-date (");
-    if (pos != -1)
-    {
-        value = content.mid(pos + 33, content.indexOf("\n", pos + 33) - (pos + 33));
-        value.replace("(", "");
-        value.replace(")", "");
-        m_setupFile->setSectionValue("Updater", "DailyVersion", value);
-    }
+        pos = content.lastIndexOf("daily.cld database is up-to-date (");
+        if (pos != -1)
+        {
+            value = content.mid(pos + 33, content.indexOf("\n", pos + 33) - (pos + 33));
+            value.replace("(", "");
+            value.replace(")", "");
+            m_setupFile->setSectionValue("Updater", "DailyVersion", value);
+        }
 
-    pos = content.lastIndexOf("bytecode.cvd database is up-to-date (");
-    if (pos != -1)
-    {
-        value = content.mid(pos + 36, content.indexOf("\n", pos + 36) - (pos + 36));
-        value.replace("(", "");
-        value.replace(")", "");
-        m_setupFile->setSectionValue("Updater", "BytecodeVersion", value);
-    }
+        pos = content.lastIndexOf("bytecode.cvd database is up-to-date (");
+        if (pos != -1)
+        {
+            value = content.mid(pos + 36, content.indexOf("\n", pos + 36) - (pos + 36));
+            value.replace("(", "");
+            value.replace(")", "");
+            m_setupFile->setSectionValue("Updater", "BytecodeVersion", value);
+        }
 
-    pos = content.lastIndexOf("bytecode.cvd updated (");
-    if (pos != -1)
-    {
-        value = content.mid(pos + 21, content.indexOf("\n", pos + 21) - (pos + 21));
-        value.replace("(", "");
-        value.replace(")", "");
-        m_setupFile->setSectionValue("Updater", "BytecodeVersion", value);
-    }
+        pos = content.lastIndexOf("bytecode.cvd updated (");
+        if (pos != -1)
+        {
+            value = content.mid(pos + 21, content.indexOf("\n", pos + 21) - (pos + 21));
+            value.replace("(", "");
+            value.replace(")", "");
+            m_setupFile->setSectionValue("Updater", "BytecodeVersion", value);
+        }
 
-    pos = content.lastIndexOf("Database updated");
-    if (pos != -1)
-    {
-        value = content.mid(pos, content.indexOf("\n", pos) - (pos));
-        m_setupFile->setSectionValue("Updater", "DatabaseFrom", value);
-    }
+        pos = content.lastIndexOf("Database updated");
+        if (pos != -1)
+        {
+            value = content.mid(pos, content.indexOf("\n", pos) - (pos));
+            m_setupFile->setSectionValue("Updater", "DatabaseFrom", value);
+        }
 
-    setUpdaterInfo();
-    emit systemStatusChanged();
-
-    m_ui.deamonLogText->clear();
-    QStringList lines = content.split("\n");
-    foreach (QString line, lines)
-    {
-        m_ui.deamonLogText->insertPlainText(line + "\n");
-        m_ui.deamonLogText->ensureCursorVisible();
+        setUpdaterInfo();
+        emit systemStatusChanged();
+        m_ui.deamonLogText->clear();
+        QStringList lines = content.split("\n");
+        foreach (QString line, lines)
+        {
+            m_ui.deamonLogText->insertPlainText(line + "\n");
+            m_ui.deamonLogText->ensureCursorVisible();
+        }
     }
 }
 
 void freshclamsetter::slot_updateFileWatcherTriggered()
 {
     QFile file(QDir::homePath() + "/.clamav-gui/update.log");
-    QString content;
+    QString content = "";
     QString value;
     int pos;
 
@@ -592,64 +599,67 @@ void freshclamsetter::slot_updateFileWatcherTriggered()
         }
     }
 
-    pos = content.lastIndexOf("ClamAV update process started at");
-    if (pos != -1)
+    if (content != "")
     {
-        value = content.mid(pos + 33, content.indexOf("\n", pos + 33) - (pos + 33));
-        m_setupFile->setSectionValue("Updater", "LastUpdate", value);
-    }
+        pos = content.lastIndexOf("ClamAV update process started at");
+        if (pos != -1)
+        {
+            value = content.mid(pos + 33, content.indexOf("\n", pos + 33) - (pos + 33));
+            m_setupFile->setSectionValue("Updater", "LastUpdate", value);
+        }
 
-    pos = content.lastIndexOf("main.cvd updated");
-    if (pos != -1)
-    {
-        value = content.mid(pos + 17, content.indexOf("\n", pos + 17) - (pos + 17));
-        value.replace("(", "");
-        value.replace(")", "");
-        m_setupFile->setSectionValue("Updater", "MainVersion", value);
-    }
+        pos = content.lastIndexOf("main.cvd updated");
+        if (pos != -1)
+        {
+            value = content.mid(pos + 17, content.indexOf("\n", pos + 17) - (pos + 17));
+            value.replace("(", "");
+            value.replace(")", "");
+            m_setupFile->setSectionValue("Updater", "MainVersion", value);
+        }
 
-    pos = content.lastIndexOf("daily.cvd updated");
-    if (pos != -1)
-    {
-        value = content.mid(pos + 18, content.indexOf("\n", pos + 18) - (pos + 18));
-        value.replace("(", "");
-        value.replace(")", "");
-        m_setupFile->setSectionValue("Updater", "DailyVersion", value);
-    }
+        pos = content.lastIndexOf("daily.cvd updated");
+        if (pos != -1)
+        {
+            value = content.mid(pos + 18, content.indexOf("\n", pos + 18) - (pos + 18));
+            value.replace("(", "");
+            value.replace(")", "");
+            m_setupFile->setSectionValue("Updater", "DailyVersion", value);
+        }
 
-    pos = content.lastIndexOf("daily.cld updated");
-    if (pos != -1)
-    {
-        value = content.mid(pos + 18, content.indexOf("\n", pos + 18) - (pos + 18));
-        value.replace("(", "");
-        value.replace(")", "");
-        m_setupFile->setSectionValue("Updater", "DailyVersion", value);
-    }
+        pos = content.lastIndexOf("daily.cld updated");
+        if (pos != -1)
+        {
+            value = content.mid(pos + 18, content.indexOf("\n", pos + 18) - (pos + 18));
+            value.replace("(", "");
+            value.replace(")", "");
+            m_setupFile->setSectionValue("Updater", "DailyVersion", value);
+        }
 
-    pos = content.lastIndexOf("bytecode.cvd updated");
-    if (pos != -1)
-    {
-        value = content.mid(pos + 21, content.indexOf("\n", pos + 21) - (pos + 21));
-        value.replace("(", "");
-        value.replace(")", "");
-        m_setupFile->setSectionValue("Updater", "BytecodeVersion", value);
-    }
+        pos = content.lastIndexOf("bytecode.cvd updated");
+        if (pos != -1)
+        {
+            value = content.mid(pos + 21, content.indexOf("\n", pos + 21) - (pos + 21));
+            value.replace("(", "");
+            value.replace(")", "");
+            m_setupFile->setSectionValue("Updater", "BytecodeVersion", value);
+        }
 
-    pos = content.lastIndexOf("Database updated");
-    if (pos != -1)
-    {
-        value = content.mid(pos, content.indexOf("\n", pos) - (pos));
-        m_setupFile->setSectionValue("Updater", "DatabaseFrom", value);
-    }
+        pos = content.lastIndexOf("Database updated");
+        if (pos != -1)
+        {
+            value = content.mid(pos, content.indexOf("\n", pos) - (pos));
+            m_setupFile->setSectionValue("Updater", "DatabaseFrom", value);
+        }
 
-    emit systemStatusChanged();
+        emit systemStatusChanged();
 
-    m_ui.logPlainText->setPlainText("");
-    QStringList lines = content.split("\n");
-    foreach (QString line, lines)
-    {
-        m_ui.logPlainText->insertPlainText(line + "\n");
-        m_ui.logPlainText->ensureCursorVisible();
+        m_ui.logPlainText->setPlainText("");
+        QStringList lines = content.split("\n");
+        foreach (QString line, lines)
+        {
+            m_ui.logPlainText->insertPlainText(line + "\n");
+            m_ui.logPlainText->ensureCursorVisible();
+        }
     }
 }
 
@@ -669,7 +679,8 @@ void freshclamsetter::slot_clearDeamonLogButtonClicked()
 
     m_ui.deamonLogText->setPlainText("");
     m_updateLogFileWatcher->removePath(QDir::homePath() + "/.clamav-gui/freshclam.log");
-    file.remove();
+    if (file.exists())
+        file.remove();
     if (file.open(QIODevice::ReadWrite))
     {
         QTextStream stream(&file);

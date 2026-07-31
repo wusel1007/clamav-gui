@@ -9,9 +9,12 @@ clamdconfspinboxoption::clamdconfspinboxoption(QWidget* parent, QString keyword,
     m_ui.checkBox->setChecked(checked);
 
     QStringList values = options.split(",");
-    QString StringSpinMin = values.at(0);
+    QString StringSpinMin;
     QString StringSpinMax = values.at(1);
     QString StringSpinValue = values.at(2);
+    options.size() > 0?StringSpinMin = values.at(0):StringSpinMin = 0;
+    options.size() > 1?StringSpinMax = values.at(1):StringSpinMax = 0;
+    options.size() > 2?StringSpinValue = values.at(2):StringSpinValue = 0;
     int spinvalue;
     int spinmin;
     int spinmax;

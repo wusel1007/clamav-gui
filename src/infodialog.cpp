@@ -2,7 +2,7 @@
 
 infoDialog::infoDialog(QWidget* parent) : QWidget(parent)
 {
-    QString version = "1.4.2 (QT5/QT6)";
+    QString version = "1.4.3 (QT5/QT6)";
 
     QString infoText = "<html>";
     infoText += "  <head/>";
@@ -264,6 +264,19 @@ infoDialog::infoDialog(QWidget* parent) : QWidget(parent)
     infoText += "              and drew my attention to something I had completely missed.<br/>";
     infoText += "              <br/>";
     infoText += "              Many thanks for that. <font style='font-size:24px;color:#d4de62'>&#128521;</font></span>";
+    infoText += "            </p>";
+    infoText += "          </td>";
+    infoText += "          <td>";
+    infoText += "            <p>";
+    infoText += "              <span style=' font-size:14px;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>";
+    infoText += "            </p>";
+    infoText += "          </td>";
+    infoText += "          <td>";
+    infoText += "            <p>";
+    infoText += "              <span style=' font-size:14px;'>Yet another helpful soul who has invested<br/>time and effort in making the programme safer and helped<br/>to defuse a ‘sleeping time bomb’ in the code.<br/>";
+    infoText += "              Thank you very much for that.\nWithout this support – and feedback from users – I wouldn’t<br/>be able to improve the quality of the programme.<br/>";
+    infoText += "              <br/>";
+    infoText += "              Thank you Roberto</span>";
     infoText += "            </p>";
     infoText += "          </td>";
     infoText += "        </tr>";

@@ -30,7 +30,7 @@ setupFileHandler::setupFileHandler(QObject* parent) : QObject(parent) {}
 
 /********************************************************************
  * setupFileHandler                                                 *
- * Parameter    : QString (filename of the setup file               *
+ * Parameter    : QString (filename of the setup file)              *
  * Return Value : None                                              *
  * Description  : overloaded standard costructor                    *
  ********************************************************************/
@@ -47,15 +47,17 @@ setupFileHandler::setupFileHandler(QString filename, QObject* parent) : QObject(
  ********************************************************************/
 void setupFileHandler::setSetupFileName(QString filename)
 {
-    QFile file(filename);
-
     m_setupFileName = filename;
 
-    if (!file.exists())
+    if ((!QFileInfo::exists(filename)) && (filename != ""))
     {
-        QString path = filename.left(filename.lastIndexOf("/"));
-        QDir* tempDir = new QDir(path);
-        tempDir->mkpath(path);
+        QFileInfo info(filename);
+        QString path = info.path();
+        QDir tempDir(path);
+        if (path != "")
+            tempDir.mkpath(path);
+
+        QFile file(filename);
         if (file.open(QIODevice::WriteOnly | QIODevice::Text))
         {
             QTextStream stream(&file);
@@ -369,14 +371,17 @@ QString setupFileHandler::getSection(QString sectionID)
  ********************************************************************/
 void setupFileHandler::readSetupFile()
 {
-    QFile file(m_setupFileName);
-    if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+    if (m_setupFileName != "")
     {
-        QTextStream stream(&file);
-        m_setupFileContent = stream.readAll().toLocal8Bit().constData();
-        if (m_setupFileContent.right(1) != "\n")
-            m_setupFileContent = m_setupFileContent + "\n";
-        file.close();
+        QFile file(m_setupFileName);
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            QTextStream stream(&file);
+            m_setupFileContent = stream.readAll().toLocal8Bit().constData();
+            if (m_setupFileContent.right(1) != "\n")
+                m_setupFileContent = m_setupFileContent + "\n";
+            file.close();
+        }
     }
 }
 
@@ -390,22 +395,25 @@ void setupFileHandler::writeSetupFile()
 {
     removeStrayComments();
 
-    QFile file(m_setupFileName);
-
-    QFileDevice::Permissions p = file.permissions();
-
-    file.remove();
-    if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+    if (m_setupFileName != "")
     {
-        QTextStream stream(&file);
-        if (m_setupFileContent.indexOf("\n\n") != -1)
-            m_setupFileContent.replace("\n\n\n", "\n\n");
-        stream << m_setupFileContent.trimmed();
-        Qt::endl(stream);
-        do {
-        } while (!file.flush());
-        file.close();
-        file.setPermissions(p);
+        QFile file(m_setupFileName);
+
+        QFileDevice::Permissions p = file.permissions();
+
+        file.remove();
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+        {
+            QTextStream stream(&file);
+            if (m_setupFileContent.indexOf("\n\n") != -1)
+                m_setupFileContent.replace("\n\n\n", "\n\n");
+            stream << m_setupFileContent.trimmed();
+            Qt::endl(stream);
+            do {
+            } while (!file.flush());
+            file.close();
+            file.setPermissions(p);
+        }
     }
 }
 
@@ -977,19 +985,22 @@ bool setupFileHandler::freeFloaterExists(QString keyword)
 QString setupFileHandler::getSectionValue(QString setupFilename, QString sectionID, QString keyword)
 {
 bool sectionFlag = false;
-QString content;
+QString content = "";
 QString section;
 QString line;
 QString rc = "";
 
-    QFile file(setupFilename);
-    if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+    if (setupFilename != "")
     {
-        QTextStream stream(&file);
-        content = stream.readAll().toLocal8Bit().constData();
-        if (content.right(1) != "\n")
-            content = content + "\n";
-        file.close();
+        QFile file(setupFilename);
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            QTextStream stream(&file);
+            content = stream.readAll().toLocal8Bit().constData();
+            if (content.right(1) != "\n")
+                content = content + "\n";
+            file.close();
+        }
     }
 
     QStringList list = content.split("\n");
@@ -1033,14 +1044,17 @@ QString line;
 QString rc = "";
 bool boolrc = false;
 
-    QFile file(setupFilename);
-    if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+    if (setupFilename != "")
     {
-        QTextStream stream(&file);
-        content = stream.readAll().toLocal8Bit().constData();
-        if (content.right(1) != "\n")
-            content = content + "\n";
-        file.close();
+        QFile file(setupFilename);
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            QTextStream stream(&file);
+            content = stream.readAll().toLocal8Bit().constData();
+            if (content.right(1) != "\n")
+                content = content + "\n";
+            file.close();
+        }
     }
 
     QStringList list = content.split("\n");

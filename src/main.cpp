@@ -20,6 +20,7 @@ int main(int argc, char *argv[])
     QString lang;
     QString setLang;
     QString rc;
+    bool showMainWindow = false;
     bool translatorLoaded = false;
 
     QApplication a(argc, argv);
@@ -183,8 +184,23 @@ int main(int argc, char *argv[])
             }
         }
 
+        if (QFileInfo::exists(QDir::homePath() + "/.clamav-gui/settings.ini") == true)
+        {
+            setupFileHandler * setupFile = new setupFileHandler(QDir::homePath() + "/.clamav-gui/settings.ini");
+            if (setupFile->getSectionValue("Setup","WindowState") == "maximized")
+            {
+                showMainWindow = true;
+                setupFile->setSectionValue("Settings", "ShowHideMainWindow", true);
+            }
+            else {
+                setupFile->setSectionValue("Settings", "ShowHideMainWindow", false);
+            }
+            delete setupFile;
+        }
+
         clamav_gui w;
-        w.show();
+        if (showMainWindow == true)
+            w.show();
 
         return a.exec();
     }

@@ -171,6 +171,7 @@ void firstRunWindow::slot_initProcessFinished()
                 if (elements.count() >=2)
                 {
                     m_ui->clamscanSourceLabel->setText(elements.at(1));
+                    m_setupFile->setSectionValue("RequiredApplications","clamscan",elements.at(1));
                     m_ui->clamscanStatusLabel->setPixmap(QPixmap(":/icons/icons/create.png"));
                 }
                 else {
@@ -528,6 +529,7 @@ void firstRunWindow::createClamdConfFile()
         m_clamdConf->setSingleLineValue("OnAccessRetryAttempts", "0");
         m_clamdConf->setSingleLineValue("OnAccessExcludeUname", "root","This option allows exclusions via user names when using the on- access scanning client. It can be used multiple times, and has the same potential race condition limitations of the OnAccessEx‐ cludeUID option. Default: disabled");
         m_clamdConf->setSingleLineValue("OnAccessExcludeUID", "0","With this option you can exclude specific UIDs. Processes with these UIDs will be able to access all files without triggering scans or permission denied events. This option can be used multiple times (one per line). Note: using a value of 0 on any line will disable this option en‐ tirely. To exclude the root UID (0) please enable the OnAccessEx‐ cludeRootUID option. Also note that if clamd cannot check the uid of the process that generated an on-access scan event (e.g., because OnAccessPreven‐ tion was not enabled, and the process already exited), clamd will perform a scan. Thus, setting OnAccessExcludeUID is not guaran‐ teed to prevent every access by the specified uid from triggering a scan (unless OnAccessPrevention is enabled). Default: disabled");
+        delete m_clamdConf;
     }
 
     m_ui->clamdConfStatusLabel->setPixmap(QPixmap(":/icons/icons/create.png"));
