@@ -142,19 +142,15 @@ void clamdManager::slot_updateClamdConfParameters()
 void clamdManager::slot_getClamdConfParameterProcessFinished()
 {
     QString rc = m_getClamdConfParametersProcess->readAll();
-    QString clamdConfFilename = m_setupFile->getSectionValue("Clamd","ClamdConfPath");
-    if (clamdConfFilename != "")
+    QFile file(QDir::homePath() + "/.clamav-gui/clamd.conf.man");
+    if (file.open(QIODevice::WriteOnly|QIODevice::Text))
     {
-        QFile file(clamdConfFilename);
-        if (file.open(QIODevice::WriteOnly|QIODevice::Text))
-        {
-            QTextStream stream(&file);
-            stream << rc;
-            Qt::endl(stream);
-            file.close();
-        }
-        getClamdConfElements();
+        QTextStream stream(&file);
+        stream << rc;
+        Qt::endl(stream);
+        file.close();
     }
+    getClamdConfElements();
 }
 
 void clamdManager::slot_filterChanged(QString searchString)

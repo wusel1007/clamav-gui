@@ -1,3 +1,6 @@
+Sat Aug 1 2026 - Version 1.4.4
+- Fixed an error in the "Re-Read Function" for the clamd.conf parameters.
+
 *Fri Jul 31 2026 - Version 1.4.3
 - Modification made for the show/hide behaviour of the main window for the inital run (setup/config) and the standard operation.
 - The routine for parsing the available options for the clamd.conf file was compromised by a version of "man" used by Manjero Linux.
