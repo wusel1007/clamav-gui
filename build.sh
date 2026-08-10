@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -eux
 
+export Qt6_DIR=/usr/lib64/cmake/Qt6
+# Debug
+echo "Qt6_DIR=$Qt6_DIR"
+ls -la "$Qt6_DIR/Qt6Config.cmake"
+
 mkdir -p build
 cd build
 
