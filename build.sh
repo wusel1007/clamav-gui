@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 set -eux
 
-export Qt6_DIR=/home/wusel/Qt/6.11.0/gcc_64/lib/cmake/Qt6
-export CMAKE_PREFIX_PATH=/usr
+export Qt6_DIR=/usr/lib64/cmake/Qt6
+export CMAKE_PREFIX_PATH=/usr${CMAKE_PREFIX_PATH:+:$CMAKE_PREFIX_PATH}
+
+echo "Qt6_DIR=$Qt6_DIR"
+ls -la "$Qt6_DIR/Qt6Config.cmake"
 
 mkdir -p build
 cd build
