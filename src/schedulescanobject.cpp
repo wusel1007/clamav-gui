@@ -111,10 +111,10 @@ scheduleScanObject::scheduleScanObject(QWidget* parent, QString name, QStringLis
         {
             newParameters << element;
         }
-        m_scanProcess->start("clamdscan", newParameters);
+        startProcess(m_scanProcess,"clamdscan", newParameters);
     }
     else {
-        m_scanProcess->start("clamscan", parameters);
+        startProcess(m_scanProcess,"clamscan", parameters);
     }
 
     m_ui.currentFileLabel->setText(tr("Scanning started ......."));

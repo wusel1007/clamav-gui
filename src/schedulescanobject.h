@@ -22,9 +22,10 @@
 #define SCHEDULESCANOBJECT_H
 
 #include "ui_schedulescanobject.h"
-#include "highlighter.h"
 #include "qroundprogressbar.h"
 #include "setupfilehandler.h"
+#include "highlighter.h"
+#include "toolbox.h"
 
 #include <QMessageBox>
 #include <QLinearGradient>

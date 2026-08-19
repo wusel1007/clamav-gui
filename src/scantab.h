@@ -26,13 +26,13 @@
 #include "cfilesystemmodel.h"
 #include "setupfilehandler.h"
 #include "highlighter.h"
+#include "toolbox.h"
 #include <QFileSystemWatcher>
 #include <QFileSystemModel>
 #include <QScrollBar>
 #include <QButtonGroup>
 #include <QObjectList>
 #include <QMessageBox>
-#include <QProcess>
 #include <QWidget>
 #include <QLabel>
 #include <QMovie>
@@ -58,7 +58,6 @@ private:
     Ui::scanTab         m_ui;
     CFileSystemModel    * m_model;
     QButtonGroup        * m_deviceGroup;
-    QProcess            * m_whoamiProcess;
     QFileSystemWatcher  * m_fileSystemWatcher = nullptr;
     QFileSystemWatcher  * m_fileSystemWatcherUbuntu;
     setupFileHandler    * m_setupFile;
@@ -79,7 +78,6 @@ private slots:
     void slot_homePathButtonClicked();
     void slot_basePathButtonClicked();
     void slot_updateDeviceList();
-    void slot_whoamiProcessFinished();
     void slot_deviceButtonClicked(int buttonIndex);
     void slot_recursivScanCheckBoxClicked();
     void slot_virusFoundComboBoxChanged();

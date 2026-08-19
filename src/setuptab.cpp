@@ -247,7 +247,11 @@ void setupTab::findTranslation()
     int index = -1;
     QString langhelper;
     QString m_country = "";
-    QString translation_path = QCoreApplication::applicationDirPath() + "/../share/clamav-gui/";
+    QString translation_path;
+    if (!isRunninginFlatPak())
+         translation_path = QCoreApplication::applicationDirPath() + "/../share/clamav-gui/";
+    else
+        translation_path = "/app/usr/share/clamav-gui/";
     QDir directory(translation_path);
     QStringList m_filelist = directory.entryList(QDir::Files);
     foreach(QString m_file, m_filelist)

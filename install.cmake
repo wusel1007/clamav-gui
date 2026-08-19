@@ -1,5 +1,11 @@
-install(TARGETS clamav-gui    
-    RUNTIME DESTINATION usr/bin/
+#install(TARGETS clamav-gui
+#    RUNTIME DESTINATION bin/
+#)
+
+include(GNUInstallDirs)
+
+install(TARGETS clamav-gui
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
 install(FILES extra/icon16/clamav-gui.png
@@ -24,6 +30,21 @@ install(FILES extra/icon64/clamav-gui.png
 
 install(FILES extra/icon128/clamav-gui.png
     DESTINATION usr/share/icons/hicolor/128x128/apps/
+)
+
+install(
+    FILES data/org.kde.clamav-gui.desktop
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/applications
+)
+
+install(
+    FILES data/icons/hicolor/64x64/apps/org.kde.clamav-gui.png
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/64x64/apps
+)
+
+install(
+    FILES data/icons/hicolor/128x128/apps/org.kde.clamav-gui.png
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/128x128/apps
 )
 
 set(CPACK_PACKAGE_ICON extra/icon256/clamav-gui.png)
@@ -66,7 +87,7 @@ install(FILES   ${CMAKE_BINARY_DIR}/clamav-gui-uk_UA.qm
                 ${CMAKE_BINARY_DIR}/clamav-uk_UA.qm
                 ${CMAKE_BINARY_DIR}/clamav-zh_CN.qm
                 ${CMAKE_BINARY_DIR}/clamav-de_DE.qm
-    DESTINATION usr/share/clamav-gui/              
+    DESTINATION usr/share/clamav-gui/
 )
 
 

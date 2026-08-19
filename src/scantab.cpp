@@ -41,9 +41,8 @@ scanTab::scanTab(QWidget* parent, setupFileHandler* setupFile) : QWidget(parent)
     slot_hiddenFoldersCheckBoxClicked();
     m_ui.virusFoundComboBox->setCurrentIndex(m_setupFile->getSectionIntValue("Settings", "VirusFoundComboBox"));
 
-    m_whoamiProcess = new QProcess(this);
-    connect(m_whoamiProcess, SIGNAL(finished(int)), this, SLOT(slot_whoamiProcessFinished()));
-    m_whoamiProcess->start("whoami", QStringList());
+    m_username = whoami();
+    slot_updateDeviceList();
 }
 
 
@@ -167,15 +166,6 @@ void scanTab::slot_deviceButtonClicked(int buttonIndex)
     m_ui.treeView->setCurrentIndex(index);
 }
 
-void scanTab::slot_whoamiProcessFinished()
-{
-
-    m_username = m_whoamiProcess->readAllStandardOutput();
-    m_username = m_username.trimmed();
-
-    slot_updateDeviceList();
-}
-
 void scanTab::slot_recursivScanCheckBoxClicked()
 {
     m_setupFile->setSectionValue("Settings", "RecursivScan", m_ui.recursivCheckBox->isChecked());
@@ -218,7 +208,8 @@ void scanTab::clearLogMessage()
 void scanTab::slot_abortScan()
 {
     m_ui.currentFileLabel->setText(tr("Scanning aborted ......"));
-
+    if (m_movie != nullptr)
+        m_movie->stop();
     emit abortScan();
 }
 
@@ -241,6 +232,8 @@ void scanTab::slot_enableForm(bool mode)
             m_movie->stop();
             delete m_movie;
             delete m_busyLabel;
+            m_movie = nullptr;
+            m_busyLabel = nullptr;
         }
     }
 

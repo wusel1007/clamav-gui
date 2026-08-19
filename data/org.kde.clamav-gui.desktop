@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=ClamAV GUI
+Comment=Graphical frontend for ClamAV
+Exec=clamav-gui
+Icon=org.kde.clamav-gui
+Terminal=false
+Type=Application
+Categories=Utility;Security;
+StartupNotify=true

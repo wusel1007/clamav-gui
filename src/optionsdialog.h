@@ -37,6 +37,7 @@
 #include "scanlimitstab.h"
 #include "scanoptionyn.h"
 #include "scanoption.h"
+#include "toolbox.h"
 
 namespace Ui {
 class optionsDialog;

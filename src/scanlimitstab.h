@@ -22,7 +22,6 @@
 #define SCANLIMITSTAB_H
 
 #include <QWidget>
-#include <QProcess>
 #include "ui_scanlimitstab.h"
 #include "setupfilehandler.h"
 

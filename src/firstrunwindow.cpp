@@ -45,7 +45,8 @@ void firstRunWindow::slot_findRequiredApplications()
 
     m_processParameters.clear();
     m_processParameters << m_initParameters.at(m_initIndex);
-    m_initProcess->start(m_initCommands.at(m_initIndex),m_processParameters);
+    //m_initProcess->start(m_initCommands.at(m_initIndex),m_processParameters);
+    startProcess(m_initProcess,m_initCommands.at(m_initIndex),m_processParameters);
 }
 
 void firstRunWindow::slot_monochromeModeChanged()
@@ -250,11 +251,13 @@ void firstRunWindow::slot_initProcessFinished()
             if (m_initParameters.at(m_initIndex) != "")
             {
                 m_processParameters << m_initParameters.at(m_initIndex);
-                m_initProcess->start(m_initCommands.at(m_initIndex),m_processParameters);
+                //m_initProcess->start(m_initCommands.at(m_initIndex),m_processParameters);
+                startProcess(m_initProcess,m_initCommands.at(m_initIndex),m_processParameters);
             }
             else {
                 m_processParameters << m_initParameters.at(m_initIndex);
-                m_initProcess->start(m_initCommands.at(m_initIndex),QStringList());
+                //m_initProcess->start(m_initCommands.at(m_initIndex),QStringList());
+                startProcess(m_initProcess,m_initCommands.at(m_initIndex),QStringList());
             }
         }
     }
@@ -320,11 +323,11 @@ void firstRunWindow::createBaseDirStructure()
     // For UALinux
     // If the settings.ini in the home folder of the user is not present a predefined version is been copied into the folder.
     //_____________________________________________________________________________________________________________________________________
-    if ((!QFileInfo::exists(QDir::homePath() + "/.clamav-gui/settings.ini")) && (!QFile::exists(QDir::homePath() + "/.clamav-gui/settings.ini")))
+    if ((!QFileInfo::exists(QDir::homePath() + "/.clamav-gui/settings.ini")) && (!checkFileExists(QDir::homePath() + "/.clamav-gui/settings.ini")))
     {
         dir.mkdir(QDir::homePath() + "/.clamav-gui");
 
-        if (QFile::exists("/etc/clamav-gui/settings.ini"))
+        if (checkFileExists("/etc/clamav-gui/settings.ini"))
             QFile::copy("/etc/clamav-gui/settings.ini", QDir::homePath() + "/.clamav-gui/settings.ini");
     }
     //______________________________________________________________________________________________________________________________________
@@ -419,7 +422,8 @@ void firstRunWindow::createServiceMenu()
     m_gsettingsProcess = new QProcess(this);
     gnomecommanderParams << "get"  << "org.gnome.gnome-commander.preferences.general" << "favorite-apps";
     connect(m_gsettingsProcess,SIGNAL(finished(int,QProcess::ExitStatus)),this,SLOT(slot_gsettingsProcessFinished(int,QProcess::ExitStatus)));
-    m_gsettingsProcess->start("gsettings",gnomecommanderParams);
+    //m_gsettingsProcess->start("gsettings",gnomecommanderParams);
+    startProcess(m_gsettingsProcess,"gsettings",gnomecommanderParams);
 
     if (created == true)
     {
@@ -440,11 +444,11 @@ void firstRunWindow::createInitialSettings()
     if (QFileInfo::exists("/usr/local/share/clamav")) m_ui->signatureDatabaseDirectoryComboBox->addItem("/usr/local/share/clamav");
     m_ui->signatureDatabaseDirectoryComboBox->addItem(QDir::homePath() + "/.clamav-gui/signatures");
 
-    if (QFileInfo::exists("/var/lib/clamav") && (QFile::exists("/var/lib/clamav/freshclam.dat")))
+    if (QFileInfo::exists("/var/lib/clamav") && (checkFileExists("/var/lib/clamav/freshclam.dat")))
     {
         virusDatabasePath = "/var/lib/clamav";
     }
-    if ((QFileInfo::exists("/usr/local/share/clamav") && (QFile::exists("/usr/local/share/clamav/freshclam.dat"))))
+    if ((QFileInfo::exists("/usr/local/share/clamav") && (checkFileExists("/usr/local/share/clamav/freshclam.dat"))))
     {
         virusDatabasePath = "/usr/local/share/clamav";
     }
@@ -537,7 +541,7 @@ void firstRunWindow::createClamdConfFile()
 
 void firstRunWindow::createFreshclamConfFile()
 {
-    if (QFile::exists(QDir::homePath() + "/.clamav-gui/freshclam.conf") == false)
+    if (checkFileExists(QDir::homePath() + "/.clamav-gui/freshclam.conf") == false)
     {
         QFile freshclamConfFile(QDir::homePath() + "/.clamav-gui/freshclam.conf");
         freshclamConfFile.setPermissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner);

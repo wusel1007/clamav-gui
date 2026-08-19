@@ -8,6 +8,7 @@
 #include "schedulescanobject.h"
 #include "setupfilehandler.h"
 #include "sharedvars.cpp"
+#include "toolbox.h"
 
 #define PORT_NUM 55000
 
@@ -171,15 +172,20 @@ int main(int argc, char *argv[])
         }
 
         QString filename = "clamav-gui-" + lang + ".qm";
-        if (QFile::exists(QCoreApplication::applicationDirPath() + "/../share/clamav-gui/" + filename))
+        QString translationPath;
+        if (isRunninginFlatPak())
+            translationPath = "/app/usr/share/clamav-gui/";
+        else
+            translationPath = QCoreApplication::applicationDirPath() + "/../share/clamav-gui/";
+        if (QFile::exists(translationPath + filename))
         {
-            translatorLoaded = translator1.load(filename,QCoreApplication::applicationDirPath() + "/../share/clamav-gui/");
+            translatorLoaded = translator1.load(filename,translationPath);
             if (translatorLoaded == true) a.installTranslator(&translator1);
 
             filename = "clamav-" + lang + ".qm";
-            if (QFile::exists(QCoreApplication::applicationDirPath() + "/../share/clamav-gui/" + filename))
+            if (QFile::exists(translationPath + filename))
             {
-                translatorLoaded = translator2.load(filename,QCoreApplication::applicationDirPath() + "/../share/clamav-gui/");
+                translatorLoaded = translator2.load(filename,translationPath);
                 if (translatorLoaded == true) a.installTranslator(&translator2);
             }
         }

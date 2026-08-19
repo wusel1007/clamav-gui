@@ -35,6 +35,7 @@
 #include "profilemanager.h"
 #include "clamdmanager.h"
 #include "firstrunwindow.h"
+#include "toolbox.h"
 
 #include <QSystemTrayIcon>
 #include <QTextStream>

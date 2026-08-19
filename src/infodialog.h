@@ -22,6 +22,7 @@
 #define INFODIALOG_H
 
 #include "ui_infodialog.h"
+#include "toolbox.h"
 #include <QWidget>
 
 namespace Ui {

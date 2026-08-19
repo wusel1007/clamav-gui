@@ -28,8 +28,8 @@ clamdManager::clamdManager(QWidget* parent, setupFileHandler* setupFile) : QWidg
     m_clamdLogWatcher = new QFileSystemWatcher(this);
     connect(m_clamdLogWatcher,SIGNAL(fileChanged(QString)),this,SLOT(slot_logFileContentChanged()));
 
-    if (QProcess::execute("pidof", QStringList() << "-q" << "-s" << "clamd") == 0)
-        m_findClamdProcess->start("bash",QStringList() << "-c" << "ps -ax | grep `pidof clamd` | grep clamd");
+    if (pidof("clamd") != "")
+        slot_findClamdProcessFinished();
     else {
         m_setupFile->setSectionValue("Clamd","ClamdPid","n/a");
         m_setupFile->setSectionValue("Clamd","ClamonaccPid","n/a");
@@ -87,17 +87,15 @@ void clamdManager::slot_initClamdSettings()
 
     if (checkClamdRunning() == true)
     {
-        m_ui.startStopClamdPushButton->setStyleSheet(selectColor("green"));
+        /*m_ui.startStopClamdPushButton->setStyleSheet(selectColor("green"));
         m_ui.startStopClamdPushButton->setText(tr("  Clamd running - Stop clamd"));
-        m_ui.startStopClamdPushButton->setIcon(QIcon(":/icons/icons/stopclamd.png"));
+        m_ui.startStopClamdPushButton->setIcon(QIcon(":/icons/icons/stopclamd.png"));*/
         if (QFileInfo::exists(m_setupFile->getSectionValue("Clamd","ClamdPidFile")) == true)
             m_clamdPidWatcher->addPath(m_setupFile->getSectionValue("Clamd","ClamdPidFile"));
-        else
-            qDebug() << m_setupFile->getSectionValue("Clamd","ClamdPidFile") << " file not found!";
     }
-    else {
+/*    else {
         m_ui.startStopClamdPushButton->setStyleSheet(selectColor("red"));
-    }
+    }*/
 
     m_clamdRestartInProgress = false;
 
@@ -136,7 +134,7 @@ void clamdManager::slot_updateClamdConfParameters()
 
     QStringList parameters;
     parameters << "clamd.conf";
-    m_getClamdConfParametersProcess->start("man",parameters);
+    startProcess(m_getClamdConfParametersProcess,"man",parameters);
 }
 
 void clamdManager::slot_getClamdConfParameterProcessFinished()
@@ -214,26 +212,20 @@ void clamdManager::slot_showUnselectedChecked()
 void clamdManager::slot_findClamdProcessFinished()
 {
     bool clamdConfPathFlag = false;
+    QString clamdConfPath;
+    QString processStatus = runProg("bash",{"-c","ps ax | grep clamd"});
+    QStringList processes = processStatus.split("\n");
+    processStatus = processes.at(0);
+    while (processStatus.indexOf("  ") != -1)
+        processStatus = processStatus.replace("  "," ");
+    QStringList lines = processStatus.split(" ");
 
-    QString clamdConfPath = "";
+    m_setupFile->setSectionValue("Clamd","ClamdPid",pidof("clamd"));
+    m_setupFile->setSectionValue("Clamd","Status","is running");
 
-    QString rc = m_findClamdProcess->readAll();
-
-    while (rc.indexOf("  ") != -1)
-        rc.replace("  "," ");
-
-    QStringList fields = rc.split(" ");
-
-    int idx = 0;
-    foreach (QString field, fields)
+    foreach (QString field, lines)
     {
         field = field.trimmed();
-
-        if (idx == 1)
-        {
-            m_setupFile->setSectionValue("Clamd","ClamdPid",field);
-            m_setupFile->setSectionValue("Clamd","Status","is running");
-        }
 
         if (clamdConfPathFlag)
         {
@@ -266,9 +258,9 @@ void clamdManager::slot_findClamdProcessFinished()
         }
 
         if (field == "-c")
+        {
             clamdConfPathFlag = true;
-
-        idx++;
+        }
     }
 
     if (QFileInfo::exists(clamdConfPath))
@@ -476,7 +468,7 @@ void clamdManager::slot_clamdStartStopButtonClicked()
         parameters << QDir::homePath() + "/.clamav-gui/startclamd.sh";
         if (m_sudoGUI == "")
             m_sudoGUI = m_setupFile->getSectionValue("Settings", "SudoGUI");
-        m_startClamdProcess->start(m_sudoGUI, parameters);
+        startProcess(m_startClamdProcess,m_sudoGUI, parameters);
         m_setupFile->setSectionValue("Clamd", "Status", "starting up ...");
         if (m_dirsUnderMonitoring > 0)
             m_setupFile->setSectionValue("Clamd", "Status2", "starting up ...");
@@ -506,7 +498,7 @@ void clamdManager::slot_clamdStartStopButtonClicked()
         parameters << QDir::homePath() + "/.clamav-gui/stopclamd.sh";
         if (m_sudoGUI == "")
             m_sudoGUI = m_setupFile->getSectionValue("Settings", "SudoGUI");
-        m_killProcess->start(m_sudoGUI, parameters);
+        startProcess(m_killProcess,m_sudoGUI, parameters);
     }
     m_ui.startStopClamdPushButton->setEnabled(false);
     m_ui.monitoringAddButton->setEnabled(false);
@@ -552,18 +544,18 @@ void clamdManager::slot_startClamdProcessFinished(int exitCode, QProcess::ExitSt
         if (QFileInfo::exists(m_setupFile->getSectionValue("Clamd","ClamdPidFile")))
             m_clamdPidWatcher->addPath(m_setupFile->getSectionValue("Clamd","ClamdPidFile"));
 
-        m_findClamdProcess->start("bash",QStringList() << "-c" << "ps -ax | grep `pidof clamd` | grep clamd");
+        startProcess(m_findClamdProcess,"bash",QStringList() << "-c" << "ps -ax | grep `pidof clamd` | grep clamd");
 
         emit systemStatusChanged();
-        m_ui.startStopClamdPushButton->setStyleSheet(selectColor("green"));
+        /*m_ui.startStopClamdPushButton->setStyleSheet(selectColor("green"));
         m_ui.startStopClamdPushButton->setText(tr("  Clamd running - Stop Clamd"));
-        m_ui.startStopClamdPushButton->setIcon(QIcon(":/icons/icons/stopclamd.png"));
+        m_ui.startStopClamdPushButton->setIcon(QIcon(":/icons/icons/stopclamd.png"));*/
 
         slot_logFileContentChanged();
 
         QStringList parameters;
         parameters << "-s" << "clamonacc";
-        m_findclamonaccProcess->start("pidof", parameters);
+        startProcess(m_findclamonaccProcess,"pidof", parameters);
     }
 
     m_clamdRestartInProgress = false;
@@ -586,9 +578,9 @@ void clamdManager::slot_killClamdProcessFinished()
     {
         if (m_clamdPidWatcher->directories().size() > 0)
             m_clamdPidWatcher->removePaths(m_clamdPidWatcher->directories());
-        m_ui.startStopClamdPushButton->setStyleSheet(selectColor("red"));
+        /*m_ui.startStopClamdPushButton->setStyleSheet(selectColor("red"));
         m_ui.startStopClamdPushButton->setText(tr("  Clamd not running - Start Clamd"));
-        m_ui.startStopClamdPushButton->setIcon(QIcon(":/icons/icons/startclamd.png"));
+        m_ui.startStopClamdPushButton->setIcon(QIcon(":/icons/icons/startclamd.png"));*/
 
         m_setupFile->setSectionValue("Clamd", "ClamdPid", "n/a");
         m_setupFile->setSectionValue("Clamd", "ClamonaccPid", "n/a");
@@ -608,9 +600,9 @@ void clamdManager::slot_killClamdProcessFinished()
                 m_clamdPidWatcher->removePaths(m_clamdPidWatcher->directories());
             if (QFileInfo::exists(m_setupFile->getSectionValue("Clamd","ClamdPidFile")))
                 m_clamdPidWatcher->addPath(m_setupFile->getSectionValue("Clamd","ClamdPidFile"));
-            m_ui.startStopClamdPushButton->setStyleSheet(selectColor("green"));
+            /*m_ui.startStopClamdPushButton->setStyleSheet(selectColor("green"));
             m_ui.startStopClamdPushButton->setText(tr("  Clamd running - Stop Clamd"));
-            m_ui.startStopClamdPushButton->setIcon(QIcon(":/icons/icons/stopclamd.png"));
+            m_ui.startStopClamdPushButton->setIcon(QIcon(":/icons/icons/stopclamd.png"));*/
         }
     }
 
@@ -621,15 +613,15 @@ void clamdManager::slot_killClamdProcessFinished()
 
 void clamdManager::slot_findclamonaccProcessFinished(int rc)
 {
-    if (rc == 0)
+    m_clamonaccPid = pidof("clamonacc");
+
+    if (m_clamonaccPid != "")
     {
-        m_clamonaccPid = m_findclamonaccProcess->readAllStandardOutput();
-        m_clamonaccPid = m_clamonaccPid.replace("\n", "");
         m_setupFile->setSectionValue("Clamd", "ClamonaccPid", m_clamonaccPid);
+        m_setupFile->setSectionValue("Clamd","Status2","is running");
         emit systemStatusChanged();
     }
     else {
-        m_clamonaccPid = "";
         m_setupFile->setSectionValue("Clamd", "ClamonaccPid", "n/a");
         m_setupFile->setSectionValue("Clamd","Status2","not running");
         emit systemStatusChanged();
@@ -790,9 +782,7 @@ void clamdManager::slot_monitoringDelButtonClicked()
 
 void clamdManager::slot_restartClamonaccProcessFinished()
 {
-    QStringList parameters;
-    parameters << "-s" << "clamonacc";
-    m_findclamonaccProcess->start("pidof", parameters);
+    slot_findclamonaccProcessFinished(0);
 }
 
 void clamdManager::slot_restartClamdButtonClicked()
@@ -862,7 +852,7 @@ void clamdManager::slot_restartClamdButtonClicked()
     if (m_sudoGUI == "")
         m_sudoGUI = m_setupFile->getSectionValue("Settings", "SudoGUI");
 
-    m_startClamdProcess->start(m_sudoGUI, parameters);
+    startProcess(m_startClamdProcess,m_sudoGUI, parameters);
 
     m_setupFile->setSectionValue("Clamd", "Status", "starting up ...");
     if (m_dirsUnderMonitoring > 0)
@@ -924,7 +914,7 @@ void clamdManager::restartClamonacc()
     if (m_sudoGUI == "")
         m_sudoGUI = m_setupFile->getSectionValue("Settings", "SudoGUI");
 
-    m_startClamdProcess->start(m_sudoGUI, parameters);
+    startProcess(m_startClamdProcess,m_sudoGUI, parameters);
 
     m_setupFile->setSectionValue("Clamd", "Status", "shutting down ...");
 
@@ -934,22 +924,29 @@ void clamdManager::restartClamonacc()
 bool clamdManager::checkClamdRunning()
 {
     bool rc = false;
-    QProcess checkPIDProcess;
-    QStringList parameters;
 
-    parameters << "-q" << "-s" << "clamd";
+    QString clamdPID = pidof("clamd");
 
-    int pid = checkPIDProcess.execute("pidof", parameters);
-
-    if (pid == 0)
+    if (clamdPID != "")
     {
         rc = true;
+        m_ui.startStopClamdPushButton->setStyleSheet(selectColor("green"));
+        m_ui.startStopClamdPushButton->setText(tr("  Clamd running - Stop clamd"));
+        m_ui.startStopClamdPushButton->setIcon(QIcon(":/icons/icons/stopclamd.png"));
+        m_setupFile->setSectionValue("Clamd", "ClamdPid", clamdPID);
+        if (pidof("clamonacc") != "")
+            m_setupFile->setSectionValue("Clamd", "ClamonaccPid", pidof("clamonacc"));
+
         emit systemStatusChanged();
     }
     else {
-        m_setupFile->setSectionValue("Clamd", "ClamdPid", "n/a");
-        m_setupFile->setSectionValue("Clamd", "Status", "not running");
         m_ui.startStopClamdPushButton->setStyleSheet(selectColor("red"));
+        m_ui.startStopClamdPushButton->setText(tr("  Clamd not running - Start Clamd"));
+        m_ui.startStopClamdPushButton->setIcon(QIcon(":/icons/icons/startclamd.png"));
+        m_setupFile->setSectionValue("Clamd", "ClamdPid", "n/a");
+        m_setupFile->setSectionValue("Clamd", "ClamonaccPid", "n/a");
+        m_setupFile->setSectionValue("Clamd", "Status", "not running");
+
         emit systemStatusChanged();
     }
 
@@ -992,13 +989,7 @@ void clamdManager::getClamdConfElements()
     {
         m_logHighlighter = new highlighter(m_ui.clamdLogPlainTextEdit->document());
         m_monochrome = false;
-        if (checkClamdRunning() == true)
-        {
-            m_ui.startStopClamdPushButton->setStyleSheet(selectColor("green"));
-        }
-        else {
-            m_ui.startStopClamdPushButton->setStyleSheet(selectColor("red"));
-        }
+        checkClamdRunning();
     }
     else {
         m_monochrome = true;

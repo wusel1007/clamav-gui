@@ -25,6 +25,7 @@
 #include "setupfilehandler.h"
 #include "highlighter.h"
 #include "progressdialog.h"
+#include "toolbox.h"
 
 #include <QFileSystemWatcher>
 #include <QFileDialog>
@@ -57,8 +58,8 @@ private:
     setupFileHandler    * m_freshclamConf;
     QProcess            * m_updater;
     QProcess            * m_startDeamonProcess;
-    QProcess            * m_ps_process;
-    QProcess            * m_getDBUserProcess;
+    //QProcess            * m_ps_process;
+    //QProcess            * m_getDBUserProcess;
     QTimer              * m_startDelayTimer;
     QTimer              * m_processWatcher;
     progressDialog      * m_busyLabel;
@@ -93,7 +94,7 @@ private slots:
     void slot_clearDeamonLogButtonClicked();
     void slot_updaterHasOutput();
     void slot_startDeamonProcessFinished(int exitCode,QProcess::ExitStatus exitStatus);
-    void slot_ps_processFinished(int rc);
+    //void slot_ps_processFinished(int rc);
     void slot_disableUpdateButtons();
     void slot_startDelayTimerExpired();
     void slot_runasrootCheckBoxChanged();

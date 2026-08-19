@@ -10,6 +10,7 @@
 #include "ui_clamdmanager.h"
 #include "highlighter.h"
 #include "translator.h"
+#include "toolbox.h"
 
 #include <QFileSystemWatcher>
 #include <QFileDialog>

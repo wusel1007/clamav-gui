@@ -46,6 +46,7 @@ SOURCES += src/main.cpp\
     src/profilewizarddialog.cpp \
     src/profilemanager.cpp \
     src/sharedvars.cpp \
+    src/toolbox.cpp \
     src/translator.cpp
 
 HEADERS  += src/clamav_gui.h \
@@ -81,6 +82,7 @@ HEADERS  += src/clamav_gui.h \
     src/progressdialog.h \
     src/profilewizarddialog.h \
     src/profilemanager.h \
+    src/toolbox.h \
     src/translator.h
 
 FORMS    += ui/clamav_gui.ui \
@@ -219,5 +221,11 @@ manpages_pt.files = man/pt/clamav-gui.1.gz
 
 documents.path = /$(DESTDIR)/usr/share/doc/ClamAV-GUI
 documents.files = README CHANGES
+
+DISTFILES += \
+    data/icons/hicolor/128x128/apps/org.kde.clamav-gui.png \
+    data/icons/hicolor/64x64/apps/org.kde.clamav-gui.png \
+    data/icons/hicolor/scalable/apps/org.kde.clamav-gui.svg \
+    data/org.kde.clamav-gui.desktop
 
 

@@ -6,7 +6,6 @@
 #include <QButtonGroup>
 #include <QFileDialog>
 #include <QMessageBox>
-#include <QProcess>
 #include <QDialog>
 #include <QDebug>
 #include <QList>
@@ -34,7 +33,6 @@ private:
     QString                  m_profileName;
     Ui::ProfileWizardDialog * m_ui;
     CFileSystemModel        * m_model;
-    QProcess                * m_whoamiProcess;
     QString                  m_getClamscanProcessOutput;
     QFileSystemWatcher      * m_fileSystemWatcher;
     QButtonGroup            * m_deviceGroup;

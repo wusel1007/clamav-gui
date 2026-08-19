@@ -1,4 +1,7 @@
-Sat Aug 1 2026 - Version 1.4.4
+* Wed Aug 19 2026 - Version 1.4.5
+- Extensive code modification for implementation of FlatPak. (Hope I didn't kill the app ...)
+
+* Sat Aug 1 2026 - Version 1.4.4
 - Fixed an error in the "Re-Read Function" for the clamd.conf parameters.
 
 *Fri Jul 31 2026 - Version 1.4.3

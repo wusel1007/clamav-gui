@@ -12,9 +12,9 @@ clamav_gui::clamav_gui(QWidget* parent) : QWidget(parent)
     firstrun = false;
     QString settingsPath = QDir::homePath() + "/.clamav-gui/settings.ini";
 
-    if ((!QFile::exists(settingsPath)) || (!QFile::exists(QDir::homePath() + "/.clamav-gui/clamd.conf.man")) ||
-        (!QFile::exists(QDir::homePath() + "/.clamav-gui/clamd.conf")) || (!QFile::exists(QDir::homePath() + "/.clamav-gui/freshclam.conf")) ||
-        (!QFile::exists(QDir::homePath() + "/.clamav-gui/clamd.conf.man")))
+    if ((!checkFileExists(settingsPath)) || (!checkFileExists(QDir::homePath() + "/.clamav-gui/clamd.conf.man")) ||
+        (!checkFileExists(QDir::homePath() + "/.clamav-gui/clamd.conf")) || (!checkFileExists(QDir::homePath() + "/.clamav-gui/freshclam.conf")) ||
+        (!checkFileExists(QDir::homePath() + "/.clamav-gui/clamd.conf.man")))
     {
         firstrun = true;
         initDialog = new firstRunWindow(this);
@@ -290,16 +290,16 @@ void clamav_gui::checkAppImage()
     QString AppImagePath = qEnvironmentVariable("APPIMAGE");
     QString serviceMenuPath;
 
-    if (QFileInfo::exists(QDir::homePath() + "/.local/share/kservices5/ServiceMenus/scanWithClamAV-GUI.desktop"))
+    if (checkFileExists(QDir::homePath() + "/.local/share/kservices5/ServiceMenus/scanWithClamAV-GUI.desktop"))
         serviceMenuPath = QDir::homePath() + "/.local/share/kservices5/ServiceMenus/scanWithClamAV-GUI.desktop";
 
-    if (serviceMenuPath.isEmpty() && QFileInfo::exists(QDir::homePath() + "/.local/share/kio/servicemenus/scanWithClamAV-GUI.desktop"))
+    if (serviceMenuPath.isEmpty() && checkFileExists(QDir::homePath() + "/.local/share/kio/servicemenus/scanWithClamAV-GUI.desktop"))
         serviceMenuPath = QDir::homePath() + "/.local/share/kio/servicemenus/scanWithClamAV-GUI.desktop";
 
-    if (serviceMenuPath.isEmpty() && QFileInfo::exists(QCoreApplication::applicationDirPath() + "/../share/" + "kio/servicemenues/scanWithClamAV-GUI.desktop"))
+    if (serviceMenuPath.isEmpty() && checkFileExists(QCoreApplication::applicationDirPath() + "/../share/" + "kio/servicemenues/scanWithClamAV-GUI.desktop"))
         serviceMenuPath = serviceMenuPath = QDir::homePath() + "/.local/share/kio/servicemenus/scanWithClamAV-GUI.desktop";
 
-    if (serviceMenuPath.isEmpty() && QFileInfo::exists(QCoreApplication::applicationDirPath() + "/../share/" + "kservices5/ServiceMenus/scanWithClamAV-GUI.desktop"))
+    if (serviceMenuPath.isEmpty() && checkFileExists(QCoreApplication::applicationDirPath() + "/../share/" + "kservices5/ServiceMenus/scanWithClamAV-GUI.desktop"))
         serviceMenuPath = QDir::homePath() + "/.local/share/kservices5/ServiceMenus/scanWithClamAV-GUI.desktop";
 
     if (!serviceMenuPath.isEmpty())
@@ -531,7 +531,7 @@ void clamav_gui::slot_scanRequest(QStringList scanObjects)
     m_scannerTab->clearLogMessage();
     m_scannerTab->setStatusMessage(temp + char(13));
 
-    (useclamdscan == true)?m_scanProcess->start("clamdscan", parameters):m_scanProcess->start("clamscan", parameters);
+    (useclamdscan == true)?startProcess(m_scanProcess,"clamdscan", parameters):startProcess(m_scanProcess,"clamscan", parameters);
 }
 
 void clamav_gui::slot_mainWinTimerTimeout()

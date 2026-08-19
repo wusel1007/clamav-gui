@@ -24,7 +24,8 @@ optionsDialog::optionsDialog(QWidget* parent, setupFileHandler* setupFile) : QWi
 
     QStringList parameters;
     parameters << "--help";
-    m_getClamscanParametersProcess->start(setupFileHandler::getSectionValue(QDir::homePath()+"/.clamav-gui/settings.ini","RequiredApplications","clamscan"), parameters);
+    //m_getClamscanParametersProcess->start(setupFileHandler::getSectionValue(QDir::homePath()+"/.clamav-gui/settings.ini","RequiredApplications","clamscan"), parameters);
+    startProcess(m_getClamscanParametersProcess,setupFileHandler::getSectionValue(QDir::homePath()+"/.clamav-gui/settings.ini","RequiredApplications","clamscan"), parameters);
 }
 
 void optionsDialog::createScanOptionElements()

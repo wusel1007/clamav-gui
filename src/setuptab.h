@@ -7,7 +7,6 @@
 #include <QNetworkReply>
 #include <QTranslator>
 #include <QFileDialog>
-#include <QProcess>
 #include <QPixmap>
 #include <QWidget>
 #include <QMovie>
@@ -15,9 +14,9 @@
 #include <QDir>
 
 #include "ui_setuptab.h"
-#include "setupfilehandler.h"
 #include "highlighter.h"
-
+#include "setupfilehandler.h"
+#include "toolbox.h"
 namespace Ui {
 class setupTab;
 }

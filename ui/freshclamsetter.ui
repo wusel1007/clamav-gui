@@ -961,14 +961,14 @@ manual update as root</string>
    </hints>
   </connection>
   <connection>
-   <sender>runasrootCheckBox</sender>
+   <sender>autoStartDaemonCheckBox</sender>
    <signal>clicked()</signal>
    <receiver>freshclamsetter</receiver>
    <slot>slot_autoStartDaemon()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>503</x>
-     <y>481</y>
+     <x>648</x>
+     <y>446</y>
     </hint>
     <hint type="destinationlabel">
      <x>966</x>
@@ -983,8 +983,8 @@ manual update as root</string>
    <slot>slot_runasrootCheckBoxChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>524</x>
-     <y>475</y>
+     <x>705</x>
+     <y>498</y>
     </hint>
     <hint type="destinationlabel">
      <x>964</x>
@@ -1015,8 +1015,8 @@ manual update as root</string>
    <slot>slot_writeFreshclamSettings()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>181</x>
-     <y>436</y>
+     <x>302</x>
+     <y>458</y>
     </hint>
     <hint type="destinationlabel">
      <x>7</x>
@@ -1127,8 +1127,8 @@ manual update as root</string>
    <slot>slot_pidFileSelectButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>352</x>
-     <y>120</y>
+     <x>404</x>
+     <y>133</y>
     </hint>
     <hint type="destinationlabel">
      <x>4</x>
