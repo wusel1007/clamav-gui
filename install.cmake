@@ -8,49 +8,49 @@ install(TARGETS clamav-gui
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
-install(FILES extra/icon16/org.kde.clamav-gui.png
+install(FILES extra/icon16/clamav-gui.png
     DESTINATION usr/share/icons/hicolor/16x16/apps/
 )
 
-install(FILES extra/icon22/org.kde.clamav-gui.png
+install(FILES extra/icon22/clamav-gui.png
     DESTINATION usr/share/icons/hicolor/22x22/apps/
 )
 
-install(FILES extra/icon32/org.kde.clamav-gui.png
+install(FILES extra/icon32/clamav-gui.png
     DESTINATION usr/share/icons/hicolor/32x32/apps/
 )
 
-install(FILES extra/icon48/org.kde.clamav-gui.png
+install(FILES extra/icon48/clamav-gui.png
     DESTINATION usr/share/icons/hicolor/48x48/apps/
 )
 
-install(FILES extra/icon64/org.kde.clamav-gui.png
+install(FILES extra/icon64/clamav-gui.png
     DESTINATION usr/share/icons/hicolor/64x64/apps/
 )
 
-install(FILES extra/icon128/org.kde.clamav-gui.png
+install(FILES extra/icon128/clamav-gui.png
     DESTINATION usr/share/icons/hicolor/128x128/apps/
 )
 
 install(
-    FILES data/org.kde.clamav-gui.desktop
+    FILES data/io.github.wusel1007.clamav-gui.desktop
     DESTINATION ${CMAKE_INSTALL_DATADIR}/applications
 )
 
 install(
-    FILES data/icons/hicolor/64x64/apps/org.kde.clamav-gui.png
+    FILES data/icons/hicolor/64x64/apps/io.github.wusel1007.clamav-gui.png
     DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/64x64/apps
 )
 
 install(
-    FILES data/icons/hicolor/128x128/apps/org.kde.clamav-gui.png
+    FILES data/icons/hicolor/128x128/apps/io.github.wusel1007.clamav-gui.png
     DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/128x128/apps
 )
 
-set(CPACK_PACKAGE_ICON org.kde.clamav-gui.png)
+set(CPACK_PACKAGE_ICON io.github.wusel1007.clamav-gui.png)
 
 install(FILES
-    "${CMAKE_SOURCE_DIR}/extra/icon256/org.kde.clamav-gui.png"
+    "${CMAKE_SOURCE_DIR}/extra/icon256/io.github.wusel1007.clamav-gui.png"
     DESTINATION share/icons/hicolor/256x256/apps
 )
 
@@ -61,10 +61,6 @@ install(DIRECTORY man
 install(FILES CHANGES README
     DESTINATION usr/share/doc/clamav-gui/
 )
-
-#install(FILES extra/org.kde.clamav-gui.desktop
-#    DESTINATION usr/share/applications/
-#)
 
 install(FILES extra/org.opendesktop.clamav_gui.appdata.xml
     DESTINATION usr/share/metainfo/
