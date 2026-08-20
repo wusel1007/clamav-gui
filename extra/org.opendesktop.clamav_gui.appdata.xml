@@ -20,7 +20,7 @@
     </p>
   </description>
 
-  <launchable type="desktop-id">org.opendesktop.clamav_gui.desktop</launchable>
+  <launchable type="desktop-id">org.kde.clamav-gui.desktop</launchable>
   <screenshots>
     <screenshot type="default">
       <image>https://images.pling.com/img/00/00/10/24/28/1127892/clamav-gui-01.png</image>
