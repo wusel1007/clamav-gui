@@ -9,6 +9,7 @@
 #include <QDir>
 
 bool isRunninginFlatPak();
+bool isRunninginAppImage();
 void startProcess(QProcess * process,QString basecommand,QStringList parameters);
 QString runProg(QString basecommand,QStringList parameters);
 bool checkFileExists(const QString path);

@@ -7,7 +7,7 @@ infoDialog::infoDialog(QWidget* parent) : QWidget(parent)
     if (isRunninginFlatPak())
         iconPath = "/app/usr/share/clamav-gui/";
     else
-        iconPath;
+        iconPath = "/usr/share/clamav-gui/";
 
     QString infoText = "<html>";
     infoText += "  <head/>";

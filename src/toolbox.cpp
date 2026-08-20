@@ -150,3 +150,14 @@ QString runProg(QString command, QStringList parameters)
 
     return QString::fromLocal8Bit(process.readAllStandardOutput()).trimmed();
 }
+
+bool isRunninginAppImage()
+{
+    QString AppImagePath = qEnvironmentVariable("APPIMAGE");
+    bool rc = false;
+
+    if (AppImagePath != "")
+        rc = true;
+
+    return rc;
+}
