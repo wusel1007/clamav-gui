@@ -143,6 +143,7 @@ clamav_gui::clamav_gui(QWidget* parent) : QWidget(parent)
 
         if(!firstrun) emit doneit();
         checkAppImage();
+        createServiceMenus();
     }
 }
 

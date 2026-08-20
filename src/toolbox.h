@@ -8,8 +8,11 @@
 #include <QFile>
 #include <QDir>
 
+#include "setupfilehandler.h"
+
 bool isRunninginFlatPak();
 bool isRunninginAppImage();
+bool createServiceMenus();
 void startProcess(QProcess * process,QString basecommand,QStringList parameters);
 QString runProg(QString basecommand,QStringList parameters);
 bool checkFileExists(const QString path);

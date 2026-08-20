@@ -161,3 +161,91 @@ bool isRunninginAppImage()
 
     return rc;
 }
+
+bool createServiceMenus()
+{
+    bool created = false;
+    //*****************************************************************************
+    //creating service Menu for Dolphin
+    //*****************************************************************************
+    QString serviceMenuPath;
+    if (QFileInfo::exists(QDir::homePath() + "/.local/share/kservices5/ServiceMenus"))
+        serviceMenuPath = QDir::homePath() + "/.local/share/kservices5/ServiceMenus";
+
+    if (serviceMenuPath.isEmpty() && QFileInfo::exists(QDir::homePath() + "/.local/share/kio/servicemenus"))
+        serviceMenuPath = QDir::homePath() + "/.local/share/kio/servicemenus";
+
+    /*if ((serviceMenuPath.isEmpty()) && (QFileInfo::exists(QCoreApplication::applicationDirPath() + "/../share/" + "kio/servicemenues")))
+        serviceMenuPath = QDir::homePath() + "/.local/share/kio/servicemenus";
+
+    if ((serviceMenuPath.isEmpty()) && (QFileInfo::exists(QCoreApplication::applicationDirPath() + "/../share/" + "kservices5/ServiceMenus")))
+        serviceMenuPath = QDir::homePath() + "/.local/share/kservices5/ServiceMenus";*/
+
+    if (serviceMenuPath != "")
+    {
+        if (!QFileInfo::exists(serviceMenuPath))
+        {
+            QDir dir(serviceMenuPath);
+            dir.mkpath(serviceMenuPath);
+        }
+        setupFileHandler* serviceFile = new setupFileHandler(serviceMenuPath + "/scanWithClamAV-GUI.desktop", nullptr);
+        serviceFile->setSectionValue("Desktop Entry", "Type", "Service");
+        serviceFile->setSectionValue("Desktop Entry", "ServiceTypes", "KonqPopupMenu/Plugin");
+        serviceFile->setSectionValue("Desktop Entry", "MimeType", "all/all;");
+        serviceFile->setSectionValue("Desktop Entry", "Actions", "scan;");
+        serviceFile->setSectionValue("Desktop Entry", "Icon", "clamav-gui");
+        serviceFile->setSectionValue("Desktop Entry", "X-KDE-Priority", "TopLevel");
+        serviceFile->setSectionValue("Desktop Entry", "X-KDE-StartupNotify", "false");
+        serviceFile->setSectionValue("Desktop Entry", "NO-X-KDE-Submenu", "Scan with ClamAV-GUI");
+        serviceFile->setSectionValue("Desktop Entry", "NO-X-KDE-Submenu[de]", "Scannen mit ClamAV-GUI");
+        serviceFile->setSectionValue("Desktop Entry", "NO-X-KDE-Submenu[da_DK]", "Scannen med ClamAV-GUI");
+        serviceFile->setSectionValue("Desktop Entry", "NO-X-KDE-Submenu[es_ES]", "Analizar con ClamAV-GUI");
+        serviceFile->setSectionValue("Desktop Entry", "NO-X-KDE-Submenu[us]", "Scan with ClamAV-GUI");
+        serviceFile->setSectionValue("Desktop Entry", "NO-X-KDE-Submenu[gb]", "Scan with ClamAV-GUI");
+        serviceFile->setSectionValue("Desktop Entry", "NO-X-KDE-Submenu[pt]", "Investigar com ClamAV-GUI");
+        serviceFile->setSectionValue("Desktop Entry", "NO-X-KDE-Submenu[br]", "Investigar com ClamAV-GUI");
+        serviceFile->setSectionValue("Desktop Entry", "NO-X-KDE-Submenu[pt_BR]", "Investigar com ClamAV-GUI");
+        serviceFile->setSectionValue("Desktop Entry", "NO-X-KDE-Submenu[fr]", "Scanner avec ClamAV-GUI");
+        serviceFile->setSectionValue("Desktop Entry", "NO-X-KDE-Submenu[it]", "Scansione con ClamAV-GUI");
+        serviceFile->setSectionValue("Desktop Entry", "NO-X-KDE-Submenu[uk]", "Сканування за допомогою ClamAV-GUI");
+
+        serviceFile->setSectionValue("Desktop Action scan", "Name", "scan");
+        serviceFile->setSectionValue("Desktop Action scan", "Name[de]", "Scannen mit ClamAV-GUI");
+        serviceFile->setSectionValue("Desktop Action scan", "Name[es_ES]", "Analizar con ClamAV-GUI");
+        serviceFile->setSectionValue("Desktop Action scan", "Name[us]", "Scan with ClamAV-GUI");
+        serviceFile->setSectionValue("Desktop Action scan", "Name[gb]", "Scan with ClamAV-GUI");
+        serviceFile->setSectionValue("Desktop Action scan", "Name[pt]", "Investigar com ClamAV-GUI");
+        serviceFile->setSectionValue("Desktop Action scan", "Name[br]", "Investigar com ClamAV-GUI");
+        serviceFile->setSectionValue("Desktop Action scan", "Name[fr]", "Scanner avec ClamAV-GUI");
+        serviceFile->setSectionValue("Desktop Action scan", "Name[it]", "Scansione con ClamAV-GUI");
+        serviceFile->setSectionValue("Desktop Action scan", "Name[uk]", "Сканування за допомогою ClamAV-GUI");
+        serviceFile->setSectionValue("Desktop Action scan", "Icon", "clamav-gui");
+        if (isRunninginFlatPak())
+            serviceFile->setSectionValue("Desktop Action scan", "Exec", "flatpak run --branch=master --arch=x86_64 --command=clamav-gui org.kde.clamav-gui --scan %F");
+        else
+            serviceFile->setSectionValue("Desktop Action scan", "Exec", "clamav-gui --scan %F");
+        delete serviceFile;
+
+        QFile file(serviceMenuPath + "/scanWithClamAV-GUI.desktop");
+        file.setPermissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner | QFileDevice::ExeOwner | QFileDevice::ReadGroup |
+                            QFileDevice::WriteGroup | QFileDevice::ExeGroup);
+        created = true;
+    }
+    // Service Menu for NEMO
+    if (QFileInfo::exists(QDir::homePath() + "/.local/share/nemo/actions"))
+    {
+        setupFileHandler* serviceFile = new setupFileHandler(QDir::homePath() + "/.local/share/nemo/actions/scan.nemo_action", nullptr);
+        serviceFile->setSectionValue("Nemo Action", "Name", "scan with ClamAV-GUI");
+        serviceFile->setSectionValue("Nemo Action", "Comment", "scan with ClamAV-GUI");
+        serviceFile->setSectionValue("Nemo Action", "Exec", "clamav-gui --scan &F");
+        serviceFile->setSectionValue("Nemo Action", "Icon-Name", "clamav-gui");
+        serviceFile->setSectionValue("Nemo Action", "Selection", "notnone");
+        serviceFile->setSectionValue("Nemo Action", "Extensions", "any");
+        serviceFile->setSectionValue("Nemo Action", "Separator", ",");
+        serviceFile->setSectionValue("Nemo Action", "Dependencies", "clamav-gui");
+        delete serviceFile;
+    }
+
+    return created;
+    //*****************************************************************************
+}
