@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<component type="desktop-application">
+
+    <id>io.github.wusel1007.clamav-gui</id>
+
+    <name>ClamAV GUI</name>
+
+    <summary>Graphical frontend for ClamAV</summary>
+
+    <developer id="io.github.wusel1007">
+        <name>Jörg Macedo da Costa Zopes</name>
+    </developer>
+
+    <metadata_license>FSFAP</metadata_license>
+
+    <project_license>GPL-3.0-or-later</project_license>
+
+    <url type="homepage">https://github.com/wusel1007/clamav-gui</url>
+    <url type="bugtracker">https://github.com/wusel1007/clamav-gui/issues</url>
+
+    <description>
+        <p>
+            A front-end (GUI) for ClamAV, freshclam and clamd. It supports
+            on-demand scanning, a context menu for Dolphin and scheduled scanning.
+        </p>
+    </description>
+
+    <launchable type="desktop-id">io.github.wusel1007.clamav-gui.desktop</launchable>
+
+    <screenshots>
+        <screenshot type="default">
+            <image>https://images.pling.com/img/00/00/10/24/28/1127892/clamav-gui-01.png</image>
+        </screenshot>
+    </screenshots>
+
+</component>
+
+
+
+
+
+
+
+
+
+
+
+

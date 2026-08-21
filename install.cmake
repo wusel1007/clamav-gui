@@ -34,7 +34,12 @@ install(FILES extra/icon128/clamav-gui.png
 
 install(
     FILES extra/io.github.wusel1007.clamav-gui.desktop
-    DESTINATION ${CMAKE_INSTALL_DATADIR}/applications
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/applications/
+)
+
+install(
+    FILES extra/io.github.wusel1007.clamav-gui.desktop
+    DESTINATION usr/share/applications/
 )
 
 install(
@@ -54,6 +59,7 @@ install(FILES
     DESTINATION share/icons/hicolor/256x256/apps
 )
 
+
 install(DIRECTORY man 
     DESTINATION usr/share/
 )
@@ -62,7 +68,7 @@ install(FILES CHANGES README
     DESTINATION usr/share/doc/clamav-gui/
 )
 
-install(FILES extra/org.opendesktop.clamav_gui.appdata.xml
+install(FILES extra/io.github.wusel1007.clamav-gui.appdata.xml
     DESTINATION usr/share/metainfo/
 )
 
