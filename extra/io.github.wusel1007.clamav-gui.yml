@@ -1,7 +1,7 @@
 app-id: io.github.wusel1007.clamav-gui
 
 runtime: org.kde.Platform
-runtime-version: "6.10"
+runtime-version: "6.11"
 
 sdk: org.kde.Sdk
 
@@ -13,11 +13,12 @@ finish-args:
   - "--socket=wayland"
   - "--socket=session-bus"
   - "--talk-name=org.kde.StatusNotifierWatcher"
-  - "--share=network"
-  - "--filesystem=host:rw"
-  - "--device=dri"
-  - "--talk-name=org.freedesktop.Flatpak"
   - "--talk-name=org.freedesktop.Notifications"
+  - "--talk-name=org.freedesktop.Flatpak"
+  - "--share=network"
+  - "--filesystem=host:ro"
+  - "--filesystem=~/.clamav-gui:rw"
+  - "--device=dri"
 
 modules:
   - name: clamav-gui

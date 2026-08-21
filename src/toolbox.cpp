@@ -221,7 +221,7 @@ bool createServiceMenus()
         serviceFile->setSectionValue("Desktop Action scan", "Name[uk]", "Сканування за допомогою ClamAV-GUI");
         serviceFile->setSectionValue("Desktop Action scan", "Icon", "clamav-gui");
         if (isRunninginFlatPak())
-            serviceFile->setSectionValue("Desktop Action scan", "Exec", "flatpak run --branch=master --arch=x86_64 --command=clamav-gui org.kde.clamav-gui --scan %F");
+            serviceFile->setSectionValue("Desktop Action scan", "Exec", "flatpak run --branch=master --arch=x86_64 --command=clamav-gui io.github.wusel1007.clamav-gui --scan %F");
         else
             serviceFile->setSectionValue("Desktop Action scan", "Exec", "clamav-gui --scan %F");
         delete serviceFile;
