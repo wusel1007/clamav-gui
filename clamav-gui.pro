@@ -184,7 +184,7 @@ icon256.path = /$(DESTDIR)/usr/share/icons/hicolor/256x256/apps
 icon256.files = extra/icon256/clamav-gui.png
 
 desktopfile.path = /$(DESTDIR)/usr/share/applications
-desktopfile.files = extra/org.opendesktop.clamav_gui.desktop
+desktopfile.files = data/io.github.wusel1007.clamav-gui.desktop
 
 metadata.path = /$(DESTDIR)/usr/share/metainfo
 metadata.files = extra/org.opendesktop.clamav_gui.appdata.xml
@@ -223,9 +223,9 @@ documents.path = /$(DESTDIR)/usr/share/doc/ClamAV-GUI
 documents.files = README CHANGES
 
 DISTFILES += \
-    data/icons/hicolor/128x128/apps/org.kde.clamav-gui.png \
-    data/icons/hicolor/64x64/apps/org.kde.clamav-gui.png \
-    data/icons/hicolor/scalable/apps/org.kde.clamav-gui.svg \
-    data/org.kde.clamav-gui.desktop
+    data/icons/hicolor/128x128/apps/io.github.wusel1007.clamav-gui.png \
+    data/icons/hicolor/64x64/apps/io.github.wusel1007.clamav-gui.png \
+    data/icons/hicolor/scalable/apps/io.github.wusel1007.clamav-gui.svg \
+    data/io.github.wusel1007.clamav-gui.desktop
 
 

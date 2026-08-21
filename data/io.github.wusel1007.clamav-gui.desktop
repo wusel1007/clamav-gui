@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=ClamAV GUI
-Comment=Graphical frontend for ClamAV
-Exec=clamav-gui
-Icon=io.github.wusel1007.clamav-gui
-Terminal=false
-Type=Application
-Categories=Utility;Security;
-StartupNotify=true

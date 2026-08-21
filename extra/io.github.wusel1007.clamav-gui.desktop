@@ -16,12 +16,8 @@ Comment[it]=Interfaccia grafica per ClamAV
 Comment[uk]=Графічний інтерфейс для ClamAV
 Comment[zh_CN]=ClamAV 图形界面
 Exec=clamav-gui
-Icon=org.kde.clamav-gui
-Type=Application
+Icon=io.github.wusel1007.clamav-gui
 Terminal=false
-X-KDE-StartupNotify=true
-X-KDE-SubstituteUID=false
-X-KDE-Username=Categories=Qt;KDE;System;Security;
-MimeType=
-StartupNotify=true
+Type=Application
 Categories=System;Security;
+StartupNotify=true

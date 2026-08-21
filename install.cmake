@@ -33,24 +33,24 @@ install(FILES extra/icon128/clamav-gui.png
 )
 
 install(
-    FILES data/io.github.wusel1007.clamav-gui.desktop
+    FILES extra/io.github.wusel1007.clamav-gui.desktop
     DESTINATION ${CMAKE_INSTALL_DATADIR}/applications
 )
 
 install(
-    FILES data/icons/hicolor/64x64/apps/io.github.wusel1007.clamav-gui.png
+    FILES extra/icon64/io.github.wusel1007.clamav-gui.png
     DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/64x64/apps
 )
 
 install(
-    FILES data/icons/hicolor/128x128/apps/io.github.wusel1007.clamav-gui.png
+    FILES extra/icon128/io.github.wusel1007.clamav-gui.png
     DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/128x128/apps
 )
 
 set(CPACK_PACKAGE_ICON io.github.wusel1007.clamav-gui.png)
 
 install(FILES
-    "${CMAKE_SOURCE_DIR}/extra/icon256/io.github.wusel1007.clamav-gui.png"
+    ${CMAKE_SOURCE_DIR}/extra/icon256/io.github.wusel1007.clamav-gui.png
     DESTINATION share/icons/hicolor/256x256/apps
 )
 
