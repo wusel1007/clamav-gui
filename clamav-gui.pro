@@ -226,6 +226,9 @@ DISTFILES += \
     data/icons/hicolor/128x128/apps/io.github.wusel1007.clamav-gui.png \
     data/icons/hicolor/64x64/apps/io.github.wusel1007.clamav-gui.png \
     data/icons/hicolor/scalable/apps/io.github.wusel1007.clamav-gui.svg \
-    data/io.github.wusel1007.clamav-gui.desktop
+    data/io.github.wusel1007.clamav-gui.desktop \
+    extra/io.github.wusel1007.clamav-gui.appdata.xml \
+    extra/io.github.wusel1007.clamav-gui.metainfo.xml \
+    extra/io.github.wusel1007.clamav-gui.yml
 
 
