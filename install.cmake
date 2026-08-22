@@ -72,6 +72,10 @@ install(FILES extra/io.github.wusel1007.clamav-gui.appdata.xml
     DESTINATION usr/share/metainfo/
 )
 
+install(FILES extra/io.github.wusel1007.clamav-gui.metainfo.xml
+    DESTINATION share/metainfo/
+)
+
 install(FILES   ${CMAKE_BINARY_DIR}/clamav-gui-uk_UA.qm
                 ${CMAKE_BINARY_DIR}/clamav-gui-pt_PT.qm
                 ${CMAKE_BINARY_DIR}/clamav-gui-it_IT.qm
