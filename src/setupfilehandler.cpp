@@ -760,7 +760,7 @@ void setupFileHandler::removeSingleLine(QString keyword, QString value, QString 
     if (comment != "")
     {
         comment = beautifyString(comment);
-        comment = comment + keyword + " " + value;
+        comment = comment + (value.isEmpty() ? keyword : keyword + " " + value);
         if (m_setupFileContent.indexOf(comment) != -1)
         {
             alreadyFinished = true;
@@ -773,8 +773,12 @@ void setupFileHandler::removeSingleLine(QString keyword, QString value, QString 
         QString newContent = "";
         QStringList lines = m_setupFileContent.split("\n");
         foreach (QString line, lines)
-            if (line.indexOf(keyword + " " + value) != 0)
+        {
+            QString trimmedLine = line.trimmed();
+            if (trimmedLine != keyword + " " + value || (value.isEmpty() && trimmedLine != keyword))
                 (newContent == "")?newContent = line:newContent = newContent + "\n" + line;
+        }
+
 
         m_setupFileContent = newContent;
     }
