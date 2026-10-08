@@ -52,6 +52,11 @@ bool scanoptionyn::isChecked()
     return m_ui.checkBox->isChecked();
 }
 
+void scanoptionyn::setCurrentText(QString text)
+{
+    m_ui.comboBox->setCurrentText(text);
+}
+
 void scanoptionyn::slot_checkboxClicked(){
     if (m_ui.checkBox->isChecked() == false)
     {

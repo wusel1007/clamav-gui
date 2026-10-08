@@ -525,12 +525,14 @@ void ProfileWizardDialog::readSettings()
                     {
                         optionyn = new scanoptionyn(this, newProfilename, "SelectedOptions", true, keyword + "<equal>yes",
                                                     m_setupFile->getSectionValue("AvailableOptions", optionText));
+                        optionyn->setCurrentText("yes");
                         optionfound = true;
                     }
                     if ((m_setupFile->keywordExists("SelectedOptions", keyword + "<equal>no") == true) && (optionfound == false))
                     {
                         optionyn = new scanoptionyn(this, newProfilename, "SelectedOptions", true, keyword + "<equal>no",
                                                     m_setupFile->getSectionValue("AvailableOptions", optionText));
+                        optionyn->setCurrentText("no");
                         optionfound = true;
                     }
                     if (optionfound == false)
@@ -539,6 +541,7 @@ void ProfileWizardDialog::readSettings()
                                                     m_setupFile->getSectionValue("AvailableOptions", optionText));
                     }
                     m_ui->optionLayout->addWidget(optionyn);
+                    scanOptions << optionyn;
                 }
                 else {
                     // --Switches without yes/no
@@ -552,6 +555,7 @@ void ProfileWizardDialog::readSettings()
                                                 m_setupFile->getSectionValue("AvailableOptions", optionText));
                     }
                     m_ui->optionLayout->addWidget(option);
+                    scanOptions << option;
                 }
             }
         }
@@ -1227,4 +1231,40 @@ void ProfileWizardDialog::slot_highlightSettings()
     m_ui->pwloadPUAUnixRadioButton->isChecked() ? m_ui->pwloadPUAUnixRadioButton->setStyleSheet(css)
                                                 : m_ui->pwloadPUAUnixRadioButton->setStyleSheet("");
     m_ui->pwloadPUAWinRadioButton->isChecked() ? m_ui->pwloadPUAWinRadioButton->setStyleSheet(css) : m_ui->pwloadPUAWinRadioButton->setStyleSheet("");
+}
+
+void ProfileWizardDialog::slot_showSelectedOnlyChecked()
+{
+    if (m_ui->wizardSelectedCheckBox->isChecked())
+        m_ui->wizardUnselectedCheckBox->setChecked(false);
+
+    slot_scanOptionFilterChanged();
+}
+
+void ProfileWizardDialog::slot_showUnselectedOnlyChecked()
+{
+    if (m_ui->wizardUnselectedCheckBox->isChecked())
+        m_ui->wizardSelectedCheckBox->setChecked(false);
+
+    slot_scanOptionFilterChanged();
+}
+
+void ProfileWizardDialog::slot_scanOptionFilterChanged()
+{
+    if ((m_ui->wizardUnselectedCheckBox->isChecked()) || (m_ui->wizardSelectedCheckBox->isChecked()))
+    {
+        if (m_ui->wizardSelectedCheckBox->isChecked())
+            foreach (scanOptionBaseClass *item, scanOptions)
+                item->setVisible(item->isChecked());
+        else
+            foreach (scanOptionBaseClass *item, scanOptions)
+                item->setVisible(!item->isChecked());
+    }
+    else {
+        foreach (scanOptionBaseClass *item, scanOptions)
+        {
+            ((item->getComment().indexOf(m_ui->wizardFilterLineEdit->text()) == -1) &&
+             (item->getOption().indexOf(m_ui->wizardFilterLineEdit->text()) == -1))?item->setVisible(false):item->setVisible(true);
+        }
+    }
 }

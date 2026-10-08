@@ -11,8 +11,9 @@
 #include <QList>
 #include <QDir>
 #include <QFile>
-#include "cfilesystemmodel.h"
+#include "scanoptionbaseclass.h"
 #include "dragablepushbutton.h"
+#include "cfilesystemmodel.h"
 #include "setupfilehandler.h"
 #include "scanoption.h"
 #include "scanoptionyn.h"
@@ -30,19 +31,21 @@ public:
     ~ProfileWizardDialog();
 
 private:
-    QString                  m_profileName;
-    Ui::ProfileWizardDialog * m_ui;
-    CFileSystemModel        * m_model;
-    QString                  m_getClamscanProcessOutput;
-    QFileSystemWatcher      * m_fileSystemWatcher;
-    QButtonGroup            * m_deviceGroup;
-    QString                   m_setupFileFilename;
-    setupFileHandler        * m_setupFile;
-    int                      m_buttonID;
-    bool                     m_newProfile;
-    bool                     m_monochrome;
-    QString                  m_username;
-    QStringList              m_devices;
+    QString                         m_profileName;
+    Ui::ProfileWizardDialog         * m_ui;
+    CFileSystemModel                * m_model;
+    QString                         m_getClamscanProcessOutput;
+    QFileSystemWatcher              * m_fileSystemWatcher;
+    QButtonGroup                    * m_deviceGroup;
+    QString                         m_setupFileFilename;
+    setupFileHandler                * m_setupFile;
+    int                             m_buttonID;
+    bool                            m_newProfile;
+    bool                            m_monochrome;
+    QString                         m_username;
+    QStringList                     m_devices;
+    QList <scanOptionBaseClass*>    scanOptions;
+
     void readSettings();
     void getClamscanOptions();
     void closeEvent(QCloseEvent *);
@@ -67,6 +70,9 @@ private slots:
     void slot_directoryCheckBoxesClicked();
     void slot_scanLimitsCheckBoxClicked();
     void slot_highlightSettings();
+    void slot_showSelectedOnlyChecked();
+    void slot_showUnselectedOnlyChecked();
+    void slot_scanOptionFilterChanged();
 
 signals:
     void signal_profileSaved();

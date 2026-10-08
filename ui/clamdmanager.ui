@@ -290,27 +290,6 @@ for changes made to take effect.</string>
                      </property>
                     </spacer>
                    </item>
-                   <item>
-                    <widget class="QPushButton" name="updateClamdConfParamPushButton">
-                     <property name="toolTip">
-                      <string>determin the current available parameters for clamd.conf. Useful after an update of clamav.</string>
-                     </property>
-                     <property name="text">
-                      <string>Update list of available 
-clamd.conf parameters.</string>
-                     </property>
-                     <property name="icon">
-                      <iconset resource="../resources.qrc">
-                       <normaloff>:/icons/icons/add_option.png</normaloff>:/icons/icons/add_option.png</iconset>
-                     </property>
-                     <property name="iconSize">
-                      <size>
-                       <width>24</width>
-                       <height>24</height>
-                      </size>
-                     </property>
-                    </widget>
-                   </item>
                   </layout>
                  </item>
                  <item>
@@ -497,6 +476,27 @@ clamd.conf parameters.</string>
               </property>
              </spacer>
             </item>
+            <item>
+             <widget class="QPushButton" name="updateClamdConfParamPushButton">
+              <property name="toolTip">
+               <string>determin the current available parameters for clamd.conf. Useful after an update of clamav.</string>
+              </property>
+              <property name="text">
+               <string>Update list of available 
+clamd.conf parameters.</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../resources.qrc">
+                <normaloff>:/icons/icons/add_option.png</normaloff>:/icons/icons/add_option.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
           <item>
@@ -531,7 +531,7 @@ clamd.conf parameters.</string>
                   <x>0</x>
                   <y>0</y>
                   <width>885</width>
-                  <height>437</height>
+                  <height>454</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -598,8 +598,8 @@ clamd.conf parameters.</string>
    <slot>slot_updateClamdConfParameters()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>896</x>
-     <y>59</y>
+     <x>960</x>
+     <y>159</y>
     </hint>
     <hint type="destinationlabel">
      <x>988</x>
@@ -614,8 +614,8 @@ clamd.conf parameters.</string>
    <slot>slot_monitoringDelButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>929</x>
-     <y>104</y>
+     <x>948</x>
+     <y>98</y>
     </hint>
     <hint type="destinationlabel">
      <x>985</x>
@@ -630,8 +630,8 @@ clamd.conf parameters.</string>
    <slot>slot_monitoringAddButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>877</x>
-     <y>105</y>
+     <x>892</x>
+     <y>98</y>
     </hint>
     <hint type="destinationlabel">
      <x>985</x>
@@ -678,8 +678,8 @@ clamd.conf parameters.</string>
    <slot>slot_showUnselectedChecked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>451</x>
-     <y>155</y>
+     <x>485</x>
+     <y>150</y>
     </hint>
     <hint type="destinationlabel">
      <x>458</x>
@@ -694,8 +694,8 @@ clamd.conf parameters.</string>
    <slot>slot_showSelectedChecked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>331</x>
-     <y>157</y>
+     <x>365</x>
+     <y>150</y>
     </hint>
     <hint type="destinationlabel">
      <x>374</x>

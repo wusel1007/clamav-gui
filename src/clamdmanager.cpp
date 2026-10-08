@@ -777,6 +777,7 @@ void clamdManager::slot_restartClamdButtonClicked()
     m_clamdRestartInProgress = true;
 
     m_ui.startStopClamdPushButton->setEnabled(false);
+    m_ui.startStopClamdPushButton->setStyleSheet("background-color:yellow;color:black");
     m_ui.monitoringAddButton->setEnabled(false);
     m_ui.monitoringDelButton->setEnabled(false);
     m_ui.startStopClamdPushButton->setText(tr("  Clamd restarting. Please wait!"));
@@ -847,7 +848,7 @@ void clamdManager::restartClamonacc()
         {
             if (m_dirsUnderMonitoring > 0)
             {
-                stream << "#!/bin/bash\n/bin/kill -9 " + m_setupFile->getSectionValue("Clamd","ClamdPid") + " && " + m_clamonaccLocation + " -c " + m_setupFile->getSectionValue("Clamd","ClamdConfPath") +
+                stream << "#!/bin/bash\n/bin/kill -9 " + m_setupFile->getSectionValue("Clamd","ClamonaccPid") + " && " + m_clamonaccLocation + " -c " + m_setupFile->getSectionValue("Clamd","ClamdConfPath") +
                               " -l " + m_setupFile->getSectionValue("Clamd","ClamdLogFile");
             }
             else {

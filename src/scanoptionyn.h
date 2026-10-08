@@ -21,6 +21,7 @@ public:
     QString getOption();
     QString getComment();
     bool isChecked();
+    void setCurrentText(QString text);
 
 private:
     Ui::scanoptionyn m_ui;
