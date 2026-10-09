@@ -3,6 +3,7 @@
 *******************************************************************/
 #include "toolbox.h"
 #include "sharedvars.cpp"
+#include <QDateTime>
 
 bool isRunninginFlatPak()
 {
@@ -108,7 +109,7 @@ QString whoami()
     if (isRunninginFlatPak())
         process.start("flatpak-spawn", {"--host","whoami"});
     else
-        process.start("whoami", {});
+        process.start(QString("whoami"), QStringList());
 
     if (!process.waitForFinished(3000))
         return "";
