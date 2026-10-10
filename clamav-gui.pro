@@ -3,6 +3,7 @@
 # Project created by QtCreator 2015-07-01T11:42:00
 #
 #-------------------------------------------------
+CONFIG += c++11
 
 QT       += core gui network widgets
 #greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
