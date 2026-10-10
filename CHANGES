@@ -1,9 +1,12 @@
+* Sat Oct 10 2026 - Version 1.5.0 updated
+- The sources didn't compile with QT5. Made some changes to toolbox.h and toolbox.cpp.
+
 * Thu Oct 8 2026 - Version 1.5.0
 - Added a merge request and fixed an issue regarding the PUA handling.
 - Changed the layout for profile tab, scheduler tab and clamd tab.
 - Fixed an issue regarding the restart script for clamd and clamonacc after configuration changes.
 - Added a filter option for scan options in the Profile Wizard Dialog.
-- Fixed an issue regarding the preinialization of the profile wizard dialog on new profiles.
+- Fixed an issue regarding the preinitialization of the profile wizard dialog on new profiles.
 
 * Wed Oct 7 2026 - Version 1.4.9
 - Fixed an issue with the version information displayed on the left side under the logo.

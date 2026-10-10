@@ -108,7 +108,7 @@ QString whoami()
     if (isRunninginFlatPak())
         process.start("flatpak-spawn", {"--host","whoami"});
     else
-        process.start("whoami", {});
+        process.start("whoami", QStringList());
 
     if (!process.waitForFinished(3000))
         return "";

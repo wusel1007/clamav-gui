@@ -2,6 +2,7 @@
 #define TOOLBOX_H
 //#include <QtEnvironmentVariables>
 #include <cstdlib>
+#include <QDateTime>
 #include <QStringList>
 #include <QFileInfo>
 #include <QProcess>
