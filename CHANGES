@@ -1,3 +1,6 @@
+* Tue Nov 17 2026 – Version 1.5.1
+– Fixed an issue with determining the database directory in the first-run dialog box. Previously installed signatures were not detected correctly.
+
 * Sat Oct 10 2026 - Version 1.5.0 updated
 - The sources didn't compile with QT5. Made some changes to toolbox.h and toolbox.cpp.
 

@@ -362,18 +362,18 @@ void firstRunWindow::createInitialSettings()
 {
     QString virusDatabasePath = "";
 
-    if (QFileInfo::exists("/var/lib/clamav")) m_ui->signatureDatabaseDirectoryComboBox->addItem("/var/lib/clamav");
-    if (QFileInfo::exists("/usr/local/share/clamav")) m_ui->signatureDatabaseDirectoryComboBox->addItem("/usr/local/share/clamav");
-    m_ui->signatureDatabaseDirectoryComboBox->addItem(QDir::homePath() + "/.clamav-gui/signatures");
-
-    if (QFileInfo::exists("/var/lib/clamav") && (checkFileExists("/var/lib/clamav/freshclam.dat")))
+    if (checkFileExists("/var/lib/clamav"))
     {
+        m_ui->signatureDatabaseDirectoryComboBox->addItem("/var/lib/clamav");
         virusDatabasePath = "/var/lib/clamav";
     }
-    if ((QFileInfo::exists("/usr/local/share/clamav") && (checkFileExists("/usr/local/share/clamav/freshclam.dat"))))
+    if (checkFileExists("/usr/local/share/clamav"))
     {
+        m_ui->signatureDatabaseDirectoryComboBox->addItem("/usr/local/share/clamav");
         virusDatabasePath = "/usr/local/share/clamav";
     }
+
+    m_ui->signatureDatabaseDirectoryComboBox->addItem(QDir::homePath() + "/.clamav-gui/signatures");
 
     if (virusDatabasePath != "")
     {
